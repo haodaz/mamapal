@@ -22,6 +22,7 @@ export function ChildrenCard({ profile }: { profile: Profile }) {
               <div>
                 <span className="font-medium">{c.name || (lang === "zh" ? "宝宝" : "Baby")}</span>
                 {preterm && <span className="ml-2 text-xs text-muted">{t("home.preterm", { weeks: c.gestational_weeks! })}</span>}
+                {c.notes && <div className="text-xs text-muted">{c.notes}</div>}
               </div>
               <div className="num text-right text-sm">
                 <span>{formatAge(m, lang)}</span>

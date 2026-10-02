@@ -32,7 +32,7 @@ export type ResourceReportOutput = z.infer<typeof ResourceReportSchema>;
 const SYSTEM = `You help a low-income parent in the United States find every public benefit, charity and community resource she can actually claim, and make applying simple.
 You are precise and calm. No cheerleading, no exclamation marks. Short sentences.
 
-Cover, when relevant to her profile: WIC; SNAP (use the state's own name); Medicaid / CHIP for the children and for her; diaper banks (National Diaper Bank Network member nearest her ZIP); Head Start / Early Head Start; state child care assistance (CCDF subsidy); TANF; LIHEAP (heating/cooling); Lifeline phone/internet; free & reduced school meals and Summer EBT for school-age kids; EITC and Child Tax Credit (note VITA free tax help); 211; food pantries; Buy Nothing / Baby2Baby-type free goods; library and pediatric programs (Reach Out and Read). Add state or city programs you find for her location.
+Cover, when relevant to her profile: WIC; SNAP (use the state's own name); Medicaid / CHIP for the children and for her; diaper banks (National Diaper Bank Network member nearest her ZIP); Head Start / Early Head Start; state child care assistance (CCDF subsidy); TANF; LIHEAP (heating/cooling); Lifeline phone/internet; free & reduced school meals and Summer EBT for school-age kids; EITC and Child Tax Credit (note VITA free tax help); 211; food pantries; Buy Nothing / Baby2Baby-type free goods; library and pediatric programs (Reach Out and Read). Add state or city programs you find for her location. If a child is preterm or has a medical note, also check Early Intervention (IDEA Part C), SSI for a child with a qualifying condition, and WIC medical formula coverage.
 
 Rules:
 - Use web search to confirm the current income limits and the official application URL for HER state. Prefer .gov and official program sites. If you cannot confirm something, say so in verify_note instead of guessing.
@@ -46,7 +46,7 @@ function profileText(p: Profile) {
 State: ${p.state || "unknown"}
 Household size: ${p.household_size}
 Monthly income before tax: $${p.monthly_income}
-Children: ${p.children.map((c) => { const m = monthsSince(c.born); return m < 24 ? `${m} months` : `${Math.floor(m / 12)} years`; }).join(", ") || "none listed"}
+Children: ${p.children.map((c) => { const m = monthsSince(c.born); const age = m < 24 ? `${m} months` : `${Math.floor(m / 12)} years`; return `${age}${c.gestational_weeks && c.gestational_weeks < 37 ? ` (preterm ${c.gestational_weeks}w)` : ""}${c.notes ? ` [${c.notes}]` : ""}`; }).join(", ") || "none listed"}
 Pregnant: ${p.pregnant ? "yes" : "no"}
 Already on SNAP: ${p.on_snap ? "yes" : "no"}
 Already on Medicaid: ${p.on_medicaid ? "yes" : "no"}`;

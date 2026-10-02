@@ -32,7 +32,7 @@ export async function POST(req: Request) {
       ...(p.state !== undefined && { state: String(p.state).trim().toUpperCase().slice(0, 2) }),
       ...(p.household_size !== undefined && { household_size: Math.max(1, Number(p.household_size) || 1) }),
       ...(p.monthly_income !== undefined && { monthly_income: Math.max(0, Number(p.monthly_income) || 0) }),
-      ...(Array.isArray(p.children) && { children: p.children.filter((c) => /^\d{4}-\d{2}$/.test(c.born)).map((c) => ({ name: String(c.name ?? "").trim(), born: c.born, ...(c.gestational_weeks ? { gestational_weeks: Math.min(42, Math.max(22, Number(c.gestational_weeks))) } : {}) })) }),
+      ...(Array.isArray(p.children) && { children: p.children.filter((c) => /^\d{4}-\d{2}$/.test(c.born)).map((c) => ({ name: String(c.name ?? "").trim(), born: c.born, ...(c.gestational_weeks ? { gestational_weeks: Math.min(42, Math.max(22, Number(c.gestational_weeks))) } : {}), ...(c.notes ? { notes: String(c.notes).trim().slice(0, 300) } : {}) })) }),
       ...(p.diapers_per_day !== undefined && { diapers_per_day: Math.max(0, Number(p.diapers_per_day) || 0) }),
       ...(p.formula_ml_per_day !== undefined && { formula_ml_per_day: Math.max(0, Number(p.formula_ml_per_day) || 0) }),
       ...(p.pregnant !== undefined && { pregnant: Boolean(p.pregnant) }),

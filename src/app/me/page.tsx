@@ -57,7 +57,7 @@ export default function MePage() {
               {state.profile.children.map((c, i) => {
                 const m = monthsSince(c.born), cm = correctedMonths(c);
                 const pre = c.gestational_weeks && c.gestational_weeks < 37;
-                return <div key={i} className="num"><span className="font-medium">{c.name || (lang === "zh" ? "宝宝" : "Baby")}</span> · {formatAge(m, lang)}{pre && cm !== m && <span className="text-primary"> · {t("home.corrected")} {formatAge(cm, lang)}</span>}{pre && <span className="text-muted"> · {t("home.preterm", { weeks: c.gestational_weeks! })}</span>}</div>;
+                return <div key={i} className="num"><span className="font-medium">{c.name || (lang === "zh" ? "宝宝" : "Baby")}</span> · {formatAge(m, lang)}{pre && cm !== m && <span className="text-primary"> · {t("home.corrected")} {formatAge(cm, lang)}</span>}{pre && <span className="text-muted"> · {t("home.preterm", { weeks: c.gestational_weeks! })}</span>}{c.notes && <span className="text-muted"> · {c.notes}</span>}</div>;
               })}
               <div className="num text-muted">{t("home.supplies", { d: state.profile.diapers_per_day, f: state.profile.formula_ml_per_day ? t("home.supplies_formula", { ml: state.profile.formula_ml_per_day }) : "" })}</div>
             </div>
@@ -80,6 +80,7 @@ export default function MePage() {
                       <label className="text-xs text-muted">{t("me.born")}<input type="month" value={c.born} onChange={(e) => updChild(i, { born: e.target.value })} className={input} /></label>
                       <label className="text-xs text-muted">{t("me.weeks")}<input type="number" min={22} max={42} value={c.gestational_weeks ?? ""} placeholder="40" onChange={(e) => updChild(i, { gestational_weeks: e.target.value ? Number(e.target.value) : undefined })} className={input} /></label>
                     </div>
+                    <label className="mt-2 block text-xs text-muted">{t("me.notes")}<input value={c.notes ?? ""} placeholder={t("me.notes_hint")} onChange={(e) => updChild(i, { notes: e.target.value })} className={input} /></label>
                     <div className="mt-2 flex items-center justify-between text-[11px] text-muted">
                       <span>{t("me.weeks_hint")}</span>
                       {p.children.length > 1 && <button onClick={() => upd("children", p.children.filter((_, j) => j !== i))} className="text-red">{t("me.remove")}</button>}
