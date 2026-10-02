@@ -1,9 +1,9 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Wallet, HandCoins, UserRound, MessageCircle } from "lucide-react";
+import { Home, Wallet, HandCoins, UserRound } from "lucide-react";
 import { useLang } from "./LangProvider";
-import { PalBust } from "./PalFace";
+import { PalBust, PalFigure } from "./PalFace";
 
 export function Nav() {
   const { lang, setLang, t } = useLang();
@@ -33,8 +33,8 @@ export function Nav() {
             {items.map(({ href, label, pal }) => (
               <Link key={href} href={href} className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm ${active(href) ? "bg-fg text-white" : "text-muted hover:text-fg"}`}>{pal && <PalBust size={22} />}{label}</Link>
             ))}
-            <Link href="/chat" className={`ml-1 flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm ${active("/chat") ? "bg-primary text-white" : "border border-primary/40 text-primary hover:bg-primary-soft"}`}>
-              <MessageCircle className="h-4 w-4" />{t("nav.chat")}
+            <Link href="/chat" className={`ml-1 flex items-center gap-1.5 rounded-full py-1 pl-1.5 pr-3 text-sm ${active("/chat") ? "bg-primary text-white" : "border border-primary/40 text-primary hover:bg-primary-soft"}`}>
+              <PalBust size={22} />{t("nav.chat")}
             </Link>
             <span className="ml-2"><LangBtn /></span>
           </nav>
@@ -63,8 +63,9 @@ export function Nav() {
 
       {/* Mobile: floating chat button */}
       {!active("/chat") && path !== "/" && (
-        <Link href="/chat" aria-label={t("nav.chat")} className="fixed bottom-20 right-4 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-lg shadow-primary/30 md:hidden">
-          <MessageCircle className="h-6 w-6" />
+        <Link href="/chat" aria-label={t("nav.chat")} className="fixed bottom-[4.2rem] right-2 z-30 flex flex-col items-center md:hidden">
+          <span className="mb-0.5 rounded-full border border-line bg-panel px-2 py-0.5 text-[11px] text-primary shadow-sm">{t("nav.chat")}</span>
+          <PalFigure pose="wave" width={76} />
         </Link>
       )}
     </>
