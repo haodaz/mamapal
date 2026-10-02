@@ -6,7 +6,7 @@ import { derive } from "./types";
 import { createClient } from "@supabase/supabase-js";
 
 // Single-user demo store. Persistence, in order of preference:
-//   1. Supabase table `app_state` (one row, jsonb) when SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY are set — needed on Vercel/Render, whose disks don't persist.
+//   1. Supabase table `app_state` (one row, jsonb) when SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY (or SUPABASE_ANON_KEY) are set — needed on Vercel/Render, whose disks don't persist.
 //   2. data/state.json on disk (local dev).
 //   3. in-memory fallback.
 // Boundary: NOT multi-user; one shared state per deployment.
@@ -17,7 +17,7 @@ let memory: State | null = null;
 
 function supabase() {
   const url = process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY; // anon works too, with the policy in supabase/schema.sql
   if (!url || !key) return null;
   return createClient(url, key, { auth: { persistSession: false } });
 }
