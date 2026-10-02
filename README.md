@@ -1,4 +1,4 @@
-# Survive & Thrive
+# MamaPal
 
 **Pal cares · Pal cuts · Pal claims. An AI guardian for a mother's $400 month.**
 

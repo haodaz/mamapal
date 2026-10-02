@@ -46,7 +46,7 @@ function profileText(p: Profile) {
 State: ${p.state || "unknown"}
 Household size: ${p.household_size}
 Monthly income before tax: $${p.monthly_income}
-Children: ${p.children.map((c) => { const m = monthsSince(c.born); const age = m < 24 ? `${m} months` : `${Math.floor(m / 12)} years`; return `${age}${c.gestational_weeks && c.gestational_weeks < 37 ? ` (preterm ${c.gestational_weeks}w)` : ""}${c.notes ? ` [${c.notes}]` : ""}`; }).join(", ") || "none listed"}
+Children: ${p.children.map((c) => { const m = monthsSince(c.born); const age = m < 24 ? `${m} months` : `${Math.floor(m / 12)} years`; return `${age}${c.notes ? ` [${c.notes}]` : ""}`; }).join(", ") || "none listed"}
 Pregnant: ${p.pregnant ? "yes" : "no"}
 Already on SNAP: ${p.on_snap ? "yes" : "no"}
 Already on Medicaid: ${p.on_medicaid ? "yes" : "no"}`;

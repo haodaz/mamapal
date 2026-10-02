@@ -4,7 +4,7 @@ import { LangProvider } from "@/components/LangProvider";
 import { Nav } from "@/components/Nav";
 
 export const metadata: Metadata = {
-  title: "Survive & Thrive",
+  title: "MamaPal",
   description: "Pal cares, Pal cuts, Pal claims. An AI guardian for a mother's $400 month. PayPal + Claude.",
 };
 export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover" };

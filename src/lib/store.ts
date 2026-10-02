@@ -83,6 +83,7 @@ function fresh(): State {
     profile: DEFAULT_PROFILE,
     resources: null,
     history: [],
+    onboarded: false,
   };
 }
 
@@ -100,6 +101,7 @@ function rollover(state: State): State {
     food_lock: state.food_lock,
     profile: state.profile,
     resources: state.resources,
+    onboarded: state.onboarded,
     history: arch ? [...state.history.filter((h) => h.month !== arch.month), arch] : state.history,
   };
 }

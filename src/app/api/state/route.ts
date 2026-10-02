@@ -15,7 +15,7 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const body = (await req.json()) as { budget?: number; food_lock?: number; profile?: Partial<Profile>; reset?: boolean };
+  const body = (await req.json()) as { budget?: number; food_lock?: number; profile?: Partial<Profile>; reset?: boolean; onboarded?: boolean };
   if (body.reset) {
     await resetState();
     return NextResponse.json(await payload());
@@ -40,6 +40,7 @@ export async function POST(req: Request) {
       ...(p.on_medicaid !== undefined && { on_medicaid: Boolean(p.on_medicaid) }),
     };
   }
+  if (typeof body.onboarded === "boolean") state.onboarded = body.onboarded;
   if (state.food_lock > state.budget) state.food_lock = state.budget;
   await saveState(state);
   return NextResponse.json(await payload());

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useAppState } from "@/components/useAppState";
 import { useLang } from "@/components/LangProvider";
 import { Ledger } from "@/components/Ledger";
-import { monthsSince, correctedMonths, formatAge } from "@/lib/age";
+import { monthsSince, formatAge } from "@/lib/age";
 import type { Child, Profile, ResourceReport } from "@/lib/types";
 
 export default function MePage() {
@@ -55,9 +55,8 @@ export default function MePage() {
           <div className="mt-2 grid gap-x-8 gap-y-1 text-sm sm:grid-cols-2">
             <div>
               {state.profile.children.map((c, i) => {
-                const m = monthsSince(c.born), cm = correctedMonths(c);
-                const pre = c.gestational_weeks && c.gestational_weeks < 37;
-                return <div key={i} className="num"><span className="font-medium">{c.name || (lang === "zh" ? "宝宝" : "Baby")}</span> · {formatAge(m, lang)}{pre && cm !== m && <span className="text-primary"> · {t("home.corrected")} {formatAge(cm, lang)}</span>}{pre && <span className="text-muted"> · {t("home.preterm", { weeks: c.gestational_weeks! })}</span>}{c.notes && <span className="text-muted"> · {c.notes}</span>}</div>;
+                const m = monthsSince(c.born);
+                return <div key={i} className="num"><span className="font-medium">{c.name || (lang === "zh" ? "宝宝" : "Baby")}</span> · {formatAge(m, lang)}{c.notes && <span className="text-muted"> · {c.notes}</span>}</div>;
               })}
               <div className="num text-muted">{t("home.supplies", { d: state.profile.diapers_per_day, f: state.profile.formula_ml_per_day ? t("home.supplies_formula", { ml: state.profile.formula_ml_per_day }) : "" })}</div>
             </div>
@@ -75,16 +74,12 @@ export default function MePage() {
                 <label className="block text-xs text-muted">{t("me.name")}<input value={p.name} onChange={(e) => upd("name", e.target.value)} className={input} /></label>
                 {p.children.map((c, i) => (
                   <div key={i} className="rounded-lg border border-line bg-panel p-3">
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="grid grid-cols-2 gap-2">
                       <label className="text-xs text-muted">{t("me.child_name")}<input value={c.name} onChange={(e) => updChild(i, { name: e.target.value })} className={input} /></label>
                       <label className="text-xs text-muted">{t("me.born")}<input type="month" value={c.born} onChange={(e) => updChild(i, { born: e.target.value })} className={input} /></label>
-                      <label className="text-xs text-muted">{t("me.weeks")}<input type="number" min={22} max={42} value={c.gestational_weeks ?? ""} placeholder="40" onChange={(e) => updChild(i, { gestational_weeks: e.target.value ? Number(e.target.value) : undefined })} className={input} /></label>
                     </div>
                     <label className="mt-2 block text-xs text-muted">{t("me.notes")}<input value={c.notes ?? ""} placeholder={t("me.notes_hint")} onChange={(e) => updChild(i, { notes: e.target.value })} className={input} /></label>
-                    <div className="mt-2 flex items-center justify-between text-[11px] text-muted">
-                      <span>{t("me.weeks_hint")}</span>
-                      {p.children.length > 1 && <button onClick={() => upd("children", p.children.filter((_, j) => j !== i))} className="text-red">{t("me.remove")}</button>}
-                    </div>
+                    {p.children.length > 1 && <div className="mt-2 text-right text-[11px]"><button onClick={() => upd("children", p.children.filter((_, j) => j !== i))} className="text-red">{t("me.remove")}</button></div>}
                   </div>
                 ))}
                 <button onClick={() => upd("children", [...p.children, { name: "", born: new Date().toISOString().slice(0, 7) }])} className="text-xs text-primary">{t("me.add_child")}</button>

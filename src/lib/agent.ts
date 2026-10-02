@@ -3,7 +3,8 @@ import { z } from "zod";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import type { State } from "./types";
 import { derive } from "./types";
-import { monthsSince, correctedMonths } from "./age";
+import { monthsSince } from "./age";
+import { needsSummaryForAgent } from "./stages";
 
 const MODEL = process.env.CLAUDE_MODEL ?? "claude-opus-5";
 
@@ -41,7 +42,7 @@ Rules:
 - Price with realistic US retail numbers (Walmart / dollar store / pharmacy generics). Round to whole dollars unless she gave cents.
 - Be concrete: name the actual alternative product category and price, not "something cheaper".
 - items must only contain things she asked for or clearly implied. Never add advice-only rows (price 0). Advice goes in the reason or the note.
-- Tone: short, calm, factual. No exclamation marks. No "great question". She is tired; every word costs her.
+- Tone: hard on products, warm and plain toward her. Short everyday words a tired person can read on a phone; no jargon, no finance words. Never shame her for wanting something; say what the baby actually needs and why. No exclamation marks, no "great question".
 - Product names can stay English.`;
 
 export async function planPurchase(ask: string, state: State, lang: "en" | "zh" = "en"): Promise<PlanOutput> {
@@ -59,7 +60,9 @@ Locked for food (untouchable): $${state.food_lock}
 Already spent this month: $${d.spent}
 Earned back this month: $${d.earned}
 AVAILABLE NOW: $${d.available}
-Children: ${state.profile.children.map((c) => { const m = monthsSince(c.born); const cm = correctedMonths(c); const age = m < 24 ? `${m} months` : `${Math.floor(m / 12)} years`; const pre = c.gestational_weeks && c.gestational_weeks < 37 ? ` (born at ${c.gestational_weeks} weeks, corrected age ${cm} months — use corrected age for feeding/development advice)` : ""; return `${c.name || "child"} ${age}${pre}${c.notes ? ` [${c.notes}]` : ""}`; }).join("; ") || "none listed"}${state.profile.pregnant ? "\nPregnant: yes" : ""}
+Children: ${state.profile.children.map((c) => { const m = monthsSince(c.born); const age = m < 24 ? `${m} months` : `${Math.floor(m / 12)} years`; return `${c.name || "child"} ${age}${c.notes ? ` [${c.notes}]` : ""}`; }).join("; ") || "none listed"}
+Expected baseline needs this month (model, store-brand prices):
+${needsSummaryForAgent(state.profile)}${state.profile.pregnant ? "\nPregnant: yes" : ""}
 Daily use: ${state.profile.diapers_per_day} diapers/day${state.profile.formula_ml_per_day ? `, ${state.profile.formula_ml_per_day} ml formula/day` : ", no formula"}
 Recent approved purchases:
 ${recent || "- none yet"}`;

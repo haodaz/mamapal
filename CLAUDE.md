@@ -1,4 +1,4 @@
-# Survive & Thrive (mamaagent)
+# MamaPal (mamaagent)
 
 PayPal AI Hackathon entry. Read `README.md` first for the product and the boundaries.
 

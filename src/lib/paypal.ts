@@ -63,7 +63,7 @@ export async function createOrder(items: OrderItem[], description: string, custo
     payment_source: {
       paypal: {
         experience_context: {
-          brand_name: "Survive & Thrive",
+          brand_name: "MamaPal",
           user_action: "PAY_NOW",
           shipping_preference: "NO_SHIPPING",
         },
@@ -88,7 +88,7 @@ export async function createPayout(receiverEmail: string, amount: number, note: 
   return call<{ batch_header: { payout_batch_id: string; batch_status: string } }>("POST", "/v1/payments/payouts", {
     sender_batch_header: {
       sender_batch_id: `st-${itemId}-${Date.now().toString(36)}`,
-      email_subject: "Survive & Thrive: micro-survey reward",
+      email_subject: "MamaPal: micro-survey reward",
       email_message: note,
     },
     items: [

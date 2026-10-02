@@ -109,6 +109,7 @@ export type State = {
   profile: Profile;
   resources: ResourceReport | null;
   history: MonthArchive[];
+  onboarded?: boolean;
 };
 
 export function derive(state: State) {
