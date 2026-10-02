@@ -105,7 +105,9 @@ function rollover(state: State): State {
 }
 
 export async function loadState(): Promise<State> {
-  if (memory) return memory;
+  // With Supabase, never trust the per-instance memory cache: on Vercel each function instance has its own,
+  // so a write from one instance would be invisible (and later clobbered) by another. One small read per request instead.
+  if (memory && !supabase()) return memory;
   try {
     const raw = await readRaw();
     if (!raw) throw new Error("empty");
