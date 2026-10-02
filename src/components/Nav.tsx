@@ -3,12 +3,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, Wallet, HandCoins, UserRound, MessageCircle } from "lucide-react";
 import { useLang } from "./LangProvider";
+import { PalBust } from "./PalFace";
 
 export function Nav() {
   const { lang, setLang, t } = useLang();
   const path = usePathname();
   const items = [
-    { href: "/", label: t("nav.home"), Icon: Home },
+    { href: "/", label: "Pal", Icon: Home, pal: true },
     { href: "/budget", label: t("nav.budget"), Icon: Wallet },
     { href: "/resources", label: t("nav.resources"), Icon: HandCoins },
     { href: "/me", label: t("nav.me"), Icon: UserRound },
@@ -29,8 +30,8 @@ export function Nav() {
             <span className="text-xs text-muted">{t("app.tagline")}</span>
           </Link>
           <nav className="flex items-center gap-1">
-            {items.map(({ href, label }) => (
-              <Link key={href} href={href} className={`rounded-full px-3 py-1.5 text-sm ${active(href) ? "bg-fg text-white" : "text-muted hover:text-fg"}`}>{label}</Link>
+            {items.map(({ href, label, pal }) => (
+              <Link key={href} href={href} className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm ${active(href) ? "bg-fg text-white" : "text-muted hover:text-fg"}`}>{pal && <PalBust size={22} />}{label}</Link>
             ))}
             <Link href="/chat" className={`ml-1 flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm ${active("/chat") ? "bg-primary text-white" : "border border-primary/40 text-primary hover:bg-primary-soft"}`}>
               <MessageCircle className="h-4 w-4" />{t("nav.chat")}
@@ -50,9 +51,9 @@ export function Nav() {
       {!active("/chat") && (
       <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-panel pb-[env(safe-area-inset-bottom)] md:hidden">
         <div className="grid grid-cols-4">
-          {items.map(({ href, label, Icon }) => (
+          {items.map(({ href, label, Icon, pal }) => (
             <Link key={href} href={href} className={`flex flex-col items-center gap-0.5 py-2 text-[11px] ${active(href) ? "text-primary" : "text-muted"}`}>
-              <Icon className="h-5 w-5" strokeWidth={active(href) ? 2.5 : 2} />
+              {pal ? <PalBust size={24} className={active(href) ? "" : "opacity-70"} /> : <Icon className="h-5 w-5" strokeWidth={active(href) ? 2.5 : 2} />}
               {label}
             </Link>
           ))}

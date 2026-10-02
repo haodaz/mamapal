@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAppState } from "@/components/useAppState";
 import { useLang } from "@/components/LangProvider";
-import { PalFace } from "@/components/PalFace";
+import { PalFace, PalFigure } from "@/components/PalFace";
 import { NeedsCard } from "@/components/NeedsCard";
 import { PlanCard } from "@/components/PlanCard";
 import { childNeeds } from "@/lib/stages";
@@ -72,14 +72,31 @@ export default function Home() {
   const chip = "shrink-0 rounded-full border border-line bg-panel px-3 py-1.5 text-sm text-fg shadow-sm hover:border-primary hover:text-primary";
 
   return (
-    <main className="mx-auto max-w-2xl px-4 pb-48 pt-4 md:pt-8">
-      <div className="flex flex-col items-center">
-        <PalFace size={72} />
-        <div className="mt-2 text-sm font-semibold">{t("pal.name")}</div>
+    <main className="mx-auto max-w-2xl px-4 pb-52 pt-4 md:pt-8">
+      <div className="relative flex flex-col items-center">
+        <PalFigure width={170} className="relative z-10 -mb-14 md:w-[200px] md:-mb-16" />
+        <section className="w-full rounded-3xl border border-line bg-panel px-5 pb-5 pt-16 shadow-sm md:pt-20">
+          <h1 className="text-xl font-semibold tracking-tight">{t("pal.welcome_back", { name: mom })}</h1>
+          <p className="mt-1 text-sm text-muted">{t("pal.intro")}</p>
+          <div className="num mt-4 grid grid-cols-3 gap-2">
+            {[
+              [t("budget.available"), money(derived.available), "text-fg"],
+              [t("pal.card.saved"), money(derived.intercepted), "text-green"],
+              [t("home.claims"), claimable == null ? "—" : money(claimable), "text-primary"],
+            ].map(([l, v, c]) => (
+              <div key={l} className="rounded-2xl bg-bg px-3 py-2.5"><div className="text-[11px] text-muted">{l}</div><div className={`text-xl font-semibold ${c}`}>{v}</div></div>
+            ))}
+          </div>
+          <div className="mt-4 text-[11px] text-muted">{t("pal.quick")}</div>
+          <div className="mt-1.5 flex flex-wrap gap-2">
+            {[t("pal.q1"), t("pal.q2", { name: kidName }), t("pal.q3")].map((q) => (
+              <button key={q} onClick={() => { setAsk(q); box.current?.focus(); }} className="rounded-full border border-line bg-panel px-3 py-1.5 text-sm hover:border-primary hover:text-primary">{q}</button>
+            ))}
+          </div>
+        </section>
       </div>
 
       <section className="mt-5 space-y-3">
-        <Bubble>{t("pal.hello", { name: mom })} {t("pal.intro")}</Bubble>
         <Bubble>{t("pal.line.money", { available: money(derived.available) })}</Bubble>
         <Card href="/budget">
           <div className="text-sm font-medium">{t("pal.card.money")}</div>
@@ -133,15 +150,16 @@ export default function Home() {
       </section>
 
       {/* Composer: bottom of the page, above the mobile tab bar */}
-      <div className="fixed inset-x-0 bottom-[calc(3.6rem+env(safe-area-inset-bottom))] z-20 border-t border-line bg-bg/95 backdrop-blur md:bottom-0">
-        <div className="mx-auto max-w-2xl px-4 py-2.5">
-          <div className="mb-2 flex gap-2 overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="fixed inset-x-0 bottom-[calc(3.6rem+env(safe-area-inset-bottom))] z-20 bg-gradient-to-t from-bg via-bg/95 to-bg/0 pt-6 md:bottom-0">
+        <div className="relative mx-auto max-w-2xl px-4 pb-2.5">
+          <PalFigure pose="wave" width={96} className="absolute bottom-[3.9rem] left-2 z-0 md:w-[120px] md:left-0" />
+          <div className="relative mb-2 ml-24 flex gap-2 overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:ml-28">
             <button onClick={() => box.current?.focus()} className={chip}>{t("pal.topic.buy")}</button>
             <Link href="/resources" className={chip}>{t("pal.topic.claim")}</Link>
             <a href="#needs" className={chip}>{t("pal.topic.month", { name: kidName })}</a>
             <Link href="/budget" className={chip}>{t("pal.topic.budget")}</Link>
           </div>
-          <div className="flex items-end gap-2 rounded-3xl border border-line bg-panel p-1.5 shadow-sm">
+          <div className="relative flex items-end gap-2 rounded-3xl border border-line bg-panel p-1.5 shadow-[0_-6px_24px_rgba(40,50,110,0.08)]">
             <textarea ref={box} value={ask} onChange={(e) => setAsk(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); } }} rows={1} placeholder={t("pal.placeholder")} className="max-h-32 flex-1 resize-none bg-transparent px-3 py-2 text-[15px] placeholder:text-muted" />
             <button onClick={submit} disabled={busy || !ask.trim()} className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white disabled:opacity-30">{busy ? t("composer.busy") : t("pal.send")}</button>
           </div>
