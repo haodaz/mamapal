@@ -3,11 +3,45 @@ import path from "path";
 import type { State, Opportunity, Profile, MonthArchive } from "./types";
 import { derive } from "./types";
 
-// Single-user demo store: one JSON file on disk, in-memory fallback if the disk is read-only.
-// Boundary: NOT multi-user and NOT durable on ephemeral hosts (Render free tier resets it on deploy).
+import { createClient } from "@supabase/supabase-js";
+
+// Single-user demo store. Persistence, in order of preference:
+//   1. Supabase table `app_state` (one row, jsonb) when SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY are set — needed on Vercel/Render, whose disks don't persist.
+//   2. data/state.json on disk (local dev).
+//   3. in-memory fallback.
+// Boundary: NOT multi-user; one shared state per deployment.
 
 const FILE = path.join(process.cwd(), "data", "state.json");
+const ROW_ID = process.env.STATE_ROW_ID ?? "default";
 let memory: State | null = null;
+
+function supabase() {
+  const url = process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) return null;
+  return createClient(url, key, { auth: { persistSession: false } });
+}
+
+async function readRaw(): Promise<string | null> {
+  const sb = supabase();
+  if (sb) {
+    const { data, error } = await sb.from("app_state").select("state").eq("id", ROW_ID).maybeSingle();
+    if (error) throw new Error(`supabase read: ${error.message}`);
+    return data ? JSON.stringify(data.state) : null;
+  }
+  return fs.readFile(FILE, "utf8");
+}
+
+async function writeRaw(state: State): Promise<void> {
+  const sb = supabase();
+  if (sb) {
+    const { error } = await sb.from("app_state").upsert({ id: ROW_ID, state, updated_at: new Date().toISOString() });
+    if (error) throw new Error(`supabase write: ${error.message}`);
+    return;
+  }
+  await fs.mkdir(path.dirname(FILE), { recursive: true });
+  await fs.writeFile(FILE, JSON.stringify(state, null, 2));
+}
 
 function monthKey(d = new Date()) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
@@ -73,7 +107,8 @@ function rollover(state: State): State {
 export async function loadState(): Promise<State> {
   if (memory) return memory;
   try {
-    const raw = await fs.readFile(FILE, "utf8");
+    const raw = await readRaw();
+    if (!raw) throw new Error("empty");
     const s = JSON.parse(raw) as Partial<State>;
     memory = { ...fresh(), ...s };
     // migrate older profile shapes
@@ -93,7 +128,8 @@ export async function loadState(): Promise<State> {
       memory = rollover(memory);
       await saveState(memory);
     }
-  } catch {
+  } catch (e) {
+    if ((e as Error).message !== "empty" && !/ENOENT/.test((e as Error).message)) console.warn("[store] load failed, starting fresh:", (e as Error).message);
     memory = fresh();
   }
   return memory!;
@@ -102,10 +138,9 @@ export async function loadState(): Promise<State> {
 export async function saveState(state: State): Promise<void> {
   memory = state;
   try {
-    await fs.mkdir(path.dirname(FILE), { recursive: true });
-    await fs.writeFile(FILE, JSON.stringify(state, null, 2));
+    await writeRaw(state);
   } catch (e) {
-    console.warn("[store] disk write failed, keeping state in memory only:", (e as Error).message);
+    console.warn("[store] write failed, keeping state in memory only:", (e as Error).message);
   }
 }
 

@@ -38,7 +38,7 @@ Everything that touches money is a real PayPal sandbox API call. Nothing is fake
 - Next.js 16 (App Router) + Tailwind 4
 - **AI:** Anthropic Claude (`claude-opus-5`) via `@anthropic-ai/sdk`. Purchase filter: structured output enforced with a Zod schema (`src/lib/agent.ts`). Benefits finder: Claude web search tool + the same structured-output approach (`src/lib/resources-agent.ts`)
 - **PayPal:** Orders v2 (create + capture) and Payouts v1, called directly against the sandbox REST API (`src/lib/paypal.ts`); PayPal JavaScript SDK buttons on the client
-- State: one JSON file (`data/state.json`) for the single-user demo
+- State: one JSON blob for the single-user demo, in Supabase (`app_state` row) when configured, else `data/state.json`
 
 ## Run it
 
@@ -53,6 +53,7 @@ npm run dev                  # http://localhost:3000
 | `ANTHROPIC_API_KEY` | https://console.anthropic.com |
 | `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET`, `NEXT_PUBLIC_PAYPAL_CLIENT_ID` | PayPal Developer Dashboard → Apps & Credentials → **Sandbox** → create app. Client ID goes in both `PAYPAL_CLIENT_ID` and `NEXT_PUBLIC_PAYPAL_CLIENT_ID`. |
 | `PAYOUT_RECEIVER_EMAIL` | Developer Dashboard → Sandbox Accounts → the **Personal** account's email. Payouts land there. |
+| `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` | Optional. On Vercel/Render the disk is not durable, so state goes to one Supabase row. Run `supabase/schema.sql` once. Locally you can skip this; state lives in `data/state.json`. |
 
 To pay in the demo, log into the PayPal popup with that same sandbox Personal account (password is in Sandbox Accounts → View/Edit).
 
@@ -60,7 +61,7 @@ To pay in the demo, log into the PayPal popup with that same sandbox Personal ac
 
 - Sandbox only. Orders are paid to our own sandbox business account; the app does not place orders at Walmart or anywhere else. The merchant names are the agent's buying advice, not integrations.
 - Prices are the model's realistic US retail estimates, not live quotes.
-- Single user, one JSON file. No accounts, no auth. On a host with an ephemeral disk the month resets on redeploy.
+- Single user, one shared state per deployment. No accounts, no auth. Anyone with the demo URL sees and changes the same month.
 - The brand surveys are seeded examples; there is no brand marketplace behind them yet.
 - The benefits finder is AI research over official sites on the day it runs. Income limits and local programs change; every card says to confirm with the program. It is not legal or benefits counsel.
 - Not medical advice. When a symptom needs a doctor the agent says so in the verdict and still prices the cheapest safe home option.
