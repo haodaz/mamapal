@@ -60,12 +60,15 @@ export default function Home() {
   const Mine = ({ children }: { children: React.ReactNode }) => (
     <div className="flex justify-end"><div className="max-w-[85%] rounded-2xl rounded-br-sm bg-primary px-4 py-2.5 text-[15px] text-white">{children}</div></div>
   );
-  const Card = ({ children, href, label }: { children: React.ReactNode; href?: string; label?: string }) => (
+  const Card = ({ children, href, label, extra }: { children: React.ReactNode; href?: string; label?: string; extra?: { href: string; label: string } }) => (
     <div className="flex items-start gap-2">
       <PalFace size={28} className="mt-1" />
       <div className="min-w-0 flex-1 rounded-2xl rounded-tl-sm border border-line bg-panel p-4 shadow-sm">
         {children}
-        {href && <Link href={href} className="mt-3 inline-block text-xs text-primary">{label ?? t("pal.card.open")} →</Link>}
+        <div className="mt-3 flex gap-4 text-xs">
+          {href && <Link href={href} className="text-primary">{label ?? t("pal.card.open")} →</Link>}
+          {extra && <Link href={extra.href} className="text-primary">{extra.label} →</Link>}
+        </div>
       </div>
     </div>
   );
@@ -98,7 +101,7 @@ export default function Home() {
 
       <section className="mt-5 space-y-3">
         <Bubble>{t("pal.line.money", { available: money(derived.available) })}</Bubble>
-        <Card href="/budget">
+        <Card href="/budget" extra={{ href: "/me#ledger", label: t("pal.card.details") }}>
           <div className="text-sm font-medium">{t("pal.card.money")}</div>
           <div className="num mt-1 flex flex-wrap items-baseline gap-x-4 gap-y-1">
             <span className="text-3xl font-semibold">{money(derived.available)}</span>

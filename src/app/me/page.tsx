@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react";
 import { useAppState } from "@/components/useAppState";
 import { useLang } from "@/components/LangProvider";
-import { Ledger } from "@/components/Ledger";
+import dynamic from "next/dynamic";
+const LedgerGrid = dynamic(() => import("@/components/LedgerGrid").then((m) => m.LedgerGrid), { ssr: false, loading: () => <div className="text-xs text-muted">…</div> });
 import { monthsSince, formatAge } from "@/lib/age";
 import type { Child, Profile, ResourceReport } from "@/lib/types";
 
@@ -143,7 +144,7 @@ export default function MePage() {
         </div>
       </section>
 
-      <section className="mt-8 grid gap-6 md:grid-cols-2">
+      <section className="mt-8">
         <div>
           <div className="mb-3 text-xs text-muted"><span className="text-primary">{t("pillar.cut")}</span> · {t("me.verdicts")}</div>
           {state.plans.length ? (
@@ -160,10 +161,12 @@ export default function MePage() {
             </ul>
           ) : <div className="text-sm text-muted">{t("me.no_verdicts")}</div>}
         </div>
-        <div>
-          <div className="mb-3 text-xs text-muted">{t("me.ledger")}</div>
-          <Ledger entries={state.ledger} />
-        </div>
+      </section>
+
+      <section id="ledger" className="mt-8 scroll-mt-20">
+        <h3 className="text-lg font-semibold tracking-tight">{t("me.ledger_motto")}</h3>
+        <div className="mb-3 text-xs text-muted">{t("me.ledger_all")}</div>
+        <LedgerGrid state={state} />
       </section>
 
       <section className="mt-8">

@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useCallback, useState } from "react";
 import { useAppState } from "@/components/useAppState";
 import { useLang } from "@/components/LangProvider";
@@ -42,7 +43,7 @@ export default function BudgetPage() {
             {plans.length ? <div className="space-y-4">{plans.map((p) => <PlanCard key={p.id} plan={p} onPaid={onMoney} onError={onError} />)}</div> : <div className="text-sm text-muted">{t("budget.no_plans")}</div>}
           </div>
           <div>
-            <div className="mb-2 text-xs text-muted">{t("ledger.section")}</div>
+            <div className="mb-2 flex items-baseline justify-between text-xs text-muted"><span>{t("ledger.section")}</span><Link href="/me#ledger" className="text-primary">{t("pal.card.details")} →</Link></div>
             <Ledger entries={state.ledger} />
           </div>
         </div>
