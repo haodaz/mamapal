@@ -9,7 +9,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 
 // AG Grid lives only here, in Me → records: every PayPal event across months, sortable, filterable,
 // with a pinned total row and CSV export. The rest of the app stays Pal-shaped.
-type Row = { month: string; date: string; kind: "spend" | "earn"; note: string; paypal_id: string; amount: number };
+type Row = { month: string; date: string; kind: "spend" | "earn" | ""; note: string; paypal_id: string; amount: number };
 
 const theme = themeQuartz.withParams({
   accentColor: "#1677ff",
@@ -47,13 +47,13 @@ export function LedgerGrid({ state }: { state: State }) {
   const cols = useMemo<ColDef<Row>[]>(() => [
     { field: "month", headerName: t("grid.month"), width: 100, filter: true },
     { field: "date", headerName: t("grid.date"), width: 140, sort: "desc" },
-    { field: "kind", headerName: t("grid.type"), width: 100, filter: true, valueFormatter: (p) => (p.value === "spend" ? t("grid.spend") : p.value === "earn" ? t("grid.earn") : ""), cellClass: (p) => (p.value === "spend" ? "text-red" : "text-green") },
+    { field: "kind", headerName: t("grid.type"), width: 100, filter: true, valueFormatter: (p) => (p.value === "spend" ? t("grid.spend") : p.value === "earn" ? t("grid.earn") : ""), cellClass: (p) => (p.value === "spend" ? "text-red" : p.value === "earn" ? "text-green" : "") },
     { field: "note", headerName: t("grid.note"), flex: 1, minWidth: 180, filter: true },
     { field: "paypal_id", headerName: t("grid.paypal_id"), width: 190, cellClass: "num text-muted" },
     { field: "amount", headerName: t("grid.amount"), width: 120, type: "rightAligned", valueFormatter: (p) => (typeof p.value === "number" ? money(p.value) : ""), cellClass: (p) => `num font-medium ${p.value < 0 ? "text-red" : "text-green"}` },
   ], [t]);
 
-  const totals: Row[] = [{ month: "", date: "", kind: "spend", note: t("grid.total"), paypal_id: `${t("grid.spend")} ${money(spent)} · ${t("grid.earn")} ${money(earned)}`, amount: spent + earned }];
+  const totals: Row[] = [{ month: "", date: "", kind: "", note: `${t("grid.total")} · ${t("grid.spend")} ${money(spent)} · ${t("grid.earn")} ${money(earned)}`, paypal_id: "", amount: spent + earned }];
 
   return (
     <div>
