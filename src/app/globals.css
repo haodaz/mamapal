@@ -1,26 +1,50 @@
 @import "tailwindcss";
 
+/* 视觉方向：轻、亮、圆、柔和阴影；Ant Design 的中性基底 + 标准蓝（和 PayPal 的蓝同系），红只用于「砍」，绿只用于「钱回来」。 */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #f5f6fa;
+  --panel: #ffffff;
+  --line: #e9ebf2;
+  --fg: #1d2233;
+  --muted: #7b8197;
+  --primary: #1677ff;
+  --primary-soft: #e6f4ff;
+  --red: #f5222d;
+  --green: #12a150;
+  --amber: #d48806;
+  --lock: #d9dde8;
+  --shadow: 0 6px 24px rgba(40, 50, 110, 0.06);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-panel: var(--panel);
+  --color-line: var(--line);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-primary: var(--primary);
+  --color-primary-soft: var(--primary-soft);
+  --color-red: var(--red);
+  --color-green: var(--green);
+  --color-amber: var(--amber);
+  --color-lock: var(--lock);
+  --shadow-sm: var(--shadow);
+  --font-sans: "Inter", -apple-system, "PingFang SC", "Noto Sans SC", "HarmonyOS Sans SC", "Microsoft YaHei", "Segoe UI", sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+html { color-scheme: light; }
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-feature-settings: "cv11", "ss01", "tnum";
+  font-variant-numeric: tabular-nums;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
 }
+.num { font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+textarea, input, select { outline: none; }
+::selection { background: #1677ff33; }
+@keyframes pulse-once { 0% { background: #12a15022; } 100% { background: transparent; } }
+.flash { animation: pulse-once 1.2s ease-out; }
