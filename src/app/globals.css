@@ -48,3 +48,10 @@ textarea, input, select { outline: none; }
 ::selection { background: #1677ff33; }
 @keyframes pulse-once { 0% { background: #12a15022; } 100% { background: transparent; } }
 .flash { animation: pulse-once 1.2s ease-out; }
+
+/* "Pal has something to say": three dots breathing inside a tiny speech bubble */
+.typing { display: inline-flex; gap: 4px; align-items: center; }
+.typing i { width: 6px; height: 6px; border-radius: 999px; background: var(--primary); opacity: .35; animation: typing 1.3s ease-in-out infinite; }
+.typing i:nth-child(2) { animation-delay: .2s; }
+.typing i:nth-child(3) { animation-delay: .4s; }
+@keyframes typing { 0%, 60%, 100% { opacity: .35; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-3px); } }

@@ -64,7 +64,7 @@ export function Nav() {
       {/* Mobile: floating chat button */}
       {!active("/chat") && path !== "/" && (
         <Link href="/chat" aria-label={t("nav.chat")} className="fixed bottom-[4.2rem] right-2 z-30 flex flex-col items-center md:hidden">
-          <span className="mb-0.5 rounded-full border border-line bg-panel px-2 py-0.5 text-[11px] text-primary shadow-sm">{t("nav.chat")}</span>
+          <span className="typing mb-1 mr-1 self-end rounded-2xl rounded-br-sm border border-line bg-panel px-2.5 py-1.5 shadow-sm"><i /><i /><i /></span>
           <PalFigure pose="wave" width={76} />
         </Link>
       )}
