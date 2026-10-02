@@ -24,9 +24,9 @@ export function ChildrenCard({ profile }: { profile: Profile }) {
                 {preterm && <span className="ml-2 text-xs text-muted">{t("home.preterm", { weeks: c.gestational_weeks! })}</span>}
                 {c.notes && <div className="text-xs text-muted">{c.notes}</div>}
               </div>
-              <div className="num text-right text-sm">
+              <div className="num shrink-0 whitespace-nowrap text-right text-sm">
                 <span>{formatAge(m, lang)}</span>
-                {preterm && cm !== m && <span className="ml-2 text-xs text-primary">{t("home.corrected")} {formatAge(cm, lang)}</span>}
+                {preterm && cm !== m && <div className="text-xs text-primary">{t("home.corrected")} {formatAge(cm, lang)}</div>}
               </div>
             </li>
           );
