@@ -9,7 +9,7 @@ export function PalFace({ size = 56, className = "" }: { size?: number; classNam
       style={{ width: size, height: size }}
       aria-label="Pal"
     >
-      <img src="/pal.png" alt="Pal" width={size} height={size} className="h-full w-full object-cover" style={{ transform: "scale(1.15) translateY(4%)" }} />
+      <img src="/pal.png" alt="Pal" width={size} height={size} className="h-full w-full object-cover" style={{ transform: "scale(1.08)" }} />
     </span>
   );
 }

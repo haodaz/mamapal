@@ -5,6 +5,7 @@ PayPal AI Hackathon entry. Read `README.md` first for the product and the bounda
 - Dev server: `npm run dev -- -p 3010` (see `.claude/launch.json`).
 - AI brain: `src/lib/agent.ts` (Claude structured output; money fields recomputed server-side, never trust model arithmetic).
 - PayPal: `src/lib/paypal.ts` (sandbox REST: Orders v2 create/capture, Payouts v1). Never fake a payment in the UI; every money event carries a real PayPal id.
-- State: `src/lib/store.ts` → `data/state.json` (git-ignored). Single user.
-- Tone of prompt and UI: cold, factual, no cheerleading, no exclamation marks.
+- State: `src/lib/store.ts` → Supabase `app_state` row when configured, else `data/state.json` (git-ignored). Single shared user.
+- Pal (persona, `public/pal.png`): hard on products, warm and plain toward the mother. Short everyday words, no jargon, no exclamation marks, never shame her. Home is Pal greeting her, not a dashboard.
+- Ages are actual months (no corrected age). Monthly needs by stage: `src/lib/stages.ts`.
 - Submission requirements live in the hackathon page; all user-facing submission material is English, the agent answers in the user's language.
