@@ -61,7 +61,7 @@ export function Nav() {
       )}
 
       {/* Mobile: floating chat button */}
-      {!active("/chat") && (
+      {!active("/chat") && path !== "/" && (
         <Link href="/chat" aria-label={t("nav.chat")} className="fixed bottom-20 right-4 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-lg shadow-primary/30 md:hidden">
           <MessageCircle className="h-6 w-6" />
         </Link>
