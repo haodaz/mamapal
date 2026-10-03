@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLang } from "@/components/LangProvider";
 import { PalFigure } from "@/components/PalFace";
+import { Logo } from "@/components/Logo";
 
 export default function Login() {
   const { t } = useLang();
@@ -24,7 +25,8 @@ export default function Login() {
   const input = "mt-1 w-full rounded-xl border border-line bg-panel px-3 py-2.5 text-base";
   return (
     <main className="mx-auto flex min-h-[80vh] max-w-sm flex-col items-center justify-center px-5">
-      <PalFigure pose="wave" width={150} />
+      <Logo size="lg" href="/intro" />
+      <PalFigure pose="wave" width={150} className="mt-4" />
       <h1 className="mt-2 text-2xl font-semibold tracking-tight">{t("login.title")}</h1>
       <p className="mt-1 text-center text-sm text-muted">{t("login.sub")}</p>
       <div className="mt-6 w-full space-y-3">

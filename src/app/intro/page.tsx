@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useLang } from "@/components/LangProvider";
 import { PalFigure } from "@/components/PalFace";
+import { Logo } from "@/components/Logo";
 
 export default function Intro() {
   const { t, lang, setLang } = useLang();
@@ -31,7 +32,7 @@ export default function Intro() {
   return (
     <main className="overflow-hidden">
       <header className="mx-auto flex max-w-5xl items-center justify-between px-5 pt-5">
-        <span className="text-base font-semibold tracking-tight">{t("intro.kicker")}</span>
+        <Logo size="md" href={null} />
         <div className="flex items-center gap-2">
           <button onClick={() => setLang(lang === "en" ? "zh" : "en")} className="num rounded-full border border-line bg-panel px-2.5 py-1 text-xs text-muted">{lang === "en" ? "中文" : "EN"}</button>
           <Link href="/login" className="rounded-full bg-fg px-4 py-1.5 text-sm font-medium text-white">{t("login.title")}</Link>
