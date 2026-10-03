@@ -54,7 +54,7 @@ export type Opportunity = {
   paypal_batch_id?: string;
 };
 
-export type Child = { name: string; born: string; gestational_weeks?: number; notes?: string }; // born = "YYYY-MM"; weeks < 37 = preterm; notes = medical context Pal must respect (FGR, NICU, allergies…)
+export type Child = { name: string; born: string; gestational_weeks?: number; notes?: string; photo?: string }; // born = "YYYY-MM"; weeks < 37 = preterm; notes = medical context Pal must respect (FGR, NICU, allergies…)
 
 export type Profile = {
   name: string;

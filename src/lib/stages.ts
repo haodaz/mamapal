@@ -13,6 +13,19 @@ export const TIER_OF: Record<NeedCategory, Tier> = { diapers: 1, feeding: 1, sol
 type NeedDraft = Omit<Need, "tier"> & { tier?: Tier };
 export type Stage = { key: string; min: number; max: number; label: L; diapersPerDay: number; formulaMlPerDay: number; needs: (p: Profile) => NeedDraft[] };
 
+// Typical things a child is working on in each stage (CDC-style ranges, not a diagnosis). Shown on the timeline.
+export const MILESTONES: Record<string, L[]> = {
+  "0-2": [{ en: "lifts head in tummy time", zh: "俯卧抬头" }, { en: "follows your face", zh: "跟着妈妈的脸看" }, { en: "first social smiles", zh: "第一次社交性微笑" }],
+  "3-5": [{ en: "laughs, babbles", zh: "咯咯笑、咿呀" }, { en: "holds head steady", zh: "头稳了" }, { en: "reaches for toys", zh: "伸手够玩具" }, { en: "rolls over", zh: "翻身" }],
+  "6-8": [{ en: "sits with little support", zh: "能坐一会儿" }, { en: "first solids", zh: "开始辅食" }, { en: "passes toys hand to hand", zh: "玩具换手" }, { en: "responds to name", zh: "叫名字有反应" }],
+  "9-11": [{ en: "crawls, pulls to stand", zh: "爬、扶站" }, { en: "finger foods", zh: "手指食物" }, { en: "waves bye-bye", zh: "挥手再见" }, { en: "says mama / dada", zh: "叫妈妈、爸爸" }],
+  "12-17": [{ en: "first steps", zh: "第一步" }, { en: "a few words", zh: "几个词" }, { en: "drinks from a cup", zh: "用杯子喝" }, { en: "points to ask", zh: "用手指要东西" }],
+  "18-23": [{ en: "runs, climbs", zh: "跑、爬高" }, { en: "two-word phrases", zh: "两个词连说" }, { en: "pretend play", zh: "过家家" }, { en: "scribbles", zh: "涂鸦" }],
+  "24-35": [{ en: "short sentences", zh: "短句子" }, { en: "potty training starts", zh: "开始如厕训练" }, { en: "jumps with both feet", zh: "双脚跳" }, { en: "plays next to other kids", zh: "和别的孩子一起玩" }],
+  "36-59": [{ en: "preschool ready", zh: "可以上幼儿园" }, { en: "tells little stories", zh: "讲小故事" }, { en: "pedals a trike", zh: "蹬三轮车" }, { en: "counts to 10", zh: "数到 10" }],
+  "60+": [{ en: "kindergarten", zh: "上学" }, { en: "reads simple words", zh: "认简单的字" }, { en: "makes friends", zh: "交朋友" }],
+};
+
 const DIAPER = (perDay: number, price: number, l: L): NeedDraft => ({ category: "diapers", label: l, qty: `${perDay * 30}/mo`, cost: Math.round(perDay * 30 * price), cheap: { en: "Store brand; diaper banks give ~50/mo free", zh: "超市自有品牌；尿布银行每月免费约 50 片" } });
 const WIPES: NeedDraft = { category: "care", label: { en: "wipes", zh: "湿巾" }, qty: "~2 packs", cost: 8, cheap: { en: "Washcloths + water at home", zh: "在家用小毛巾加清水" } };
 const FORMULA = (ml: number): NeedDraft => ({ category: "feeding", label: { en: "formula", zh: "奶粉" }, qty: `${ml} ml/day`, cost: Math.round(ml * 30 * 0.0031), cheap: { en: "WIC covers formula fully; store brand meets the same FDA rules", zh: "WIC 全额覆盖奶粉；自有品牌执行同样的 FDA 标准" } });

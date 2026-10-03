@@ -6,6 +6,7 @@ import { useAppState } from "@/components/useAppState";
 import { useLang } from "@/components/LangProvider";
 import { PalFace, PalFigure } from "@/components/PalFace";
 import { NeedsCard } from "@/components/NeedsCard";
+import { BabyAvatar } from "@/components/BabyAvatar";
 import { PlanCard } from "@/components/PlanCard";
 import { childNeeds } from "@/lib/stages";
 import { supplyStatus } from "@/lib/inventory";
@@ -81,7 +82,10 @@ export default function Home() {
   return (
     <main className="mx-auto max-w-2xl px-4 pb-52 pt-4 md:pt-8">
       <div className="relative flex flex-col items-center">
-        <PalFigure width={170} className="relative z-10 -mb-14 md:w-[200px] md:-mb-16" />
+        <div className="relative z-10 -mb-14 md:-mb-16">
+          <PalFigure width={170} className="md:w-[200px]" />
+          {first && <BabyAvatar child={first} size={64} className="absolute -right-6 bottom-10 ring-4 md:-right-8 md:bottom-12" />}
+        </div>
         <section className="w-full rounded-3xl border border-line bg-panel px-5 pb-5 pt-16 shadow-sm md:pt-20">
           <h1 className="text-xl font-semibold tracking-tight">{t("pal.welcome_back", { name: mom })}</h1>
           <p className="mt-1 text-sm text-muted">{t("pal.intro")}</p>
