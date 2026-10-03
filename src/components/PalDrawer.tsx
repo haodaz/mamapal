@@ -39,11 +39,11 @@ export function PalDrawer({ ctx, kid, onClose }: { ctx: PalContext | null; kid: 
   }
 
   return (
-    <div className="fixed inset-0 z-40">
-      <div className="absolute inset-0 bg-fg/15 backdrop-blur-[1px]" onClick={onClose} />
+    <div className="fixed inset-0 z-40 md:pointer-events-none">
+      <div className="absolute inset-0 bg-fg/15 backdrop-blur-[1px] md:hidden" onClick={onClose} />
       <section
         role="dialog"
-        className="absolute inset-x-0 bottom-0 flex max-h-[88vh] flex-col rounded-t-3xl border border-line bg-bg shadow-2xl md:inset-x-auto md:bottom-auto md:left-1/2 md:top-1/2 md:h-[640px] md:max-h-[85vh] md:w-[520px] md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-3xl"
+        className="absolute inset-x-0 bottom-0 flex max-h-[88vh] flex-col rounded-t-3xl border border-line bg-bg shadow-2xl md:pointer-events-auto md:inset-x-auto md:bottom-6 md:right-6 md:h-[620px] md:max-h-[85vh] md:w-[440px] md:rounded-3xl md:shadow-[0_20px_60px_rgba(40,50,110,0.25)]"
       >
         <header className="flex items-center justify-between rounded-t-3xl border-b border-line bg-panel px-4 py-3">
           <div className="flex items-center gap-2 text-sm font-medium"><PalFace size={26} />{t("chat.title")}</div>

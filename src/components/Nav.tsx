@@ -67,10 +67,10 @@ export function Nav() {
       {/* Floating Pal on every page except home (own composer) and chat. Mobile → the chat page; desktop → a side panel. Both know where you are. */}
       {!active("/chat") && path !== "/" && (
         <>
-          <button onClick={() => setOpen(true)} aria-label={t("nav.chat")} className="fixed bottom-[4.2rem] right-2 z-30 flex flex-col items-center md:bottom-6 md:right-6">
+          {!open && <button onClick={() => setOpen(true)} aria-label={t("nav.chat")} className="fixed bottom-[4.2rem] right-2 z-30 flex flex-col items-center md:bottom-6 md:right-6">
             <span className="typing mb-1 mr-1 self-end rounded-2xl rounded-br-sm border border-line bg-panel px-2.5 py-1.5 shadow-sm"><i /><i /><i /></span>
             <PalFigure pose="wave" width={76} className="md:w-[96px]" />
-          </button>
+          </button>}
           {open && <PalDrawer ctx={ctx} kid={kid} onClose={() => setOpen(false)} />}
         </>
       )}
