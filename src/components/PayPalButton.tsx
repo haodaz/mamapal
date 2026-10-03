@@ -26,7 +26,9 @@ function BuyerHint() {
   const email = process.env.NEXT_PUBLIC_SANDBOX_BUYER_EMAIL;
   const pass = process.env.NEXT_PUBLIC_SANDBOX_BUYER_PASSWORD;
   const [done, setDone] = useState<string | null>(null);
-  if (!email) return null;
+  const [hidden, setHidden] = useState(false);
+  useEffect(() => { try { setHidden(localStorage.getItem("rec") === "1"); } catch {} }, []); // recording mode: no credentials on camera
+  if (!email || hidden) return null;
   const copy = async (label: string, v: string) => { try { await navigator.clipboard.writeText(v); setDone(label); setTimeout(() => setDone(null), 1200); } catch {} };
   const Chip = ({ label, value }: { label: string; value: string }) => (
     <button onClick={() => copy(label, value)} className="num rounded-full border border-line bg-bg px-2.5 py-1 text-[11px] text-fg hover:border-primary">
