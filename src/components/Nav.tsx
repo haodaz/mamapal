@@ -26,10 +26,7 @@ export function Nav() {
       {/* Desktop: top navigation */}
       <header className="sticky top-0 z-30 hidden border-b border-line bg-panel/90 backdrop-blur md:block">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3">
-          <Link href="/" className="flex items-baseline gap-3">
-            <span className="text-base font-semibold tracking-tight">{t("app.title")}</span>
-            <span className="text-xs text-muted">{t("app.tagline")}</span>
-          </Link>
+          <Link href="/" className="text-base font-semibold tracking-tight">{t("app.title")}</Link>
           <nav className="flex items-center gap-1">
             {items.map(({ href, label, pal }) => (
               <Link key={href} href={href} className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm ${active(href) ? "bg-fg text-white" : "text-muted hover:text-fg"}`}>{pal && <PalBust size={22} />}{label}</Link>
@@ -38,7 +35,6 @@ export function Nav() {
               <PalBust size={22} />{t("nav.chat")}
             </Link>
             <span className="ml-2"><LangBtn /></span>
-            <button onClick={async () => { await fetch("/api/login", { method: "DELETE" }); window.location.href = "/intro"; }} className="ml-1 text-xs text-muted hover:text-fg">{t("me.logout")}</button>
           </nav>
         </div>
       </header>
