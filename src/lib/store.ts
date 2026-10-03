@@ -92,6 +92,8 @@ function fresh(): State {
     supplies: emptySupplies(),
     month_notes: [],
     knowledge: {},
+    market: {},
+    owned: [],
   };
 }
 
@@ -113,6 +115,8 @@ function rollover(state: State): State {
     supplies: state.supplies,
     month_notes: [],
     knowledge: state.knowledge,
+    market: state.market,
+    owned: state.owned,
     history: arch ? [...state.history.filter((h) => h.month !== arch.month), arch] : state.history,
   };
 }

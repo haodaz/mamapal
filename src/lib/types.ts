@@ -110,6 +110,7 @@ export type MonthArchive = {
 };
 
 export type MonthNotes = { month: string; lang: "en" | "zh"; child: string; focus: string[]; tier_notes: { 1: string; 2: string; 3: string }; next: string; at: string };
+export type Market = { brands: { brand: string; product: string; price: number; where: string; url: string | null; note: string | null }[]; cheapest: string; at: string };
 export type Guide = { title: string; what: string; which_one: string; how_much: string; traps: string[]; safety: string; cheap: string; at: string };
 
 export type State = {
@@ -125,7 +126,9 @@ export type State = {
   onboarded?: boolean;
   supplies: Supplies;
   month_notes?: MonthNotes[]; // one per child per month (cached AI text)
-  knowledge?: Record<string, Guide>; // key = stage|label_en|lang
+  knowledge?: Record<string, Guide>; // key = stage|id|lang (slow-changing memory)
+  market?: Record<string, Market>; // key = stage|id|lang (retrieved, refreshable)
+  owned?: string[]; // one-time items she already has
 };
 
 export function derive(state: State) {

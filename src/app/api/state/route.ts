@@ -16,7 +16,7 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const body = (await req.json()) as { budget?: number; food_lock?: number; profile?: Partial<Profile>; reset?: boolean; onboarded?: boolean; supplies?: Partial<Record<SupplyType, number>> };
+  const body = (await req.json()) as { budget?: number; food_lock?: number; profile?: Partial<Profile>; reset?: boolean; onboarded?: boolean; supplies?: Partial<Record<SupplyType, number>>; owned?: { id: string; value: boolean } };
   if (body.reset) {
     await resetState();
     return NextResponse.json(await payload());
@@ -42,6 +42,7 @@ export async function POST(req: Request) {
     };
   }
   if (typeof body.onboarded === "boolean") state.onboarded = body.onboarded;
+  if (body.owned && typeof body.owned.id === "string") { const set = new Set(state.owned ?? []); if (body.owned.value) set.add(body.owned.id); else set.delete(body.owned.id); state.owned = [...set]; }
   if (body.supplies) for (const [k, v] of Object.entries(body.supplies)) if (typeof v === "number") state.supplies = setSupply(state.supplies, k as SupplyType, v);
   if (state.food_lock > state.budget) state.food_lock = state.budget;
   await saveState(state);

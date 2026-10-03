@@ -69,7 +69,7 @@ export default function PlanPage() {
         )}
       </section>
 
-      <section className="mt-5"><PlanNeeds child={child} profile={state.profile} tierNotes={notes?.tier_notes} /></section>
+      <section className="mt-5"><PlanNeeds child={child} profile={state.profile} owned={state.owned ?? []} tierNotes={notes?.tier_notes} onOwned={async (id, value) => { await fetch("/api/state", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ owned: { id, value } }) }); refresh(); }} /></section>
 
       <section id="pantry" className="mt-6 scroll-mt-20 md:max-w-md"><PantryCard state={state} onSaved={refresh} /></section>
     </main>

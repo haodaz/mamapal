@@ -69,7 +69,7 @@ Earned back this month: $${d.earned}
 AVAILABLE NOW: $${d.available}
 Children: ${state.profile.children.map((c) => { const m = monthsSince(c.born); const age = m < 24 ? `${m} months` : `${Math.floor(m / 12)} years`; return `${c.name || "child"} ${age}${c.notes ? ` [${c.notes}]` : ""}`; }).join("; ") || "none listed"}
 Expected baseline needs this month (model, store-brand prices; tier 1 = survival, tier 2 = growth & learning, tier 3 = joy & experiences):
-${needsSummaryForAgent(state.profile)}
+${needsSummaryForAgent(state.profile, state.owned ?? [])}
 Pantry right now: ${supplyStatus(state).map((x) => `${x.type}: ${x.tracked ? `${x.left} left ≈ ${x.days} days` : "not tracked"}`).join("; ")}${state.profile.pregnant ? "\nPregnant: yes" : ""}
 Daily use: ${state.profile.diapers_per_day} diapers/day${state.profile.formula_ml_per_day ? `, ${state.profile.formula_ml_per_day} ml formula/day` : ", no formula"}
 Recent approved purchases:

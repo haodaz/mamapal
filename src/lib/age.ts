@@ -5,10 +5,11 @@ export function monthsSince(born: string, now = new Date()): number {
   const m = /^(\d{4})-(\d{1,2})$/.exec(born);
   if (!m) return 0;
   const y = Number(m[1]), mo = Number(m[2]);
-  return Math.max(0, (now.getFullYear() - y) * 12 + (now.getMonth() + 1 - mo));
+  return (now.getFullYear() - y) * 12 + (now.getMonth() + 1 - mo); // negative = not born yet (due month)
 }
 
 export function formatAge(months: number, lang: Lang): string {
+  if (months < 0) return lang === "zh" ? `预产期还有 ${-months} 个月` : `due in ${-months} mo`;
   if (lang === "zh") {
     if (months < 24) return `${months} 个月`;
     const y = Math.floor(months / 12), r = months % 12;
