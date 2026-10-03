@@ -19,7 +19,6 @@ export function Nav() {
   const kid = data?.state.profile.children[0]?.name || (lang === "zh" ? "宝宝" : "the baby");
   const first = data?.state.profile.children[0];
   const ctx = contextFor(path, lang, first ? monthsSince(first.born) : 0);
-  const chatHref = ctx ? `/chat?from=${ctx.screen}${ctx.itemId ? `&item=${encodeURIComponent(ctx.itemId)}` : ""}` : "/chat";
   const items = [
     { href: "/", label: t("nav.home"), mobileLabel: "Pal", Icon: Home, pal: true },
     { href: "/plan", label: t("nav.plan"), Icon: CalendarHeart },
@@ -68,13 +67,9 @@ export function Nav() {
       {/* Floating Pal on every page except home (own composer) and chat. Mobile → the chat page; desktop → a side panel. Both know where you are. */}
       {!active("/chat") && path !== "/" && (
         <>
-          <Link href={chatHref} aria-label={t("nav.chat")} className="fixed bottom-[4.2rem] right-2 z-30 flex flex-col items-center md:hidden">
+          <button onClick={() => setOpen(true)} aria-label={t("nav.chat")} className="fixed bottom-[4.2rem] right-2 z-30 flex flex-col items-center md:bottom-6 md:right-6">
             <span className="typing mb-1 mr-1 self-end rounded-2xl rounded-br-sm border border-line bg-panel px-2.5 py-1.5 shadow-sm"><i /><i /><i /></span>
-            <PalFigure pose="wave" width={76} />
-          </Link>
-          <button onClick={() => setOpen(true)} aria-label={t("nav.chat")} className="fixed bottom-6 right-6 z-30 hidden flex-col items-center md:flex">
-            <span className="typing mb-1 mr-1 self-end rounded-2xl rounded-br-sm border border-line bg-panel px-2.5 py-1.5 shadow-sm"><i /><i /><i /></span>
-            <PalFigure pose="wave" width={96} />
+            <PalFigure pose="wave" width={76} className="md:w-[96px]" />
           </button>
           {open && <PalDrawer ctx={ctx} kid={kid} onClose={() => setOpen(false)} />}
         </>

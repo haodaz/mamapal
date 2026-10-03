@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { X } from "lucide-react";
 import { useLang } from "./LangProvider";
 import { PalFace } from "./PalFace";
@@ -7,7 +8,8 @@ import { PlanCard } from "./PlanCard";
 import { contextLine, type PalContext } from "@/lib/context";
 import type { Plan } from "@/lib/types";
 
-// Desktop: the conversation as a side panel over the current page. Pal knows which page it was opened from.
+// The conversation, summoned from any page: a centered popup on desktop, a bottom sheet on phones.
+// Pal knows which page (or item) it was opened from; the quick questions sit right under its greeting.
 export function PalDrawer({ ctx, kid, onClose }: { ctx: PalContext | null; kid: string; onClose: () => void }) {
   const { t, lang } = useLang();
   const [ask, setAsk] = useState("");
@@ -17,11 +19,12 @@ export function PalDrawer({ ctx, kid, onClose }: { ctx: PalContext | null; kid: 
   const end = useRef<HTMLDivElement>(null);
   const box = useRef<HTMLTextAreaElement>(null);
   useEffect(() => { box.current?.focus(); }, []);
-  useEffect(() => { end.current?.scrollIntoView({ behavior: "smooth", block: "end" }); }, [thread.length, busy]);
+  useEffect(() => { if (thread.length || busy) end.current?.scrollIntoView({ behavior: "smooth", block: "end" }); }, [thread.length, busy]);
+  useEffect(() => { const k = (e: KeyboardEvent) => e.key === "Escape" && onClose(); window.addEventListener("keydown", k); return () => window.removeEventListener("keydown", k); }, [onClose]);
   const vars = { name: kid, item: ctx?.item ?? "" };
   const screen = ctx?.screen ?? "home";
-  const intro = ctx ? t(`ctx.${screen}.intro` as const, vars) : "";
-  const chips = ctx ? [t(`ctx.${screen}.q1` as const, vars), t(`ctx.${screen}.q2` as const, vars), t(`ctx.${screen}.q3` as const, vars)] : [];
+  const intro = ctx ? t(`ctx.${screen}.intro` as const, vars) : t("pal.intro");
+  const chips = ctx ? [t(`ctx.${screen}.q1` as const, vars), t(`ctx.${screen}.q2` as const, vars), t(`ctx.${screen}.q3` as const, vars)] : [t("pal.q1"), t("pal.q2", vars), t("pal.q3")];
 
   async function submit(text = ask) {
     if (!text.trim() || busy) return;
@@ -36,16 +39,26 @@ export function PalDrawer({ ctx, kid, onClose }: { ctx: PalContext | null; kid: 
   }
 
   return (
-    <div className="fixed inset-0 z-40 hidden md:block">
-      <div className="absolute inset-0 bg-fg/10" onClick={onClose} />
-      <aside className="absolute bottom-0 right-0 top-0 flex w-[440px] flex-col border-l border-line bg-bg shadow-2xl">
-        <header className="flex items-center justify-between border-b border-line bg-panel px-4 py-3">
+    <div className="fixed inset-0 z-40">
+      <div className="absolute inset-0 bg-fg/15 backdrop-blur-[1px]" onClick={onClose} />
+      <section
+        role="dialog"
+        className="absolute inset-x-0 bottom-0 flex max-h-[88vh] flex-col rounded-t-3xl border border-line bg-bg shadow-2xl md:inset-x-auto md:bottom-auto md:left-1/2 md:top-1/2 md:h-[640px] md:max-h-[85vh] md:w-[520px] md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-3xl"
+      >
+        <header className="flex items-center justify-between rounded-t-3xl border-b border-line bg-panel px-4 py-3">
           <div className="flex items-center gap-2 text-sm font-medium"><PalFace size={26} />{t("chat.title")}</div>
-          <button onClick={onClose} className="rounded-full p-1 text-muted hover:bg-bg hover:text-fg"><X className="h-4 w-4" /></button>
+          <div className="flex items-center gap-3">
+            <Link href="/chat" className="text-xs text-primary">{t("pal.history")}</Link>
+            <button onClick={onClose} className="rounded-full p-1 text-muted hover:bg-bg hover:text-fg" aria-label="close"><X className="h-4 w-4" /></button>
+          </div>
         </header>
-        <div className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
-          {intro && (
-            <div className="flex items-end gap-2"><PalFace size={24} className="mb-1" /><div className="max-w-[88%] rounded-2xl rounded-bl-sm border border-primary/30 bg-primary-soft/60 px-3.5 py-2 text-sm leading-relaxed">{intro}</div></div>
+        <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-4">
+          <div className="flex items-end gap-2">
+            <PalFace size={24} className="mb-1" />
+            <div className="max-w-[88%] rounded-2xl rounded-bl-sm border border-primary/30 bg-primary-soft/60 px-3.5 py-2 text-sm leading-relaxed">{intro}</div>
+          </div>
+          {thread.length === 0 && (
+            <div className="ml-8 flex flex-wrap gap-1.5">{chips.map((q) => <button key={q} onClick={() => submit(q)} className="rounded-full border border-primary/40 bg-panel px-3 py-1.5 text-sm text-primary shadow-sm hover:bg-primary-soft">{q}</button>)}</div>
           )}
           {thread.map(({ ask: a, plan }) => (
             <div key={plan.id} className="space-y-2">
@@ -57,14 +70,13 @@ export function PalDrawer({ ctx, kid, onClose }: { ctx: PalContext | null; kid: 
           {error && <div className="rounded-lg border border-red/40 bg-red/5 px-3 py-2 text-xs text-red">{error}</div>}
           <div ref={end} />
         </div>
-        <div className="border-t border-line bg-panel px-4 py-3">
-          {chips.length > 0 && <div className="mb-2 flex flex-wrap gap-1.5">{chips.map((q) => <button key={q} onClick={() => submit(q)} className="rounded-full border border-primary/40 bg-primary-soft/60 px-2.5 py-1 text-xs text-primary hover:bg-primary-soft">{q}</button>)}</div>}
+        <div className="border-t border-line bg-panel px-4 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:rounded-b-3xl">
           <div className="flex items-end gap-2 rounded-2xl border border-line bg-bg p-1.5">
             <textarea ref={box} value={ask} onChange={(e) => setAsk(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); } }} rows={1} placeholder={t("pal.placeholder")} className="max-h-32 flex-1 resize-none bg-transparent px-3 py-2 text-sm placeholder:text-muted" />
             <button onClick={() => submit()} disabled={busy || !ask.trim()} className="rounded-full bg-primary px-3.5 py-2 text-sm font-semibold text-white disabled:opacity-30">{t("pal.send")}</button>
           </div>
         </div>
-      </aside>
+      </section>
     </div>
   );
 }
