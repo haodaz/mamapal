@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { loadState, saveState, resetState } from "@/lib/store";
-import { derive, type Profile } from "@/lib/types";
+import { derive, type Profile, type SupplyType } from "@/lib/types";
+import { setSupply } from "@/lib/inventory";
 import { paypalConfigured } from "@/lib/paypal";
 
 export const dynamic = "force-dynamic";
@@ -15,7 +16,7 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const body = (await req.json()) as { budget?: number; food_lock?: number; profile?: Partial<Profile>; reset?: boolean; onboarded?: boolean };
+  const body = (await req.json()) as { budget?: number; food_lock?: number; profile?: Partial<Profile>; reset?: boolean; onboarded?: boolean; supplies?: Partial<Record<SupplyType, number>> };
   if (body.reset) {
     await resetState();
     return NextResponse.json(await payload());
@@ -41,6 +42,7 @@ export async function POST(req: Request) {
     };
   }
   if (typeof body.onboarded === "boolean") state.onboarded = body.onboarded;
+  if (body.supplies) for (const [k, v] of Object.entries(body.supplies)) if (typeof v === "number") state.supplies = setSupply(state.supplies, k as SupplyType, v);
   if (state.food_lock > state.budget) state.food_lock = state.budget;
   await saveState(state);
   return NextResponse.json(await payload());

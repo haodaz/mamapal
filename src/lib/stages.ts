@@ -7,18 +7,21 @@ import { monthsSince } from "./age";
 
 export type NeedCategory = "diapers" | "feeding" | "solids" | "clothing" | "play" | "books" | "health" | "care";
 type L = { en: string; zh: string };
-export type Need = { category: NeedCategory; label: L; qty: string; cost: number; cheap: L | null };
-export type Stage = { key: string; min: number; max: number; label: L; diapersPerDay: number; formulaMlPerDay: number; needs: (p: Profile) => Need[] };
+export type Tier = 1 | 2 | 3; // Maslow: 1 survival, 2 growth & learning, 3 joy & experiences
+export type Need = { category: NeedCategory; label: L; qty: string; cost: number; cheap: L | null; tier: Tier };
+export const TIER_OF: Record<NeedCategory, Tier> = { diapers: 1, feeding: 1, solids: 1, health: 1, care: 1, clothing: 1, play: 2, books: 2 };
+type NeedDraft = Omit<Need, "tier"> & { tier?: Tier };
+export type Stage = { key: string; min: number; max: number; label: L; diapersPerDay: number; formulaMlPerDay: number; needs: (p: Profile) => NeedDraft[] };
 
-const DIAPER = (perDay: number, price: number, l: L): Need => ({ category: "diapers", label: l, qty: `${perDay * 30}/mo`, cost: Math.round(perDay * 30 * price), cheap: { en: "Store brand; diaper banks give ~50/mo free", zh: "超市自有品牌；尿布银行每月免费约 50 片" } });
-const WIPES: Need = { category: "care", label: { en: "wipes", zh: "湿巾" }, qty: "~2 packs", cost: 8, cheap: { en: "Washcloths + water at home", zh: "在家用小毛巾加清水" } };
-const FORMULA = (ml: number): Need => ({ category: "feeding", label: { en: "formula", zh: "奶粉" }, qty: `${ml} ml/day`, cost: Math.round(ml * 30 * 0.0031), cheap: { en: "WIC covers formula fully; store brand meets the same FDA rules", zh: "WIC 全额覆盖奶粉；自有品牌执行同样的 FDA 标准" } });
-const MILK: Need = { category: "feeding", label: { en: "whole milk", zh: "全脂牛奶" }, qty: "~16 oz/day", cost: 16, cheap: { en: "WIC provides milk", zh: "WIC 提供牛奶" } };
-const VITD: Need = { category: "health", label: { en: "vitamin D drops (if breastfed) + fever meds", zh: "维生素 D 滴剂（母乳喂养）+ 退烧药" }, qty: "", cost: 5, cheap: { en: "Generic acetaminophen; ask pediatrician for samples", zh: "通用对乙酰氨基酚；可向儿科医生要试用装" } };
-const CREAM: Need = { category: "care", label: { en: "diaper cream, soap", zh: "护臀膏、沐浴液" }, qty: "", cost: 5, cheap: { en: "Zinc oxide generic $4", zh: "通用锌氧膏约 $4" } };
-const BOOKS = (l: L): Need => ({ category: "books", label: l, qty: "1–2/mo", cost: 3, cheap: { en: "Library: free; Reach Out and Read gives books at checkups", zh: "图书馆免费；儿科体检时 Reach Out and Read 送书" } });
-const CLOTH = (l: L, cost: number): Need => ({ category: "clothing", label: l, qty: "", cost, cheap: { en: "Thrift, Buy Nothing groups, hand-me-downs", zh: "二手店、Buy Nothing 群、亲友旧衣" } });
-const PLAY = (l: L, cost: number, cheap: L): Need => ({ category: "play", label: l, qty: "", cost, cheap });
+const DIAPER = (perDay: number, price: number, l: L): NeedDraft => ({ category: "diapers", label: l, qty: `${perDay * 30}/mo`, cost: Math.round(perDay * 30 * price), cheap: { en: "Store brand; diaper banks give ~50/mo free", zh: "超市自有品牌；尿布银行每月免费约 50 片" } });
+const WIPES: NeedDraft = { category: "care", label: { en: "wipes", zh: "湿巾" }, qty: "~2 packs", cost: 8, cheap: { en: "Washcloths + water at home", zh: "在家用小毛巾加清水" } };
+const FORMULA = (ml: number): NeedDraft => ({ category: "feeding", label: { en: "formula", zh: "奶粉" }, qty: `${ml} ml/day`, cost: Math.round(ml * 30 * 0.0031), cheap: { en: "WIC covers formula fully; store brand meets the same FDA rules", zh: "WIC 全额覆盖奶粉；自有品牌执行同样的 FDA 标准" } });
+const MILK: NeedDraft = { category: "feeding", label: { en: "whole milk", zh: "全脂牛奶" }, qty: "~16 oz/day", cost: 16, cheap: { en: "WIC provides milk", zh: "WIC 提供牛奶" } };
+const VITD: NeedDraft = { category: "health", label: { en: "vitamin D drops (if breastfed) + fever meds", zh: "维生素 D 滴剂（母乳喂养）+ 退烧药" }, qty: "", cost: 5, cheap: { en: "Generic acetaminophen; ask pediatrician for samples", zh: "通用对乙酰氨基酚；可向儿科医生要试用装" } };
+const CREAM: NeedDraft = { category: "care", label: { en: "diaper cream, soap", zh: "护臀膏、沐浴液" }, qty: "", cost: 5, cheap: { en: "Zinc oxide generic $4", zh: "通用锌氧膏约 $4" } };
+const BOOKS = (l: L): NeedDraft => ({ category: "books", label: l, qty: "1–2/mo", cost: 3, cheap: { en: "Library: free; Reach Out and Read gives books at checkups", zh: "图书馆免费；儿科体检时 Reach Out and Read 送书" } });
+const CLOTH = (l: L, cost: number): NeedDraft => ({ category: "clothing", label: l, qty: "", cost, cheap: { en: "Thrift, Buy Nothing groups, hand-me-downs", zh: "二手店、Buy Nothing 群、亲友旧衣" } });
+const PLAY = (l: L, cost: number, cheap: L): NeedDraft => ({ category: "play", label: l, qty: "", cost, cheap });
 
 export const STAGES: Stage[] = [
   { key: "0-2", min: 0, max: 2, label: { en: "newborn", zh: "新生儿" }, diapersPerDay: 10, formulaMlPerDay: 600,
@@ -70,20 +73,33 @@ export function stageFor(months: number): Stage {
   return STAGES.find((s) => months >= s.min && months <= s.max) ?? STAGES[STAGES.length - 1];
 }
 
+const JOY: Record<string, Need[]> = {
+  "0-2": [{ category: "play", label: { en: "a photo print for the fridge", zh: "打印一张照片贴冰箱" }, qty: "", cost: 1, cheap: { en: "Pharmacy kiosk, 30¢ a print", zh: "药房自助打印，三毛一张" }, tier: 3 }],
+  "3-5": [{ category: "play", label: { en: "library baby time, a park morning", zh: "图书馆婴儿活动、公园上午" }, qty: "", cost: 0, cheap: null, tier: 3 }],
+  "6-8": [{ category: "play", label: { en: "a swim or music session", zh: "一次游泳或音乐课" }, qty: "1/mo", cost: 15, cheap: { en: "Rec center sliding scale; library story time is free", zh: "社区中心按收入减免；图书馆故事会免费" }, tier: 3 }],
+  "9-11": [{ category: "play", label: { en: "zoo or children's museum day", zh: "动物园或儿童博物馆一日" }, qty: "1/mo", cost: 10, cheap: { en: "Library museum pass; EBT 'Museums for All' $3 entry", zh: "图书馆借博物馆通票；EBT 卡 Museums for All 门票 $3" }, tier: 3 }],
+  "12-17": [{ category: "play", label: { en: "a class or outing", zh: "一次亲子课或出游" }, qty: "1/mo", cost: 15, cheap: { en: "Head Start family events; parks", zh: "Head Start 家庭活动；公园" }, tier: 3 }],
+  "18-23": [{ category: "play", label: { en: "a class or outing", zh: "一次亲子课或出游" }, qty: "1/mo", cost: 15, cheap: { en: "Library passes, free museum days", zh: "图书馆通票、博物馆免费日" }, tier: 3 }],
+  "24-35": [{ category: "play", label: { en: "a treat day: zoo, pool, ice cream", zh: "一次开心日：动物园、泳池、冰淇淋" }, qty: "1/mo", cost: 20, cheap: { en: "Museums for All with EBT; splash pads", zh: "EBT 的 Museums for All；喷泉公园" }, tier: 3 }],
+  "36-59": [{ category: "play", label: { en: "an activity or birthday fund", zh: "一项活动或生日基金" }, qty: "", cost: 25, cheap: { en: "Rec center scholarships; library programs", zh: "社区中心减免；图书馆项目" }, tier: 3 }],
+  "60+": [{ category: "play", label: { en: "one activity, a field trip, a birthday", zh: "一项课外活动、一次春游、一个生日" }, qty: "", cost: 30, cheap: { en: "School-sponsored clubs; fee waivers", zh: "学校社团；费用减免" }, tier: 3 }],
+};
+
 export function childNeeds(child: Child, profile: Profile) {
   const months = monthsSince(child.born);
   const stage = stageFor(months);
-  const needs = stage.needs(profile);
+  const needs: Need[] = [...stage.needs(profile).map((n) => ({ ...n, tier: n.tier ?? TIER_OF[n.category] })), ...(JOY[stage.key] ?? [])];
   const total = needs.reduce((s, n) => s + n.cost, 0);
-  return { months, stage, needs, total };
+  const tiers = ([1, 2, 3] as Tier[]).map((tier) => ({ tier, needs: needs.filter((n) => n.tier === tier), total: needs.filter((n) => n.tier === tier).reduce((s, n) => s + n.cost, 0) }));
+  return { months, stage, needs, total, tiers };
 }
 
 export function needsSummaryForAgent(profile: Profile): string {
   return profile.children
     .map((c) => {
-      const { months, stage, needs, total } = childNeeds(c, profile);
-      const parts = needs.map((n) => `${n.label.en} $${n.cost}`).join(", ");
-      return `${c.name || "child"} (${stage.label.en}, ${months} mo): baseline ≈ $${total}/mo — ${parts}`;
+      const { months, stage, total, tiers } = childNeeds(c, profile);
+      const parts = tiers.map((t) => `tier ${t.tier} $${t.total}: ${t.needs.map((n) => `${n.label.en} $${n.cost}`).join(", ")}`).join(" | ");
+      return `${c.name || "child"} (${stage.label.en}, ${months} mo): ≈ $${total}/mo — ${parts}`;
     })
     .join("\n");
 }

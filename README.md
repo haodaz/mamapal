@@ -1,6 +1,8 @@
 # MamaPal
 
-**Pal cares · Pal cuts · Pal claims. An AI guardian for a mother's $400 month.**
+**Pal cares · Pal cuts · Pal claims. A pal for a mother's hardest month.**
+
+Live demo: https://mamapal.vercel.app (sign in with any name; it's a demo session, no password).
 
 Built for the [PayPal AI Hackathon](https://paypalaihackathon.devpost.com/) by a single mother who lives on this budget.
 
@@ -12,18 +14,20 @@ Three pillars. Desktop gets a top navigation and a wide layout; phones get a bot
 
 | Screen | What it is |
 |---|---|
-| **Home** | This month at a glance: available budget, smart tax intercepted, earned back, claimable per month, the children and their ages, the latest verdict, recent PayPal activity. |
+| **Intro / sign-in** | A landing page and a mock session (name + email cookie). No real accounts yet. |
+| **Welcome** | First-run wizard: language, your name, children, daily use, money and where you live. |
+| **Pal (home)** | Pal talks: money left, the pantry (and a warning when diapers or formula run low), what the baby needs this month in three tiers, help you can claim, the last verdict. Topic chips and the composer sit at the bottom; verdicts appear inline. |
 | **Budget** | The budget bar, every verdict with its PayPal button, the ledger, and the earn-back surveys. |
 | **Ask Pal** | The conversation: she says what she thinks she needs, Pal answers with a verdict card. |
 | **Resources** | What she can claim, from her profile. |
-| **Me** | Everything Pal knows: name, children (birth month and weeks at birth, so preterm babies get corrected age), daily diapers and formula, household, income, ZIP, budget, language. |
+| **Me** | Records: a status card (edit to change), the pantry, this month's numbers, every verdict, an AG Grid ledger across months (sort, filter, search, totals, CSV), archived months. |
 
 ### Pal cares
 
-Mom fills in **Me** once: children with birth month and gestational weeks (a 34-week baby gets a corrected age, which changes feeding and development advice), daily diaper and formula use, household and income. Then she sets the month: `$400 total · $100 locked for food`. The locked part is untouchable; the agent only ever sees what is left.
+Mom answers five questions once: children with birth month and any medical notes, daily diaper and formula use, household, income, ZIP. From that Pal knows the baby's stage and builds the month in Maslow order: must-haves (diapers, milk, food, health, care, clothes), then growth and learning, then joy and outings, each priced at store-brand retail with the cheaper way next to it. Pal also keeps a pantry: every purchase paid through Pal adds diapers, formula or wipes; daily use drains it; when something has a week left, the welcome card says so. She sets the month: `$400 total · $100 locked for food`. The locked part is untouchable; the agent only ever sees what is left.
 ### Pal cuts
 
-**Smart-tax filter.** She types what she thinks she needs, the way it sits in her head ("baby has a rash, Instagram says buy the $45 organic oil and the $60 sleep sack"). Claude returns a verdict per item: **BUY / SWAP / SKIP / DEFER**, a concrete cheaper equivalent with a realistic US retail price, and a one-line reason. Money fields are recomputed server-side; the model never gets the last word on arithmetic. Typical result: $105 asked → $18 approved.
+**Smart-tax filter.** She types what she thinks she needs, the way it sits in her head ("baby has a rash, Instagram says buy the $45 organic oil and the $60 sleep sack"). Claude returns a verdict per item: **BUY / SWAP / SKIP / DEFER**, a concrete cheaper equivalent with a realistic US retail price, and a one-line reason. Money fields are recomputed server-side; the model never gets the last word on arithmetic. Typical result: $105 asked → $18 approved. Then **check prices across stores**: Pal searches the web for the same item at Walmart, Target, Amazon, Costco, Aldi, dollar stores and pharmacies, lists real offers with links, and lowers the cart if it finds cheaper. Pal is nobody's shop.
 **Execute minimal purchase (PayPal Checkout).** One button. The agent builds a PayPal order for exactly the approved cart (itemised), Mom approves in the PayPal popup, the server captures it, and the budget bar drops by the captured amount with the PayPal capture id on the ledger.
 ### Pal claims
 
@@ -36,7 +40,8 @@ Everything that touches money is a real PayPal sandbox API call. Nothing is fake
 ## Stack
 
 - Next.js 16 (App Router) + Tailwind 4
-- **AI:** Anthropic Claude (`claude-opus-5`) via `@anthropic-ai/sdk`. Purchase filter: structured output enforced with a Zod schema (`src/lib/agent.ts`). Benefits finder: Claude web search tool + the same structured-output approach (`src/lib/resources-agent.ts`)
+- **AI:** Anthropic Claude (`claude-opus-5`) via `@anthropic-ai/sdk`. Purchase filter: structured output enforced with a Zod schema (`src/lib/agent.ts`). Benefits finder and price check: Claude web search tool + structured output (`src/lib/resources-agent.ts`, `src/lib/compare-agent.ts`). Monthly needs model: `src/lib/stages.ts`; pantry: `src/lib/inventory.ts`.
+- **Ledger:** AG Grid Community (`src/components/LedgerGrid.tsx`), only on the Me page.
 - **PayPal:** Orders v2 (create + capture) and Payouts v1, called directly against the sandbox REST API (`src/lib/paypal.ts`); PayPal JavaScript SDK buttons on the client
 - State: one JSON blob for the single-user demo, in Supabase (`app_state` row) when configured, else `data/state.json`
 
@@ -53,7 +58,7 @@ npm run dev                  # http://localhost:3000
 | `ANTHROPIC_API_KEY` | https://console.anthropic.com |
 | `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET`, `NEXT_PUBLIC_PAYPAL_CLIENT_ID` | PayPal Developer Dashboard → Apps & Credentials → **Sandbox** → create app. Client ID goes in both `PAYPAL_CLIENT_ID` and `NEXT_PUBLIC_PAYPAL_CLIENT_ID`. |
 | `PAYOUT_RECEIVER_EMAIL` | Developer Dashboard → Sandbox Accounts → the **Personal** account's email. Payouts land there. |
-| `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` (or `SUPABASE_ANON_KEY`) | Optional. On Vercel/Render the disk is not durable, so state goes to one Supabase row. Run `supabase/schema.sql` once. Locally you can skip this; state lives in `data/state.json`. |
+| `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` (or `SUPABASE_ANON_KEY`) | Optional but used in production. On Vercel/Render the disk is not durable, so state goes to one Supabase row. Run `supabase/schema.sql` once. Locally you can skip this; state lives in `data/state.json`. |
 
 To pay in the demo, log into the PayPal popup with that same sandbox Personal account (password is in Sandbox Accounts → View/Edit).
 
@@ -61,7 +66,9 @@ To pay in the demo, log into the PayPal popup with that same sandbox Personal ac
 
 - Sandbox only. Orders are paid to our own sandbox business account; the app does not place orders at Walmart or anywhere else. The merchant names are the agent's buying advice, not integrations.
 - Prices are the model's realistic US retail estimates, not live quotes.
-- Single user, one shared state per deployment. No accounts, no auth. Anyone with the demo URL sees and changes the same month.
+- Single shared state per deployment. The sign-in is a demo cookie, not authentication: anyone who signs in sees and changes the same month.
+- The pantry tracks three consumables and only learns about purchases made through Pal; buy elsewhere and you fix the number in Me.
+- Price checks are what web search found that day; stock and shipping vary.
 - The brand surveys are seeded examples; there is no brand marketplace behind them yet.
 - The benefits finder is AI research over official sites on the day it runs. Income limits and local programs change; every card says to confirm with the program. It is not legal or benefits counsel.
 - Not medical advice. When a symptom needs a doctor the agent says so in the verdict and still prices the cheapest safe home option.

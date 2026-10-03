@@ -1,0 +1,89 @@
+# MamaPal · 产品与开发记录
+
+> 内部页面，无入口，地址 `/doc`。随做随更新，避免细节遗漏。最后更新：2026-10-03。
+> 比赛：PayPal AI Hackathon，截止 2026-11-12 下午 2 点（太平洋时间）。仓库 github.com/haodaz/mamapal，线上 mamapal.vercel.app。
+
+## 一句话
+
+Pal cares · Pal cuts · Pal claims（它管 · 它砍 · 它领）。一个月 $400 的妈妈的守护者。不是给妈妈一个 SaaS，是给她一个 Pal：陪她谋划一切，关心她和宝宝。
+
+## 定位决定
+
+- 用户是低收入妈妈，理解力和时间都有限。界面要温暖、说人话；对商品狠，对妈妈温和，不说教。
+- 首页不是仪表盘，是 Pal 本人在说话：气泡 + 它递来的卡片。输入框在页面底部。
+- 「我」是记录，不是设置。设置折进一张「现状」卡，点编辑才展开。
+- 预算分层按马斯洛：先必需（尿布、奶、吃的、健康、护理、衣服），有余力再成长启蒙（玩具、书），再有余力才开心出游。Pal 判定时按这个顺序分钱。
+- 月龄按实际月龄，不做矫正月龄（简化，评委不看这么细）。医疗情况写在孩子备注里给 Pal。
+- 不用 PayPal 商标做产品名。产品叫 MamaPal，角色叫 Pal。
+
+## 页面
+
+| 路由 | 作用 | 导航 |
+|---|---|---|
+| `/intro` | 登录前介绍页：Pal 立绘、三支柱、三步怎么用 | 无（未登录自动跳到这里） |
+| `/login` | 模拟登录：名字 + 邮箱，写一个 cookie | 无 |
+| `/welcome` | 首次引导五步：语言 → 称呼 → 孩子 → 每日消耗 → 钱与地区 | 无（未引导过自动进入） |
+| `/` | Pal 首页：顶部立绘压在欢迎卡上（三个数 + 库存提醒 + 快捷提问）；下面 Pal 的气泡与卡片（钱、库存、每月需要、能领的、上次判定）；底部输入框，左下角挥手的 Pal | 「Pal」（胸像） |
+| `/budget` | 预算条、本月所有判定（含 PayPal 按钮）、账本、挣回来的调研 | 预算 |
+| `/chat` | 问 Pal：全部历史对话 | 桌面顶栏按钮 / 手机右下角挥手的 Pal（头顶跳动小气泡） |
+| `/resources` | 能申请什么：按档案联网查官方项目 | 资源 |
+| `/me` | 记录：现状卡（可编辑）、库存、本月四个数、判定历史、AG Grid 账本明细（所有月份）、往月归档 | 我 |
+| `/doc` | 本页 | 无 |
+
+桌面：顶部导航，宽布局。手机：底部四个标签（Pal / 预算 / 资源 / 我）。
+
+## 功能点
+
+### Pal cares（它管）
+- 档案：称呼、孩子（名字、出生年月、医疗备注）、每天尿布片数、每天奶粉 ml、家里几口、月收入、邮编、州、怀孕/SNAP/Medicaid。存在「我」。
+- 每月开销模型 `src/lib/stages.ts`：按实际月龄分九段（0–2、3–5、6–8、9–11 个月、1 岁、1 岁半、2 岁、3–4 岁、5 岁+），每段列出尿布、湿巾、奶/牛奶、辅食/饭、衣服换码、玩具启蒙、书、健康、护理，和第三层「开心与出游」。每项带美国自有品牌保守价和省钱办法（图书馆、WIC、Buy Nothing、Museums for All）。按三层汇总，总基线喂给 Pal。
+- 库存 `src/lib/inventory.ts`：尿布、奶粉（按冲好的 ml 计）、湿巾三样。通过 Pal 付款时，判定项里的 `supply_type / supply_qty` 自动加进库存；按档案里的每日消耗推算今天还剩多少、还能用几天。≤7 天算「快见底」：欢迎卡里出黄色提醒，快捷提问里出现「帮我买尿布」，首页有库存卡。「我 → 库存」可以手改数（在别处买了）。
+- 换月自动归档：日历翻页或点「重置本月」，本月判定与账单整体存入 `history`。
+
+### Pal cuts（它砍）
+- 输入一段话 → Claude 结构化输出：每项 BUY / SWAP / SKIP / DEFER、平替名、价格、商家、理由、优先级、库存类型与数量。金额全部服务器重算，不信模型算术。
+- 系统提示要点：饭钱锁死不能动；网红/品牌/小红书推荐一律可疑；健康安全第一且该看医生就说；按马斯洛分钱；库存够两周以上的消耗品判 defer；语气对物狠对人暖，短句，不惊叹。
+- 全网比价（`/api/plan/[id]/compare`）：对未支付的判定，Claude 带联网搜索查 Walmart、Target、Amazon、Costco、Aldi、一元店、药房的真实报价（带链接），最便宜的排前面；比到更便宜就更新该项价格和商家，重算合计。Pal 不替任何一家店服务。
+- PayPal Checkout（Orders v2）：按批准清单逐项建单，妈妈在 PayPal 弹窗确认，服务器 capture，账本记 capture id，预算条下降，库存入账。
+
+### Pal claims（它领）
+- 微调研 → PayPal Payouts v1 打到妈妈的沙盒个人账号，账本记 batch id，预算条上升。目前两张种子问卷。
+- 资源查询 `src/lib/resources-agent.ts`：按档案，Claude 带联网搜索查官方网站，列 8–12 个项目（WIC、SNAP 用州名、Medicaid/CHIP、尿布银行、Head Start、托育补贴、HEAP、Lifeline、学校餐、EITC/CTC、211、食物银行、免费物品群；有医疗备注再查 Early Intervention、儿童 SSI、WIC 医学奶粉）。每项：决定资格的那一条规则、每月值多少、三四步、要带的材料、官方链接电话、需核实的提醒。约两分钟。
+
+### 账本
+- 首页/预算页的简单账单列表 + 「看明细」→ 「我」里的 AG Grid 表：所有月份，排序、筛选、搜索、固定合计行、导出 CSV。标题「认真算账，认真生活」。AG Grid 只出现在这一处（为 Best Use of AG Grid 奖）。
+
+## 技术
+
+- Next.js 16 App Router + Tailwind 4 + TypeScript。字体 Inter + Noto Sans SC / 苹方。配色 Ant Design 中性灰底 + 标准蓝 #1677ff；红只给「砍」，绿只给「钱回来」。
+- AI：`@anthropic-ai/sdk`，模型 `claude-opus-5`。判定用 `messages.parse` + Zod；资源查询和比价用 `messages.stream` + `web_search_20260209` + 结构化输出（max_tokens 32k，effort medium），资源查询有两步兜底。
+- PayPal：`src/lib/paypal.ts` 直连沙盒 REST（Orders v2 create/capture，Payouts v1；注意 Payouts 的金额字段是 `currency` 不是 `currency_code`）。前端 PayPal JS SDK 按钮。
+- 状态：单用户一份 JSON。配了 Supabase 就存 `app_state` 表的一行（Vercel 多实例必须每次读表，不走内存缓存）；否则 `data/state.json`。
+- 登录：`/api/login` 写 `mp_session` cookie，`src/middleware.ts` 没 cookie 的页面请求跳 `/intro`。不是真正的认证，状态仍是共享的一份。
+- 形象：通义万相 `wan2.2-t2i-plus` 出图，`scripts/cutout.mjs` 去白底成透明立绘。原图在 `docs/pal-candidates`、`docs/pal-poses`，立绘在 `public/pal-*.png`。
+- 部署：GitHub `main` 自动部署到 Vercel。环境变量：ANTHROPIC_API_KEY、PAYPAL_CLIENT_ID、PAYPAL_CLIENT_SECRET、NEXT_PUBLIC_PAYPAL_CLIENT_ID、PAYOUT_RECEIVER_EMAIL、SUPABASE_URL、SUPABASE_SERVICE_ROLE_KEY。
+
+## 已验证
+
+- 2026-10-02：判定 $105 → $18（11 秒）；中文输入；皇后区档案资源查询 12 项（2 分钟）；Payouts 批次 LX5UMD75ANHG4；Orders 建单 + 妈妈本人确认 capture 1RM22261GF492652U（$147）；线上 Vercel 判定 19 秒。
+
+## 边界（对外要说清楚）
+
+- 仅沙盒，不在真实商店下单；商家名是建议，比价链接是搜索当天的结果。
+- 价格是估算或当天搜索价，不是实时报价。
+- 库存只记三样，别处买的要手改。
+- 资源结果是 AI 查官网整理，每张卡都提醒向项目方确认；不是法律或福利咨询，不是医疗建议。
+- 单用户共享状态，没有真账号。
+
+## 待办
+
+- 视频脚本与 Devpost 文案（开场是妈妈和比特的故事）。
+- 更多 Pal 姿势接进页面状态（思考 = 正在砍，睡着 = 夜间/空状态）。
+- 调研问卷来源与品牌端（现在是种子）。
+- Channel3（赞助商商品搜索 API）可作为比价的数据源，另有 $1500 专项奖。
+- 真账号与按人分表。
+
+## 变更日志
+
+- 10-02：骨架、判定、PayPal 两条路、资源查询、五页面响应式、中英文、Supabase、Vercel 上线、Pal 形象与首页对话化、AG Grid 账本。
+- 10-03：库存与提醒、马斯洛三层开销、全网比价、介绍页与模拟登录、/doc。

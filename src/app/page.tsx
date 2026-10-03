@@ -8,8 +8,9 @@ import { PalFace, PalFigure } from "@/components/PalFace";
 import { NeedsCard } from "@/components/NeedsCard";
 import { PlanCard } from "@/components/PlanCard";
 import { childNeeds } from "@/lib/stages";
+import { supplyStatus } from "@/lib/inventory";
 import { monthsSince, formatAge } from "@/lib/age";
-import type { Plan, ResourceReport } from "@/lib/types";
+import type { Plan, ResourceReport, SupplyType } from "@/lib/types";
 
 export default function Home() {
   const { t, lang } = useLang();
@@ -36,6 +37,9 @@ export default function Home() {
   const needsTotal = kids.reduce((s, c) => s + childNeeds(c, state.profile).total, 0);
   const claimable = report ? report.items.filter((i) => i.eligibility !== "unlikely").reduce((s, i) => s + i.monthly_value_estimate, 0) : null;
   const latest = [...state.plans].reverse().find((p) => !thread.some((x) => x.plan.id === p.id));
+  const pantry = supplyStatus(state).filter((x) => x.tracked);
+  const low = pantry.filter((x) => x.low);
+  const sname = (k: SupplyType) => t(`supply.${k}` as const);
   const money = (n: number) => `$${n.toFixed(0)}`;
 
   async function submit() {
@@ -90,9 +94,14 @@ export default function Home() {
               <div key={l} className="rounded-2xl bg-bg px-3 py-2.5"><div className="text-[11px] text-muted">{l}</div><div className={`text-xl font-semibold ${c}`}>{v}</div></div>
             ))}
           </div>
+          {low.length > 0 && (
+            <div className="mt-4 rounded-xl border border-amber/40 bg-amber/5 px-3 py-2 text-sm text-amber">
+              {low.map((x) => t("supply.low", { item: sname(x.type), d: x.days ?? 0 })).join(" ")}
+            </div>
+          )}
           <div className="mt-4 text-[11px] text-muted">{t("pal.quick")}</div>
           <div className="mt-1.5 flex flex-wrap gap-2">
-            {[t("pal.q1"), t("pal.q2", { name: kidName }), t("pal.q3")].map((q) => (
+            {[...low.map((x) => t("supply.ask", { item: sname(x.type) })), t("pal.q1"), t("pal.q2", { name: kidName }), t("pal.q3")].map((q) => (
               <button key={q} onClick={() => { setAsk(q); box.current?.focus(); }} className="rounded-full border border-line bg-panel px-3 py-1.5 text-sm hover:border-primary hover:text-primary">{q}</button>
             ))}
           </div>
@@ -119,6 +128,23 @@ export default function Home() {
         <div id="needs" className="space-y-3">
           {kids.map((c, i) => <Card key={i} href="/me"><NeedsCard child={c} profile={state.profile} /></Card>)}
         </div>
+
+        {pantry.length > 0 && (
+          <>
+            <Bubble>{low.length ? low.map((x) => t("supply.low", { item: sname(x.type), d: x.days ?? 0 })).join(" ") : t("supply.ok", { items: pantry.map((x) => `${sname(x.type)} ${t("supply.days", { d: x.days ?? 0 })}`).join(", ") })}</Bubble>
+            <Card href="/me#supplies" label={t("budget.edit")}>
+              <div className="text-sm font-medium">{t("supply.title")}</div>
+              <ul className="mt-2 space-y-2">
+                {pantry.map((x) => (
+                  <li key={x.type}>
+                    <div className="flex items-baseline justify-between text-sm"><span>{sname(x.type)}</span><span className={`num ${x.low ? "text-amber" : "text-muted"}`}>{t("supply.left", { n: x.left, unit: t(`supply.unit.${x.type}` as const) })} · {t("supply.days", { d: x.days ?? 0 })}</span></div>
+                    <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-[#eceef5]"><div className={`h-full ${x.low ? "bg-amber" : "bg-primary"}`} style={{ width: `${Math.min(100, ((x.days ?? 0) / 30) * 100)}%` }} /></div>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          </>
+        )}
 
         <Bubble>{claimable != null ? t("pal.line.claims", { claims: money(claimable) }) : t("pal.line.claims_none")}</Bubble>
         {claimable != null && report && (

@@ -5,6 +5,7 @@ import type { State } from "./types";
 import { derive } from "./types";
 import { monthsSince } from "./age";
 import { needsSummaryForAgent } from "./stages";
+import { supplyStatus } from "./inventory";
 
 const MODEL = process.env.CLAUDE_MODEL ?? "claude-opus-5";
 
@@ -20,6 +21,8 @@ export const PlanSchema = z.object({
       buy_price: z.number().nullable().describe("USD price of buy_name. null if skip/defer"),
       merchant: z.string().nullable().describe("Where to buy it cheapest (Walmart, dollar store, pharmacy, Amazon). null if skip/defer"),
       priority: z.union([z.literal(1), z.literal(2), z.literal(3)]).describe("1 = baby health/safety, 2 = real need, 3 = nice-to-have"),
+      supply_type: z.enum(["diapers", "formula", "wipes", "none"]).describe("If buy_name is a consumable we track: diapers, formula or wipes. Else none."),
+      supply_qty: z.number().describe("Quantity buy_name adds: diapers = count of diapers in the pack; formula = ml of PREPARED formula the pack makes (a 36 oz / 1.02 kg powder can ≈ 7,500 ml); wipes = sheets. 0 if none."),
     }),
   ),
   requested_total: z.number().describe("Sum of requested_price"),
@@ -41,6 +44,8 @@ Rules:
 - Priority 1 (health/safety: fever, rash that spreads, feeding, car seat, medication the doctor prescribed) is never skipped. If the ask includes a medical symptom that needs a doctor, say so in the reason and still give the cheapest safe home option.
 - Price with realistic US retail numbers (Walmart / dollar store / pharmacy generics). Round to whole dollars unless she gave cents.
 - Be concrete: name the actual alternative product category and price, not "something cheaper".
+- Maslow order: money goes to tier 1 (diapers, feeding, food, health, care, clothing) first. Tier 2 (play, books, learning) only when tier 1 for the month is covered and the pantry is safe. Tier 3 (outings, classes, treats) only with real slack. Say which tier an item is when you defer it.
+- If a consumable she asked for is still well stocked (more than ~2 weeks left), say so and verdict "defer". If something is nearly out, keep it even if she did not ask the amount.
 - items must only contain things she asked for or clearly implied. Never add advice-only rows (price 0). Advice goes in the reason or the note.
 - Tone: hard on products, warm and plain toward her. Short everyday words a tired person can read on a phone; no jargon, no finance words. Never shame her for wanting something; say what the baby actually needs and why. No exclamation marks, no "great question".
 - Product names can stay English.`;
@@ -61,8 +66,9 @@ Already spent this month: $${d.spent}
 Earned back this month: $${d.earned}
 AVAILABLE NOW: $${d.available}
 Children: ${state.profile.children.map((c) => { const m = monthsSince(c.born); const age = m < 24 ? `${m} months` : `${Math.floor(m / 12)} years`; return `${c.name || "child"} ${age}${c.notes ? ` [${c.notes}]` : ""}`; }).join("; ") || "none listed"}
-Expected baseline needs this month (model, store-brand prices):
-${needsSummaryForAgent(state.profile)}${state.profile.pregnant ? "\nPregnant: yes" : ""}
+Expected baseline needs this month (model, store-brand prices; tier 1 = survival, tier 2 = growth & learning, tier 3 = joy & experiences):
+${needsSummaryForAgent(state.profile)}
+Pantry right now: ${supplyStatus(state).map((x) => `${x.type}: ${x.tracked ? `${x.left} left ≈ ${x.days} days` : "not tracked"}`).join("; ")}${state.profile.pregnant ? "\nPregnant: yes" : ""}
 Daily use: ${state.profile.diapers_per_day} diapers/day${state.profile.formula_ml_per_day ? `, ${state.profile.formula_ml_per_day} ml formula/day` : ", no formula"}
 Recent approved purchases:
 ${recent || "- none yet"}`;

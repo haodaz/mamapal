@@ -5,6 +5,8 @@ import { useLang } from "@/components/LangProvider";
 import dynamic from "next/dynamic";
 const LedgerGrid = dynamic(() => import("@/components/LedgerGrid").then((m) => m.LedgerGrid), { ssr: false, loading: () => <div className="text-xs text-muted">…</div> });
 import { monthsSince, formatAge } from "@/lib/age";
+import { supplyStatus, SUPPLY_TYPES } from "@/lib/inventory";
+import type { SupplyType } from "@/lib/types";
 import type { Child, Profile, ResourceReport } from "@/lib/types";
 
 export default function MePage() {
@@ -16,6 +18,15 @@ export default function MePage() {
   const [editing, setEditing] = useState(false);
   const [saved, setSaved] = useState(false);
   const [report, setReport] = useState<ResourceReport | null>(null);
+  const [stock, setStock] = useState<Partial<Record<SupplyType, number>>>({});
+  async function saveStock() {
+    await fetch("/api/state", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ supplies: stock }) });
+    setStock({}); refresh();
+  }
+  async function logout() {
+    await fetch("/api/login", { method: "DELETE" });
+    window.location.href = "/intro";
+  }
   useEffect(() => { if (data && !p) { setP(data.state.profile); setBudget(data.state.budget); setFood(data.state.food_lock); } }, [data, p]);
   useEffect(() => { fetch("/api/resources", { cache: "no-store" }).then((r) => r.json()).then((j) => setReport(j.resources)); }, []);
   if (!data || !p) return <main className="p-8 text-sm text-muted">{t("loading")}</main>;
@@ -119,7 +130,7 @@ export default function MePage() {
               </div>
               <div className="mt-4 flex items-center justify-between border-t border-line pt-3 text-xs text-muted">
                 <span>{t("me.data_note")}</span>
-                <button onClick={reset} className="text-red">{t("reset")}</button>
+                <span className="flex gap-4"><button onClick={logout}>{t("me.logout")}</button><button onClick={reset} className="text-red">{t("reset")}</button></span>
               </div>
             </Box>
             <div className="flex justify-end md:col-span-2">
@@ -127,6 +138,27 @@ export default function MePage() {
             </div>
           </div>
         )}
+      </section>
+
+      {/* Pantry */}
+      <section id="supplies" className="mt-8 scroll-mt-20">
+        <div className="mb-3 text-xs text-muted">{t("supply.title")}</div>
+        <div className="rounded-2xl border border-line bg-panel p-5 shadow-sm">
+          <ul className="divide-y divide-line">
+            {supplyStatus(state).map((x) => (
+              <li key={x.type} className="flex flex-wrap items-center gap-3 py-2.5 text-sm">
+                <span className="w-16 font-medium">{t(`supply.${x.type}` as const)}</span>
+                <span className={`num flex-1 ${x.low ? "text-amber" : "text-muted"}`}>{x.tracked ? `${t("supply.left", { n: x.left, unit: t(`supply.unit.${x.type}` as const) })} · ${t("supply.days", { d: x.days ?? 0 })}` : t("supply.untracked")}</span>
+                <input type="number" min={0} placeholder={String(x.left)} value={stock[x.type] ?? ""} onChange={(e) => setStock({ ...stock, [x.type]: e.target.value === "" ? undefined : Number(e.target.value) })} className="num w-24 rounded-lg border border-line bg-bg px-2 py-1 text-sm" />
+                <span className="text-xs text-muted">{t(`supply.unit.${x.type}` as const)}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-3 flex items-center justify-between gap-3">
+            <span className="text-xs text-muted">{t("supply.hint")}</span>
+            <button onClick={saveStock} disabled={!SUPPLY_TYPES.some((k) => typeof stock[k] === "number")} className="rounded-full bg-primary px-4 py-1.5 text-sm font-semibold text-white disabled:opacity-30">{t("supply.set")}</button>
+          </div>
+        </div>
       </section>
 
       {/* Records */}

@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 import path from "path";
-import type { State, Opportunity, Profile, MonthArchive } from "./types";
+import type { State, Opportunity, Profile, MonthArchive, Supplies } from "./types";
 import { derive } from "./types";
 
 import { createClient } from "@supabase/supabase-js";
@@ -72,6 +72,11 @@ export const DEFAULT_PROFILE: Profile = {
   on_medicaid: false,
 };
 
+export function emptySupplies(): Supplies {
+  const now = new Date().toISOString();
+  return { diapers: { qty: 0, as_of: now }, formula: { qty: 0, as_of: now }, wipes: { qty: 0, as_of: now } };
+}
+
 function fresh(): State {
   return {
     month: monthKey(),
@@ -84,6 +89,7 @@ function fresh(): State {
     resources: null,
     history: [],
     onboarded: false,
+    supplies: emptySupplies(),
   };
 }
 
@@ -102,6 +108,7 @@ function rollover(state: State): State {
     profile: state.profile,
     resources: state.resources,
     onboarded: state.onboarded,
+    supplies: state.supplies,
     history: arch ? [...state.history.filter((h) => h.month !== arch.month), arch] : state.history,
   };
 }
@@ -127,6 +134,7 @@ export async function loadState(): Promise<State> {
     // migrate old opportunity shape
     memory.opportunities = memory.opportunities.map((o) => ({ ...SEED_OPPORTUNITIES.find((x) => x.id === o.id), ...o } as Opportunity));
     if (!Array.isArray(memory.history)) memory.history = [];
+    memory.supplies = { ...emptySupplies(), ...(s.supplies ?? {}) };
     // new calendar month: archive the old one automatically
     if (memory.month !== monthKey()) {
       memory = rollover(memory);

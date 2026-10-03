@@ -1,5 +1,9 @@
 export type Verdict = "buy" | "swap" | "skip" | "defer";
 
+export type SupplyType = "diapers" | "formula" | "wipes";
+
+export type Offer = { merchant: string; price: number; url: string | null; note: string | null };
+
 export type PlanItem = {
   requested: string;
   requested_price: number;
@@ -9,6 +13,9 @@ export type PlanItem = {
   buy_price: number | null;
   merchant: string | null;
   priority: 1 | 2 | 3;
+  supply_type?: SupplyType | "none"; // what this purchase adds to the pantry
+  supply_qty?: number; // diapers: count; formula: ml of prepared formula; wipes: sheets
+  offers?: Offer[]; // filled by the cross-store price check
 };
 
 export type Plan = {
@@ -23,6 +30,7 @@ export type Plan = {
   remaining_after: number;
   note: string;
   status: "proposed" | "paid" | "dismissed";
+  compared_at?: string;
   paypal_order_id?: string;
   paypal_capture_id?: string;
 };
@@ -88,6 +96,8 @@ export type ResourceReport = {
   items: Resource[];
 };
 
+export type Supplies = Record<SupplyType, { qty: number; as_of: string }>;
+
 export type MonthArchive = {
   month: string;
   budget: number;
@@ -110,6 +120,7 @@ export type State = {
   resources: ResourceReport | null;
   history: MonthArchive[];
   onboarded?: boolean;
+  supplies: Supplies;
 };
 
 export function derive(state: State) {

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { loadState, saveState, newId } from "@/lib/store";
 import { captureOrder } from "@/lib/paypal";
 import { derive } from "@/lib/types";
+import { addSupply } from "@/lib/inventory";
 
 export const dynamic = "force-dynamic";
 
@@ -18,6 +19,11 @@ export async function POST(_req: Request, ctx: { params: Promise<{ id: string }>
     }
     plan.status = "paid";
     plan.paypal_capture_id = capture.id;
+    for (const it of plan.items) {
+      if ((it.verdict === "buy" || it.verdict === "swap") && it.supply_type && it.supply_type !== "none" && it.supply_qty) {
+        state.supplies = addSupply(state.supplies, state, it.supply_type, it.supply_qty);
+      }
+    }
     state.ledger.push({
       id: newId("led"),
       ts: new Date().toISOString(),

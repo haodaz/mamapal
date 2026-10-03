@@ -15,6 +15,7 @@ export function Nav() {
     { href: "/me", label: t("nav.me"), Icon: UserRound },
   ];
   const active = (href: string) => (href === "/" ? path === "/" : path.startsWith(href));
+  if (path === "/intro" || path === "/login" || path === "/doc" || path === "/welcome") return null;
   const LangBtn = () => (
     <button onClick={() => setLang(lang === "en" ? "zh" : "en")} className="num rounded-full border border-line bg-panel px-2.5 py-1 text-xs text-muted hover:text-fg" aria-label="language">
       {lang === "en" ? "中文" : "EN"}
