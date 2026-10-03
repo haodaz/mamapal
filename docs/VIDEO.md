@@ -1,6 +1,6 @@
 # MamaPal · 演示视频脚本 v1（≤ 3:00）
 
-目标：评委三分钟内看懂「它管、它砍、它领」，看到真实的 PayPal 两条路和 Claude 的判断，记住这是一位单亲妈妈为自己做的东西。
+目标：评委三分钟内看懂「它管、它砍、它领」，看到真实的 PayPal 两条路和 Claude 的判断，记住这是一位妈妈为自己做的东西。
 英文旁白给评委（可配音或字幕），中文是给你看的对照。画面由我在浏览器里按时间点操作，你只管录屏。
 
 ## 录制前（我来做，你确认）
@@ -13,7 +13,7 @@
 
 | 时间 | 画面（我操作） | 英文旁白 | 中文对照 |
 |---|---|---|---|
-| 0:00–0:12 | 介绍页首屏，Pal 立绘静止 2 秒，然后缓慢向下滚到三支柱 | I'm a single mother. My son BIT was born at 32 weeks, in the NICU for his first weeks. I live on about four hundred dollars a month. I built MamaPal because I needed it. | 我是单亲妈妈。儿子比特 32 周出生，头几周在 NICU。我一个月大约 400 美元过日子。我做 MamaPal，是因为我自己需要它。 |
+| 0:00–0:12 | 介绍页首屏，Pal 立绘静止 2 秒，然后缓慢向下滚到三支柱 | I'm a mother on a very tight budget: about four hundred dollars a month for everything. I built MamaPal because I needed it. | 我是一个手头很紧的妈妈，一个月大约 400 美元过日子。我做 MamaPal，是因为我自己需要它。 |
 | 0:12–0:25 | 三支柱卡片特写（抱心 / 举账单 / 牵宝宝） | Pal cares: it knows your baby's month. Pal cuts: it keeps what the baby really needs. Pal claims: it finds the money you're owed. All of it runs on PayPal and Claude. | 它管：知道宝宝几个月。它砍：留下真正需要的。它领：找回该你拿的钱。全部跑在 PayPal 和 Claude 上。 |
 | 0:25–0:40 | 登录 → 首页。停在 Pal 和比特头像、「Hi, 壮. I'm BIT's Pal.」、公告五句话 | Every morning Pal says the whole month in five lines: what's left, what BIT needs, how the pantry looks, what help I can claim, what it saved me last time. | 每天早上 Pal 用五句话把这个月说完。 |
 | 0:40–1:10 | 在首页输入框打字：「Baby has a mild rash. Instagram says buy the $45 organic calming oil and the $60 temperature-regulating sleep sack.」→ 等判定卡出现（约 10 秒，期间旁白） | I type what the feed told me to buy. Pal reads the rash, keeps a five-dollar pharmacy cream and a thirteen-dollar cotton sack, and tells me why in one line each. A hundred and five dollars becomes eighteen. | 我把网上让我买的打进去。Pal 看懂是红疹，留下 $5 的药膏和 $13 的棉睡袋。$105 变成 $18。 |
@@ -26,7 +26,7 @@
 
 ## 剪辑提示
 - 两处等待（判定约 10 秒、比价约 50 秒）录全，剪辑时加速或跳切，叠一行字幕说明正在做什么。
-- 不出现密码；不出现真实姓名以外的个人信息。
+- 不出现密码；不出现家庭和医疗细节（不说单亲，不说早产/NICU）。
 - 配乐用无版权库（YouTube Audio Library），规则禁止第三方版权音乐。
 
 ## 录制流程

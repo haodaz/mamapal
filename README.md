@@ -4,7 +4,7 @@
 
 Live demo: https://mamapal.vercel.app (sign in with any name; it's a demo session, no password).
 
-Built for the [PayPal AI Hackathon](https://paypalaihackathon.devpost.com/) by a single mother who lives on this budget.
+Built for the [PayPal AI Hackathon](https://paypalaihackathon.devpost.com/) by a mother who lives on this budget.
 
 Most "agentic commerce" demos teach an AI to spend money for people who have plenty. This one does the opposite: it stands between a tired parent and a feed full of $45 "calming oils", and lets PayPal move only the dollars that survive the cut.
 
