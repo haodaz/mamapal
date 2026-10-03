@@ -12,7 +12,7 @@ export default function Intro() {
     <ul className="mt-5 space-y-2.5">{items.map((b) => <li key={b} className="flex gap-2.5 text-[15px] leading-relaxed"><Check />{b}</li>)}</ul>
   );
   const Pillar = ({ img, kicker, title, text, bullets, children, flip, tint }: { img: string; kicker: string; title: string; text: string; bullets: string[]; children: React.ReactNode; flip?: boolean; tint: string }) => (
-    <section className="mx-auto max-w-5xl px-5 py-12 md:py-16">
+    <section className="mx-auto max-w-6xl px-5 py-12 md:py-16">
       <div className={`grid items-center gap-8 md:grid-cols-2 ${flip ? "md:[&>*:first-child]:order-2" : ""}`}>
         <div>
           <div className="flex items-center gap-3">
@@ -31,7 +31,7 @@ export default function Intro() {
 
   return (
     <main className="overflow-hidden">
-      <header className="mx-auto flex max-w-5xl items-center justify-between px-5 pt-5">
+      <header className="mx-auto flex max-w-6xl items-center justify-between px-5 pt-5">
         <Logo size="md" href={null} />
         <div className="flex items-center gap-2">
           <button onClick={() => setLang(lang === "en" ? "zh" : "en")} className="num rounded-full border border-line bg-panel px-2.5 py-1 text-xs text-muted">{lang === "en" ? "中文" : "EN"}</button>
@@ -40,7 +40,7 @@ export default function Intro() {
       </header>
 
       {/* Hero */}
-      <section className="relative mx-auto max-w-5xl px-5 pb-6 pt-10 md:pt-16">
+      <section className="relative mx-auto max-w-6xl px-5 pb-6 pt-10 md:pt-16">
         <div className="pointer-events-none absolute -left-24 top-0 h-[26rem] w-[26rem] rounded-full bg-[#dbeafe] opacity-70 blur-3xl" />
         <div className="pointer-events-none absolute -right-24 top-24 h-[22rem] w-[22rem] rounded-full bg-[#fde2e4] opacity-60 blur-3xl" />
         <div className="relative grid items-center gap-8 md:grid-cols-2">
@@ -108,7 +108,7 @@ export default function Intro() {
       </Pillar>
 
       {/* More modules */}
-      <section className="mx-auto max-w-5xl px-5 py-12">
+      <section className="mx-auto max-w-6xl px-5 py-12">
         <h2 className="text-2xl font-semibold tracking-tight">{t("intro.more")}</h2>
         <div className="mt-6 grid gap-4 md:grid-cols-3">
           {[
@@ -130,7 +130,7 @@ export default function Intro() {
       </section>
 
       {/* How */}
-      <section id="how" className="mx-auto max-w-5xl px-5 py-10">
+      <section id="how" className="mx-auto max-w-6xl px-5 py-10">
         <h2 className="text-2xl font-semibold tracking-tight">{t("intro.how")}</h2>
         <ol className="mt-5 grid gap-4 md:grid-cols-3">
           {[t("intro.s1"), t("intro.s2"), t("intro.s3")].map((s, i) => (
@@ -140,7 +140,7 @@ export default function Intro() {
         <div className="mt-8 flex justify-center"><Link href="/login" className="rounded-full bg-primary px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-primary/25">{t("intro.cta")}</Link></div>
       </section>
 
-      <footer className="mx-auto max-w-5xl px-5 pb-16 pt-6 text-center text-xs text-muted">{t("intro.foot")}</footer>
+      <footer className="mx-auto max-w-6xl px-5 pb-16 pt-6 text-center text-xs text-muted">{t("intro.foot")}</footer>
     </main>
   );
 }

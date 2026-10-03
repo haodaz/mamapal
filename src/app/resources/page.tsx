@@ -45,7 +45,7 @@ export default function ResourcesPage() {
   const total = report ? report.items.filter((i) => i.eligibility !== "unlikely").reduce((s, i) => s + i.monthly_value_estimate, 0) : 0;
 
   return (
-    <main className="mx-auto max-w-5xl px-4 pt-4 md:px-6 md:pt-8">
+    <main className="mx-auto max-w-6xl px-4 pt-4 md:px-6 md:pt-8">
       <div className="text-xs text-muted"><span className="text-primary">{t("pillar.claim")}</span></div>
       <AskPalBar from="resources" name={profile.children[0]?.name || "the baby"} />
       <h2 className="mt-1 text-2xl font-semibold tracking-tight">{t("res.title")}</h2>

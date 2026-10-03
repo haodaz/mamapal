@@ -38,7 +38,7 @@ export default function PlanPage() {
   const name = child.name || (lang === "zh" ? "宝宝" : "Baby");
 
   return (
-    <main className="mx-auto max-w-5xl px-4 pt-4 md:px-6 md:pt-8">
+    <main className="mx-auto max-w-6xl px-4 pt-4 md:px-6 md:pt-8">
       <AskPalBar from="plan" name={name} />
       <div className="flex items-center gap-4">
         <BabyAvatar child={child} size={56} />

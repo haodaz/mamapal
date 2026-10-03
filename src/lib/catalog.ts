@@ -10,7 +10,8 @@ export type Item = {
   qty_en: string; qty_zh: string; cheap_en: string; cheap_zh: string; only: "any" | "breastfeeding" | "formula"; essential: boolean;
   stage: string; from: number; to: number;
 };
-export const CATALOG = raw as Item[];
+// Rule on top of the generated data: a mother's consumables (nursing pads, nipple cream, postpartum pads, storage bags, vitamins) are must-haves, not "growth".
+export const CATALOG = (raw as Item[]).map((it) => (it.category === "mom" && it.kind !== "one_time" ? { ...it, tier: 1 as const } : it));
 
 export function itemsForMonths(months: number, profile: Profile): Item[] {
   const formula = profile.formula_ml_per_day > 0;

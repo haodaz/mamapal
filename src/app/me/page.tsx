@@ -47,7 +47,7 @@ export default function MePage() {
   );
 
   return (
-    <main className="mx-auto max-w-5xl px-4 pt-4 md:px-6 md:pt-8">
+    <main className="mx-auto max-w-6xl px-4 pt-4 md:px-6 md:pt-8">
       <div className="text-xs text-muted"><span className="text-primary">{t("pillar.manage")}</span></div>
       <AskPalBar from="me" name={state.profile.children[0]?.name || "the baby"} />
       <h2 className="text-2xl font-semibold tracking-tight">{state.profile.name || t("home.mom")}</h2>

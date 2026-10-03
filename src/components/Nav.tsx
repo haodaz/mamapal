@@ -22,7 +22,7 @@ export function Nav() {
     <>
       {/* Desktop: top navigation */}
       <header className="sticky top-0 z-30 hidden border-b border-line bg-panel/90 backdrop-blur md:block">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
           <Logo size="md" />
           <nav className="flex items-center gap-6">
             {items.map(({ href, label }) => (

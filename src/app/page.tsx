@@ -157,7 +157,7 @@ export default function Home() {
   const tabs: { k: Tab; l: string }[] = [{ k: "money", l: t("tab.money") }, { k: "pantry", l: t("tab.pantry") }, { k: "needs", l: t("tab.needs") }, { k: "claims", l: t("tab.claims") }];
 
   return (
-    <main className="mx-auto max-w-2xl px-4 pb-56 pt-4 md:max-w-5xl md:px-6 md:pb-48 md:pt-8">
+    <main className="mx-auto max-w-2xl px-4 pb-56 pt-4 md:max-w-6xl md:px-6 md:pb-48 md:pt-8">
       <div className="relative flex flex-col items-center md:flex-row md:items-end md:gap-6">
         <div className="relative z-10 -mb-14 md:mb-0 md:shrink-0">
           <PalFigure width={170} className="md:w-[190px]" />
@@ -210,7 +210,7 @@ export default function Home() {
       </section>
 
       <div className="fixed inset-x-0 bottom-[calc(3.6rem+env(safe-area-inset-bottom))] z-20 bg-gradient-to-t from-bg via-bg/95 to-bg/0 pt-6 md:bottom-0">
-        <div className="relative mx-auto max-w-2xl px-4 pb-2.5 md:max-w-5xl md:px-6">
+        <div className="relative mx-auto max-w-2xl px-4 pb-2.5 md:max-w-6xl md:px-6">
           <PalFigure pose="wave" width={96} className="absolute bottom-[3.9rem] left-2 z-0 md:left-0 md:w-[120px]" />
           <div className="relative mb-2 ml-24 flex gap-2 overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:ml-32">
             <button onClick={() => box.current?.focus()} className={chip}>{t("pal.topic.buy")}</button>
