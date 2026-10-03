@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { Sparkles, RefreshCw } from "lucide-react";
 import { useAppState } from "@/components/useAppState";
 import { useLang } from "@/components/LangProvider";
-import { AskPalBar } from "@/components/AskPalBar";
 import { BabyAvatar } from "@/components/BabyAvatar";
 import { PlanNeeds } from "@/components/PlanNeeds";
 import { PantryCard } from "@/components/PantryCard";
@@ -39,7 +38,6 @@ export default function PlanPage() {
 
   return (
     <main className="mx-auto max-w-6xl px-4 pt-4 md:px-6 md:pt-8">
-      <AskPalBar from="plan" name={name} />
       <div className="flex items-center gap-4">
         <BabyAvatar child={child} size={56} />
         <div>

@@ -11,7 +11,7 @@ export async function POST(req: Request) {
   if (!ask || !ask.trim()) return NextResponse.json({ error: "Say what you need." }, { status: 400 });
   const state = await loadState();
   try {
-    const out = await planPurchase(ask.trim(), state, lang === "zh" ? "zh" : "en", typeof context === "string" ? context.slice(0, 20) : undefined);
+    const out = await planPurchase(ask.trim(), state, lang === "zh" ? "zh" : "en", typeof context === "string" ? context.slice(0, 80) : undefined);
     const plan: Plan = {
       id: newId("plan"),
       created_at: new Date().toISOString(),

@@ -79,7 +79,7 @@ ${recent || "- none yet"}`;
     model: MODEL,
     max_tokens: 4000,
     system: [{ type: "text", text: SYSTEM, cache_control: { type: "ephemeral" } }],
-    messages: [{ role: "user", content: `${context}${ctx ? `\nShe is asking from the ${ctx} screen of the app (plan = this month's needs list; budget = money and verdicts; resources = benefits she can claim; me = her records).` : ""}\nOutput language for headline, reasons and note: ${lang === "zh" ? "Simplified Chinese" : "English"}\n\nMom says:\n"""${ask}"""` }],
+    messages: [{ role: "user", content: `${context}${ctx ? `\nShe is asking from the ${ctx} screen of the app (plan = this month's needs list; budget = money and verdicts; resources = benefits she can claim; me = her records; "item page: X" = she is reading about item X, so "this"/"it" means X).` : ""}\nOutput language for headline, reasons and note: ${lang === "zh" ? "Simplified Chinese" : "English"}\n\nMom says:\n"""${ask}"""` }],
     output_config: { format: zodOutputFormat(PlanSchema) },
   });
 

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { PalFace } from "@/components/PalFace";
+import { CATALOG } from "@/lib/catalog";
 import { useAppState } from "@/components/useAppState";
 import { useLang } from "@/components/LangProvider";
 import { PlanCard } from "@/components/PlanCard";
@@ -12,7 +13,10 @@ function ChatInner() {
   const { t, lang } = useLang();
   const params = useSearchParams();
   const fromRaw = params.get("from");
-  const from = (["plan", "budget", "resources", "me"] as const).find((x) => x === fromRaw);
+  const from = (["plan", "budget", "resources", "me", "item"] as const).find((x) => x === fromRaw);
+  const itemId = params.get("item") ?? "";
+  const itemRow = CATALOG.find((x) => x.id === itemId);
+  const item = itemRow ? (lang === "zh" ? itemRow.label_zh : itemRow.label_en) : itemId;
   const { data, refresh } = useAppState();
   const [ask, setAsk] = useState("");
   const [busy, setBusy] = useState(false);
@@ -27,7 +31,7 @@ function ChatInner() {
     if (!text.trim() || busy) return;
     setBusy(true); setError(null);
     try {
-      const r = await fetch("/api/plan", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ask: text, lang, context: from }) });
+      const r = await fetch("/api/plan", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ask: text, lang, context: from === "item" ? `item page: ${item}` : from }) });
       const j = await r.json();
       if (!r.ok) throw new Error(j.error ?? "Planning failed");
       setAsk("");
@@ -38,7 +42,7 @@ function ChatInner() {
   if (!data) return <main className="p-8 text-sm text-muted">{t("loading")}</main>;
   const plans = data.state.plans;
   const kid = data.state.profile.children[0]?.name || (lang === "zh" ? "宝宝" : "the baby");
-  const ctxChips = from ? [t(`ctx.${from}.q1` as const, { name: kid }), t(`ctx.${from}.q2` as const, { name: kid }), t(`ctx.${from}.q3` as const, { name: kid })] : [];
+  const ctxChips = from ? [t(`ctx.${from}.q1` as const, { name: kid, item }), t(`ctx.${from}.q2` as const, { name: kid, item }), t(`ctx.${from}.q3` as const, { name: kid, item })] : [];
   return (
     <main className="mx-auto max-w-3xl px-4 pt-2 md:px-6 md:pt-8">
       <div className="flex items-baseline justify-between">
@@ -54,7 +58,7 @@ function ChatInner() {
         {from && (
           <div className="flex items-end gap-2">
             <PalFace size={28} className="mb-1" />
-            <div className="max-w-[85%] rounded-2xl rounded-bl-sm border border-primary/30 bg-primary-soft/60 px-4 py-2.5 text-[15px] leading-relaxed">{t(`ctx.${from}.intro` as const, { name: kid })}</div>
+            <div className="max-w-[85%] rounded-2xl rounded-bl-sm border border-primary/30 bg-primary-soft/60 px-4 py-2.5 text-[15px] leading-relaxed">{t(`ctx.${from}.intro` as const, { name: kid, item })}</div>
           </div>
         )}
         {!plans.length && !from && <p className="text-sm text-muted">{t("chat.empty")}</p>}

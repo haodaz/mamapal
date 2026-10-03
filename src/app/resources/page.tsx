@@ -1,5 +1,4 @@
 "use client";
-import { AskPalBar } from "@/components/AskPalBar";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { monthsSince, formatAge } from "@/lib/age";
@@ -47,7 +46,6 @@ export default function ResourcesPage() {
   return (
     <main className="mx-auto max-w-6xl px-4 pt-4 md:px-6 md:pt-8">
       <div className="text-xs text-muted"><span className="text-primary">{t("pillar.claim")}</span></div>
-      <AskPalBar from="resources" name={profile.children[0]?.name || "the baby"} />
       <h2 className="mt-1 text-2xl font-semibold tracking-tight">{t("res.title")}</h2>
       <p className="mt-1 text-sm text-muted">{t("res.subtitle")}</p>
 
