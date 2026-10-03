@@ -1,5 +1,5 @@
 "use client";
-import { Baby, Milk, Utensils, Shirt, ToyBrick, BookOpen, HeartPulse, Droplets, Wallet, type LucideIcon } from "lucide-react";
+import { Baby, Milk, Utensils, Shirt, ToyBrick, BookOpen, HeartPulse, Droplets, type LucideIcon } from "lucide-react";
 import type { Child, Profile, State } from "@/lib/types";
 import { childNeeds, type NeedCategory } from "@/lib/stages";
 import { useLang } from "./LangProvider";
@@ -16,17 +16,17 @@ export function SpendCard({ child, profile, state }: { child: Child; profile: Pr
     <div className="rounded-2xl border border-line bg-panel p-5 shadow-sm">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#fff1f0] text-red"><Wallet className="h-5 w-5" /></span>
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#e6f4ff] text-primary"><Baby className="h-5 w-5" /></span>
           <div>
-            <div className="text-sm font-medium">{t("me.spend_title")}</div>
-            <div className="num text-xs text-muted">{t("me.spent_so_far")} <span className="text-red">${spent.toFixed(0)}</span> · {t("me.baseline")} ${total}</div>
+            <div className="text-sm font-medium">{t("pal.card.needs", { name: child.name || (lang === "zh" ? "宝宝" : "Baby") })}</div>
+            <div className="num text-xs text-muted">{t("me.baseline")} <b className="text-fg">${total}</b> · {t("me.spent_so_far")} <span className="text-red">${spent.toFixed(0)}</span></div>
           </div>
         </div>
         <div className="h-2 w-28 overflow-hidden rounded-full bg-[#eceef5]"><div className="h-full bg-red/70" style={{ width: `${Math.min(100, (spent / Math.max(total, 1)) * 100)}%` }} /></div>
       </div>
-      <div className="mt-4 grid gap-3 md:grid-cols-3">
+      <div className="mt-4 grid gap-3 md:grid-cols-[3fr_2fr]">
         {tiers.map(({ tier, needs, total: tt }) => (
-          <div key={tier} className="rounded-xl bg-bg p-3">
+          <div key={tier} className={`rounded-xl bg-bg p-3 ${tier === 1 ? "md:row-span-2" : ""}`}>
             <div className="flex items-baseline justify-between">
               <span className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${TIER_STYLE[tier]}`}>{t(`tier.${tier}` as const)}</span>
               <span className="num text-sm font-semibold">${tt}</span>

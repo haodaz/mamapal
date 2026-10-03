@@ -90,6 +90,8 @@ function fresh(): State {
     history: [],
     onboarded: false,
     supplies: emptySupplies(),
+    month_notes: [],
+    knowledge: {},
   };
 }
 
@@ -109,6 +111,8 @@ function rollover(state: State): State {
     resources: state.resources,
     onboarded: state.onboarded,
     supplies: state.supplies,
+    month_notes: [],
+    knowledge: state.knowledge,
     history: arch ? [...state.history.filter((h) => h.month !== arch.month), arch] : state.history,
   };
 }

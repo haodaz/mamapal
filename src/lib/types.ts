@@ -109,6 +109,9 @@ export type MonthArchive = {
   ledger: LedgerEntry[];
 };
 
+export type MonthNotes = { month: string; lang: "en" | "zh"; child: string; focus: string[]; tier_notes: { 1: string; 2: string; 3: string }; next: string; at: string };
+export type Guide = { title: string; what: string; which_one: string; how_much: string; traps: string[]; safety: string; cheap: string; at: string };
+
 export type State = {
   month: string;
   budget: number;
@@ -121,6 +124,8 @@ export type State = {
   history: MonthArchive[];
   onboarded?: boolean;
   supplies: Supplies;
+  month_notes?: MonthNotes[]; // one per child per month (cached AI text)
+  knowledge?: Record<string, Guide>; // key = stage|label_en|lang
 };
 
 export function derive(state: State) {

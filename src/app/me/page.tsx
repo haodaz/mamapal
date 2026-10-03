@@ -1,4 +1,5 @@
 "use client";
+import { AskPalBar } from "@/components/AskPalBar";
 import { useEffect, useState } from "react";
 import { useAppState } from "@/components/useAppState";
 import { useLang } from "@/components/LangProvider";
@@ -6,8 +7,6 @@ import dynamic from "next/dynamic";
 const LedgerGrid = dynamic(() => import("@/components/LedgerGrid").then((m) => m.LedgerGrid), { ssr: false, loading: () => <div className="text-xs text-muted">…</div> });
 import { monthsSince, formatAge } from "@/lib/age";
 import { BabyTimeline } from "@/components/BabyTimeline";
-import { SpendCard } from "@/components/SpendCard";
-import { PantryCard } from "@/components/PantryCard";
 import type { Child, Profile, ResourceReport } from "@/lib/types";
 
 export default function MePage() {
@@ -50,6 +49,7 @@ export default function MePage() {
   return (
     <main className="mx-auto max-w-5xl px-4 pt-4 md:px-6 md:pt-8">
       <div className="text-xs text-muted"><span className="text-primary">{t("pillar.manage")}</span></div>
+      <AskPalBar name={state.profile.children[0]?.name || "the baby"} />
       <h2 className="text-2xl font-semibold tracking-tight">{state.profile.name || t("home.mom")}</h2>
       <p className="text-sm text-muted">{t("me.subtitle")}</p>
 
@@ -129,12 +129,6 @@ export default function MePage() {
             </div>
           </div>
         )}
-      </section>
-
-      {/* Spending + pantry */}
-      <section id="supplies" className="mt-8 grid gap-4 scroll-mt-20 md:grid-cols-[3fr_2fr]">
-        <div className="space-y-4">{state.profile.children.map((c, i) => <SpendCard key={i} child={c} profile={state.profile} state={state} />)}</div>
-        <PantryCard state={state} onSaved={refresh} />
       </section>
 
       {/* Records */}

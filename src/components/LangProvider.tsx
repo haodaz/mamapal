@@ -14,7 +14,6 @@ export function LangProvider({ children }: { children: React.ReactNode }) {
     try {
       const saved = localStorage.getItem("lang") as Lang | null;
       if (saved === "en" || saved === "zh") setLangState(saved);
-      else if (navigator.language.toLowerCase().startsWith("zh")) setLangState("zh");
     } catch {}
   }, []);
   const setLang = (l: Lang) => {
