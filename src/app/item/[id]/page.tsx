@@ -17,6 +17,7 @@ export default function ItemPage() {
   const [guide, setGuide] = useState<Guide | null | "loading">("loading");
   const [market, setMarket] = useState<Market | null>(null);
   const [looking, setLooking] = useState(false);
+  const [tab, setTab] = useState<"memory" | "market">("memory");
   const child = data?.state.profile.children[0];
   const key = child?.name || "baby";
   useEffect(() => {
@@ -56,9 +57,13 @@ export default function ItemPage() {
         )}
       </header>
 
+      <div className="mt-4 flex gap-1 rounded-xl bg-panel p-1 md:hidden">
+        {(["memory", "market"] as const).map((k) => <button key={k} onClick={() => setTab(k)} className={`flex-1 rounded-lg py-1.5 text-xs font-medium ${tab === k ? "bg-primary-soft text-primary" : "text-muted"}`}>{t(k === "memory" ? "item.memory" : "item.market")}</button>)}
+      </div>
+      <div className="mt-3 grid gap-4 md:mt-6 md:grid-cols-2">
       {/* Memory */}
-      <section className="mt-6 rounded-2xl border border-line bg-panel p-5 shadow-sm">
-        <div className="flex items-center gap-2"><PalFace size={24} /><span className="text-sm font-medium">{t("item.memory")}</span><span className="text-xs text-muted">· {t("item.memory_hint")}</span></div>
+      <section className={`rounded-2xl border border-line bg-panel p-5 shadow-sm ${tab === "memory" ? "" : "hidden md:block"}`}>
+        <div className="flex items-center gap-2"><PalFace size={24} /><span className="text-sm font-medium">{t("item.memory")}</span></div>
         {guide === "loading" ? <div className="mt-3 text-sm text-muted">{t("guide.loading")}</div> : !guide ? <div className="mt-3 text-sm text-red">…</div> : (
           <div className="mt-4 space-y-4 text-[15px] leading-relaxed">
             {([["guide.what", guide.what], ["guide.which", guide.which_one], ["guide.how_much", guide.how_much]] as const).map(([k, v]) => <div key={k}><div className="text-xs text-muted">{t(k)}</div><p className="mt-0.5">{v}</p></div>)}
@@ -70,9 +75,9 @@ export default function ItemPage() {
       </section>
 
       {/* Market */}
-      <section className="mt-5 rounded-2xl border border-line bg-panel p-5 shadow-sm">
+      <section className={`rounded-2xl border border-line bg-panel p-5 shadow-sm ${tab === "market" ? "" : "hidden md:block"}`}>
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <div className="flex items-center gap-2"><Search className="h-4 w-4 text-primary" /><span className="text-sm font-medium">{t("item.market")}</span>{market && <span className="text-xs text-muted">· {t("item.market_hint", { date: market.at.slice(0, 10) })}</span>}</div>
+          <div className="flex items-center gap-2"><Search className="h-4 w-4 text-primary" /><span className="text-sm font-medium">{t("item.market")}</span>{market && <span className="num text-xs text-muted">{market.at.slice(0, 10)}</span>}</div>
           <button onClick={() => lookup(Boolean(market))} disabled={looking} className="flex items-center gap-1 rounded-full border border-primary/40 px-3 py-1 text-xs text-primary disabled:opacity-50"><RefreshCw className={`h-3 w-3 ${looking ? "animate-spin" : ""}`} />{looking ? t("item.looking") : market ? t("item.refresh") : t("item.lookup")}</button>
         </div>
         {market ? (
@@ -89,6 +94,7 @@ export default function ItemPage() {
           </>
         ) : <div className="mt-3 text-sm text-muted">{looking ? t("item.looking") : t("item.market_none")}</div>}
       </section>
+      </div>
     </main>
   );
 }

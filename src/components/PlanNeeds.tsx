@@ -20,7 +20,7 @@ export function PlanNeeds({ child, profile, owned, tierNotes, onOwned }: { child
             <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${TIER_STYLE[tier]}`}>{t(`tier.${tier}` as const)}</span>
             <span className="num text-sm"><b>${tt}</b><span className="text-xs text-muted">/mo</span>{ot > 0 && <span className="ml-2 text-xs text-muted">+ ${ot} {t("kind.one_time")}</span>}</span>
           </div>
-          {tierNotes && <p className="mt-2 text-sm leading-relaxed text-fg/80">{tierNotes[tier as 1 | 2 | 3]}</p>}
+          {tierNotes && <p className="mt-2 text-xs leading-relaxed text-muted">{tierNotes[tier as 1 | 2 | 3]}</p>}
           <ul className="mt-3 divide-y divide-line">
             {needs.map((n) => { const I = CAT_ICON[n.category]; return (
               <li key={n.id} className={`flex items-center gap-3 py-2 ${n.owned ? "opacity-50" : ""}`}>

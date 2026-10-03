@@ -11,13 +11,13 @@ const VOICE = `You are Pal, a warm, plain-spoken guardian for a mother on a tigh
 
 // --- Pal's notes for the month: focus, one line per tier, next month
 export const NotesSchema = z.object({
-  focus: z.array(z.string()).min(2).max(4).describe("2–4 concrete things this month is about for this child, each max 14 words"),
+  focus: z.array(z.string()).min(2).max(4).describe("2–4 concrete things this month is about for this child, each max 8 words, like a chip"),
   tier_notes: z.object({
-    1: z.string().describe("One or two sentences about the must-haves this month (diapers, milk, food, health, clothes). Mention sizes/amounts to expect."),
-    2: z.string().describe("One or two sentences about growth & learning this month: what to offer, what not to buy."),
-    3: z.string().describe("One sentence about joy & outings, with free options."),
+    1: z.string().describe("ONE sentence, max 18 words, about the must-haves this month (a size or amount to expect)."),
+    2: z.string().describe("ONE sentence, max 18 words: what to offer for growth, what not to buy."),
+    3: z.string().describe("ONE sentence, max 14 words, about joy & outings with a free option."),
   }),
-  next: z.string().describe("One or two sentences: what to prepare for next month (size changes, new foods, milestones)."),
+  next: z.string().describe("ONE sentence, max 20 words: what to prepare for next month."),
 });
 
 function childText(c: Child, p: Profile, state: State, lang: "en" | "zh") {
