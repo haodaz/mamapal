@@ -38,6 +38,7 @@ export function Nav() {
               <PalBust size={22} />{t("nav.chat")}
             </Link>
             <span className="ml-2"><LangBtn /></span>
+            <button onClick={async () => { await fetch("/api/login", { method: "DELETE" }); window.location.href = "/intro"; }} className="ml-1 text-xs text-muted hover:text-fg">{t("me.logout")}</button>
           </nav>
         </div>
       </header>

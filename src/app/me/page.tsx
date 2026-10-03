@@ -215,6 +215,11 @@ export default function MePage() {
           </ul>
         ) : <div className="text-sm text-muted">{t("me.no_months")}</div>}
       </section>
+
+      <div className="mt-10 flex items-center justify-between border-t border-line pt-4 text-xs text-muted">
+        <span>{t("me.data_note")}</span>
+        <button onClick={logout} className="rounded-full border border-line bg-panel px-3 py-1.5 text-fg hover:border-red hover:text-red">{t("me.logout")}</button>
+      </div>
     </main>
   );
 }
