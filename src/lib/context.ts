@@ -1,14 +1,14 @@
 import type { Lang } from "./i18n";
-import { CATALOG } from "./catalog";
+import { findItem } from "./catalog";
 
 // Where the user is when they call Pal. One template per page type; the item page fills in the item's name.
 export type Screen = "plan" | "budget" | "resources" | "me" | "item";
 export type PalContext = { screen: Screen; item?: string; itemId?: string };
 
-export function contextFor(pathname: string, lang: Lang): PalContext | null {
+export function contextFor(pathname: string, lang: Lang, months = 0): PalContext | null {
   if (pathname.startsWith("/item/")) {
     const id = decodeURIComponent(pathname.split("/")[2] ?? "");
-    const it = CATALOG.find((x) => x.id === id);
+    const it = findItem(id, months); // the entry for the child's current stage, so the label matches the page
     return { screen: "item", itemId: id, item: it ? (lang === "zh" ? it.label_zh : it.label_en) : id };
   }
   if (pathname.startsWith("/plan")) return { screen: "plan" };

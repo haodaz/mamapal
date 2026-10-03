@@ -9,6 +9,7 @@ import { PalDrawer } from "./PalDrawer";
 import { contextFor } from "@/lib/context";
 import { useState } from "react";
 import { useAppState } from "./useAppState";
+import { monthsSince } from "@/lib/age";
 
 export function Nav() {
   const { t, lang } = useLang();
@@ -16,7 +17,8 @@ export function Nav() {
   const [open, setOpen] = useState(false);
   const { data } = useAppState();
   const kid = data?.state.profile.children[0]?.name || (lang === "zh" ? "宝宝" : "the baby");
-  const ctx = contextFor(path, lang);
+  const first = data?.state.profile.children[0];
+  const ctx = contextFor(path, lang, first ? monthsSince(first.born) : 0);
   const chatHref = ctx ? `/chat?from=${ctx.screen}${ctx.itemId ? `&item=${encodeURIComponent(ctx.itemId)}` : ""}` : "/chat";
   const items = [
     { href: "/", label: t("nav.home"), mobileLabel: "Pal", Icon: Home, pal: true },
