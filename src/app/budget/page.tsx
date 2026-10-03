@@ -28,7 +28,7 @@ export default function BudgetPage() {
   }
   return (
     <main className="mx-auto max-w-5xl px-4 pt-4 md:px-6 md:pt-8">
-      <AskPalBar name={state.profile.children[0]?.name || "the baby"} />
+      <AskPalBar from="budget" name={state.profile.children[0]?.name || "the baby"} />
       <div className="grid gap-4 md:grid-cols-3">
         <div className="space-y-4 md:col-span-2">
           <div key={flash} className={flash ? "flash rounded-2xl" : ""}><BudgetBar state={state} derived={derived} onEdit={() => setEditing((v) => !v)} /></div>

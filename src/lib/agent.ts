@@ -46,11 +46,12 @@ Rules:
 - Be concrete: name the actual alternative product category and price, not "something cheaper".
 - Maslow order: money goes to tier 1 (diapers, feeding, food, health, care, clothing) first. Tier 2 (play, books, learning) only when tier 1 for the month is covered and the pantry is safe. Tier 3 (outings, classes, treats) only with real slack. Say which tier an item is when you defer it.
 - If a consumable she asked for is still well stocked (more than ~2 weeks left), say so and verdict "defer". If something is nearly out, keep it even if she did not ask the amount.
+- If she asks a question instead of listing things to buy (how much milk, how to apply for WIC, what can wait), answer it: headline = the one-line answer, note = 2–4 plain sentences with numbers, items = [] . Only produce items when there is something to buy or not buy.
 - items must only contain things she asked for or clearly implied. Never add advice-only rows (price 0). Advice goes in the reason or the note.
 - Tone: hard on products, warm and plain toward her. Short everyday words a tired person can read on a phone; no jargon, no finance words. Never shame her for wanting something; say what the baby actually needs and why. No exclamation marks, no "great question".
 - Product names can stay English.`;
 
-export async function planPurchase(ask: string, state: State, lang: "en" | "zh" = "en"): Promise<PlanOutput> {
+export async function planPurchase(ask: string, state: State, lang: "en" | "zh" = "en", screen?: string): Promise<PlanOutput> {
   const client = new Anthropic();
   const d = derive(state);
   const recent = state.plans
@@ -59,6 +60,7 @@ export async function planPurchase(ask: string, state: State, lang: "en" | "zh" 
     .map((p) => `- ${p.created_at.slice(0, 10)}: paid $${p.approved_total} (${p.items.filter((i) => i.buy_name).map((i) => i.buy_name).join(", ")})`)
     .join("\n");
 
+  const ctx = screen;
   const context = `Month: ${state.month}
 Monthly budget: $${state.budget}
 Locked for food (untouchable): $${state.food_lock}
@@ -77,7 +79,7 @@ ${recent || "- none yet"}`;
     model: MODEL,
     max_tokens: 4000,
     system: [{ type: "text", text: SYSTEM, cache_control: { type: "ephemeral" } }],
-    messages: [{ role: "user", content: `${context}\nOutput language for headline, reasons and note: ${lang === "zh" ? "Simplified Chinese" : "English"}\n\nMom says:\n"""${ask}"""` }],
+    messages: [{ role: "user", content: `${context}${ctx ? `\nShe is asking from the ${ctx} screen of the app (plan = this month's needs list; budget = money and verdicts; resources = benefits she can claim; me = her records).` : ""}\nOutput language for headline, reasons and note: ${lang === "zh" ? "Simplified Chinese" : "English"}\n\nMom says:\n"""${ask}"""` }],
     output_config: { format: zodOutputFormat(PlanSchema) },
   });
 

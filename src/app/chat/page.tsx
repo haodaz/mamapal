@@ -1,13 +1,18 @@
 "use client";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { PalFace } from "@/components/PalFace";
 import { useAppState } from "@/components/useAppState";
 import { useLang } from "@/components/LangProvider";
 import { PlanCard } from "@/components/PlanCard";
 import { EXAMPLES } from "@/lib/i18n";
 
-export default function ChatPage() {
+function ChatInner() {
   const { t, lang } = useLang();
+  const params = useSearchParams();
+  const fromRaw = params.get("from");
+  const from = (["plan", "budget", "resources", "me"] as const).find((x) => x === fromRaw);
   const { data, refresh } = useAppState();
   const [ask, setAsk] = useState("");
   const [busy, setBusy] = useState(false);
@@ -22,7 +27,7 @@ export default function ChatPage() {
     if (!text.trim() || busy) return;
     setBusy(true); setError(null);
     try {
-      const r = await fetch("/api/plan", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ask: text, lang }) });
+      const r = await fetch("/api/plan", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ask: text, lang, context: from }) });
       const j = await r.json();
       if (!r.ok) throw new Error(j.error ?? "Planning failed");
       setAsk("");
@@ -32,6 +37,8 @@ export default function ChatPage() {
 
   if (!data) return <main className="p-8 text-sm text-muted">{t("loading")}</main>;
   const plans = data.state.plans;
+  const kid = data.state.profile.children[0]?.name || (lang === "zh" ? "宝宝" : "the baby");
+  const ctxChips = from ? [t(`ctx.${from}.q1` as const, { name: kid }), t(`ctx.${from}.q2` as const, { name: kid }), t(`ctx.${from}.q3` as const, { name: kid })] : [];
   return (
     <main className="mx-auto max-w-3xl px-4 pt-2 md:px-6 md:pt-8">
       <div className="flex items-baseline justify-between">
@@ -44,7 +51,13 @@ export default function ChatPage() {
       </div>
 
       <div className="mt-4 space-y-5 pb-48">
-        {!plans.length && <p className="text-sm text-muted">{t("chat.empty")}</p>}
+        {from && (
+          <div className="flex items-end gap-2">
+            <PalFace size={28} className="mb-1" />
+            <div className="max-w-[85%] rounded-2xl rounded-bl-sm border border-primary/30 bg-primary-soft/60 px-4 py-2.5 text-[15px] leading-relaxed">{t(`ctx.${from}.intro` as const, { name: kid })}</div>
+          </div>
+        )}
+        {!plans.length && !from && <p className="text-sm text-muted">{t("chat.empty")}</p>}
         {plans.map((p) => (
           <div key={p.id} className="space-y-2">
             <div className="flex justify-end"><div className="max-w-[85%] rounded-2xl rounded-br-sm bg-primary px-4 py-2 text-sm text-white">{p.ask}</div></div>
@@ -59,7 +72,8 @@ export default function ChatPage() {
       <div className="fixed inset-x-0 bottom-0 z-20 border-t border-line bg-bg/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:bottom-0">
         <div className="mx-auto max-w-3xl px-4 py-3 md:px-6">
           <div className="mb-2 flex flex-wrap gap-1.5">
-            {EXAMPLES[lang].map((ex, i) => <button key={i} onClick={() => setAsk(ex)} className="rounded-full border border-line bg-panel px-2.5 py-1 text-[11px] text-muted hover:border-primary hover:text-fg">{t("composer.example")} {i + 1}</button>)}
+            {ctxChips.map((q) => <button key={q} onClick={() => setAsk(q)} className="rounded-full border border-primary/40 bg-primary-soft/60 px-2.5 py-1 text-[11px] text-primary">{q}</button>)}
+            {!from && EXAMPLES[lang].map((ex, i) => <button key={i} onClick={() => setAsk(ex)} className="rounded-full border border-line bg-panel px-2.5 py-1 text-[11px] text-muted hover:border-primary hover:text-fg">{t("composer.example")} {i + 1}</button>)}
           </div>
           <div className="flex items-end gap-2">
             <textarea value={ask} onChange={(e) => setAsk(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); } }} rows={2} placeholder={t("composer.placeholder")} className="flex-1 resize-none rounded-2xl border border-line bg-panel px-4 py-2.5 text-sm shadow-sm placeholder:text-muted focus:border-primary" />
@@ -69,4 +83,8 @@ export default function ChatPage() {
       </div>
     </main>
   );
+}
+
+export default function ChatPage() {
+  return <Suspense fallback={null}><ChatInner /></Suspense>;
 }
