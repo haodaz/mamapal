@@ -27,7 +27,7 @@ export function PlanCard({ plan, onPaid, onError }: { plan: Plan; onPaid: (r: un
   return (
     <article className={`rounded-2xl border ${paid ? "border-green/40" : "border-line"} bg-panel shadow-sm`}>
       <header className="border-b border-line px-5 py-4">
-        <div className="text-xs text-muted"><span className="text-primary">{t("pillar.cut")}</span> · {paid ? t("plan.paid_label") : t("plan.filter_label")}</div>
+        <div className="text-xs text-muted"><span className="text-primary">{t("pillar.cut")}</span>{plan.items.length > 0 && <> · {paid ? t("plan.paid_label") : t("plan.filter_label")}</>}</div>
         <h2 className="mt-1 text-lg font-semibold leading-snug">{plan.headline}</h2>
         <p className="mt-1 text-sm text-muted">“{plan.ask}”</p>
       </header>
@@ -69,11 +69,11 @@ export function PlanCard({ plan, onPaid, onError }: { plan: Plan; onPaid: (r: un
         })}
       </ul>
       <footer className="space-y-3 border-t border-line px-5 py-4">
-        <div className="num flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 text-sm">
+        {plan.items.length > 0 && <div className="num flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 text-sm">
           <span className="whitespace-nowrap text-muted">{t("plan.asked")} ${plan.requested_total.toFixed(2)}</span>
           <span className="whitespace-nowrap text-red">{t("plan.intercepted")} −${plan.intercepted.toFixed(2)}</span>
           <span className="whitespace-nowrap text-base font-semibold text-fg">{t("plan.pay")} ${plan.approved_total.toFixed(2)}</span>
-        </div>
+        </div>}
         <p className="text-sm text-muted">{plan.note}</p>
         {!paid && plan.approved_total > 0 && (
           <div className="flex flex-wrap items-center gap-3 text-xs">
@@ -88,9 +88,9 @@ export function PlanCard({ plan, onPaid, onError }: { plan: Plan; onPaid: (r: un
             <div className="mb-2 text-xs text-muted">{t("plan.execute")} (${plan.approved_total.toFixed(2)})</div>
             <PayPalButton planId={plan.id} onPaid={onPaid} onError={onError} />
           </div>
-        ) : (
+        ) : plan.items.length > 0 ? (
           <div className="text-xs text-muted">{t("plan.nothing")}</div>
-        )}
+        ) : null}
       </footer>
     </article>
   );
