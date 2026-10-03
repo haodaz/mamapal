@@ -20,6 +20,28 @@ function loadSdk(clientId: string) {
   return loading;
 }
 
+// Sandbox buyer credentials shown next to the button so a tester never has to remember them. Fake account, fake money.
+function BuyerHint() {
+  const { t } = useLang();
+  const email = process.env.NEXT_PUBLIC_SANDBOX_BUYER_EMAIL;
+  const pass = process.env.NEXT_PUBLIC_SANDBOX_BUYER_PASSWORD;
+  const [done, setDone] = useState<string | null>(null);
+  if (!email) return null;
+  const copy = async (label: string, v: string) => { try { await navigator.clipboard.writeText(v); setDone(label); setTimeout(() => setDone(null), 1200); } catch {} };
+  const Chip = ({ label, value }: { label: string; value: string }) => (
+    <button onClick={() => copy(label, value)} className="num rounded-full border border-line bg-bg px-2.5 py-1 text-[11px] text-fg hover:border-primary">
+      {label}: {value} · <span className="text-primary">{done === label ? t("paypal.copied") : t("paypal.copy")}</span>
+    </button>
+  );
+  return (
+    <div className="mt-2 flex flex-wrap items-center gap-1.5 text-[11px] text-muted">
+      <span>{t("paypal.buyer")}</span>
+      <Chip label="email" value={email} />
+      {pass && <Chip label={t("paypal.password")} value={pass} />}
+    </div>
+  );
+}
+
 export function PayPalButton({ planId, onPaid, onError }: { planId: string; onPaid: (result: unknown) => void; onError: (msg: string) => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
@@ -62,6 +84,7 @@ export function PayPalButton({ planId, onPaid, onError }: { planId: string; onPa
     <div>
       {!ready && <div className="text-xs text-muted">{t("paypal.loading")}</div>}
       <div ref={ref} />
+      <BuyerHint />
     </div>
   );
 }

@@ -44,7 +44,7 @@ Pal cares · Pal cuts · Pal claims（它管 · 它砍 · 它领）。一个月 
 - 输入一段话 → Claude 结构化输出：每项 BUY / SWAP / SKIP / DEFER、平替名、价格、商家、理由、优先级、库存类型与数量。金额全部服务器重算，不信模型算术。
 - 系统提示要点：饭钱锁死不能动；网红/品牌/小红书推荐一律可疑；健康安全第一且该看医生就说；按马斯洛分钱；库存够两周以上的消耗品判 defer；语气对物狠对人暖，短句，不惊叹。
 - 全网比价（`/api/plan/[id]/compare`）：对未支付的判定，Claude 带联网搜索查 Walmart、Target、Amazon、Costco、Aldi、一元店、药房的真实报价（带链接），最便宜的排前面；比到更便宜就更新该项价格和商家，重算合计。Pal 不替任何一家店服务。
-- PayPal Checkout（Orders v2）：按批准清单逐项建单，妈妈在 PayPal 弹窗确认，服务器 capture，账本记 capture id，预算条下降，库存入账。
+- PayPal Checkout（Orders v2）：按批准清单逐项建单，妈妈在 PayPal 弹窗确认，服务器 capture，账本记 capture id，预算条下降，库存入账。按钮下方显示沙盒买家邮箱和密码（各带复制按钮，读 `NEXT_PUBLIC_SANDBOX_BUYER_*`），换设备测试不用记；弹窗是 PayPal 的页面，无法代填。
 
 ### Pal claims（它领）
 - 微调研 → PayPal Payouts v1 打到妈妈的沙盒个人账号，账本记 batch id，预算条上升。目前两张种子问卷。

@@ -58,6 +58,7 @@ npm run dev                  # http://localhost:3000
 | `ANTHROPIC_API_KEY` | https://console.anthropic.com |
 | `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET`, `NEXT_PUBLIC_PAYPAL_CLIENT_ID` | PayPal Developer Dashboard → Apps & Credentials → **Sandbox** → create app. Client ID goes in both `PAYPAL_CLIENT_ID` and `NEXT_PUBLIC_PAYPAL_CLIENT_ID`. |
 | `PAYOUT_RECEIVER_EMAIL` | Developer Dashboard → Sandbox Accounts → the **Personal** account's email. Payouts land there. |
+| `NEXT_PUBLIC_SANDBOX_BUYER_EMAIL`, `NEXT_PUBLIC_SANDBOX_BUYER_PASSWORD` | Optional. Shown with copy buttons next to the PayPal button so testers can sign into the sandbox popup without remembering the demo buyer. Fake account, fake money; never put a real account here. |
 | `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` (or `SUPABASE_ANON_KEY`) | Optional but used in production. On Vercel/Render the disk is not durable, so state goes to one Supabase row. Run `supabase/schema.sql` once. Locally you can skip this; state lives in `data/state.json`. |
 
 To pay in the demo, log into the PayPal popup with that same sandbox Personal account (password is in Sandbox Accounts → View/Edit).
