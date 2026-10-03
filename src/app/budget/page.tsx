@@ -18,7 +18,7 @@ export default function BudgetPage() {
   const onError = useCallback((m: string) => setError(m), []);
   if (!data) return <main className="p-8 text-sm text-muted">{t("loading")}</main>;
   const { state, derived } = data;
-  const plans = [...state.plans].reverse();
+  const plans = [...state.plans].reverse().filter((p) => p.items.length > 0);
   const input = "num mt-1 w-full rounded-lg border border-line bg-bg px-2 py-1.5 text-fg";
   async function saveBudget(form: FormData) {
     await fetch("/api/state", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ budget: Number(form.get("budget")), food_lock: Number(form.get("food_lock")) }) });

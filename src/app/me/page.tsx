@@ -149,7 +149,7 @@ export default function MePage() {
           <div className="mb-3 text-xs text-muted"><span className="text-primary">{t("pillar.cut")}</span> · {t("me.verdicts")}</div>
           {state.plans.length ? (
             <ul className="divide-y divide-line rounded-2xl border border-line bg-panel shadow-sm">
-              {[...state.plans].reverse().map((pl) => (
+              {[...state.plans].reverse().filter((pl) => pl.items.length > 0).map((pl) => (
                 <li key={pl.id} className="px-4 py-3 text-sm">
                   <div className="flex items-baseline justify-between gap-3">
                     <span className="min-w-0 truncate font-medium">{pl.headline}</span>

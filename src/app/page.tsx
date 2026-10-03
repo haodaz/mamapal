@@ -42,7 +42,7 @@ export default function Home() {
   const kidName = first?.name || (lang === "zh" ? "宝宝" : "Baby");
   const needsTotal = kids.reduce((s, c) => s + childNeeds(c, state.profile).total, 0);
   const claimable = report ? report.items.filter((i) => i.eligibility !== "unlikely").reduce((s, i) => s + i.monthly_value_estimate, 0) : null;
-  const latest = [...state.plans].reverse().find((p) => !thread.some((x) => x.plan.id === p.id));
+  const latest = [...state.plans].reverse().find((p) => p.items.length > 0 && !thread.some((x) => x.plan.id === p.id));
   const pantry = supplyStatus(state).filter((x) => x.tracked);
   const low = pantry.filter((x) => x.low);
   const sname = (k: SupplyType) => t(`supply.${k}` as const);
