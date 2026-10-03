@@ -33,7 +33,7 @@ for nid,s in starts:
         cues.append(f"{k}\n{ts(t)} --> {ts(t+d-0.05)}\n{wrap(x)}\n"); k+=1; t+=d
 open("subs.srt","w").write("\n".join(cues))
 # audio: delay each clip, mix
-inputs=["-i","cut_v5.mp4"]; fl=[]; mix=""
+inputs=["-i","cut_v6_clean.mp4"]; fl=[]; mix=""
 for i,(nid,s) in enumerate(starts):
     inputs+=["-i",f"tts/{nid}.wav"]
     fl.append(f"[{i+1}:a]aresample=48000,adelay={int(s*1000)}|{int(s*1000)},volume=1.0[a{i}]"); mix+=f"[a{i}]"
