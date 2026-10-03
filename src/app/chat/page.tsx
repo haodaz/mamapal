@@ -16,10 +16,10 @@ function ChatInner() {
   const fromRaw = params.get("from");
   const from = (["plan", "budget", "resources", "me", "item"] as const).find((x) => x === fromRaw);
   const itemId = params.get("item") ?? "";
+  const { data, refresh } = useAppState();
   const firstKid = data?.state.profile.children[0];
   const itemRow = itemId ? findItem(itemId, firstKid ? monthsSince(firstKid.born) : 0) : undefined;
   const item = itemRow ? (lang === "zh" ? itemRow.label_zh : itemRow.label_en) : itemId;
-  const { data, refresh } = useAppState();
   const [ask, setAsk] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
