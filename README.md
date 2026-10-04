@@ -3,6 +3,7 @@
 **Pal cares · Pal cuts · Pal claims. A pal for a mother's hardest month.**
 
 Live demo: https://mamapal.vercel.app (sign in with any name; it's a demo session, no password).
+Demo video (2:55): https://youtu.be/jDOPtrLy4sY
 
 Built for the [PayPal AI Hackathon](https://paypalaihackathon.devpost.com/) by a mother who lives on this budget.
 
