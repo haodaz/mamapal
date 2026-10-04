@@ -16,7 +16,7 @@ Pal cares, Pal cuts, Pal claims. A pal for a mother's hardest month.
 ## About the project
 
 ### Inspiration
-I am a mother on a very tight budget: about four hundred dollars a month for everything after rent. Every feed I open tells me the baby needs a $45 calming oil or a $120 sound machine, and when you are tired it is hard to tell marketing from need. At the same time there is real help I qualified for and did not know how to claim. I built MamaPal because I needed one calm friend who knows my baby's month, cuts what we don't need, pays for exactly what we do, and chases the money we are owed.
+I am the maker of this project and its first user. I am a mother on a very tight budget: about four hundred dollars a month for everything after rent. Every feed I open tells me the baby needs a $45 calming oil or a $120 sound machine, and when you are tired it is hard to tell marketing from need. At the same time there was real help I qualified for and did not know how to claim. MamaPal comes out of my own months of counting diapers and dollars: I built it because I needed it, and I have been living with it since the first day it ran.
 
 ### What it does
 MamaPal is an AI pal, not a dashboard. You talk to Pal; Pal answers with short sentences and cards.
@@ -52,6 +52,9 @@ Low-income mothers do not want a SaaS; they want a pal. Tone is a feature. And t
 
 ### What's next
 Real accounts and per-family data; a brand survey marketplace that pays mothers for honest answers; Channel3 as a product data source; sharing a month's plan with a partner or a caseworker; Spanish.
+
+## Contribution (sidebar)
+Maker and first user. I designed and built MamaPal from my own experience as a mother on a tight budget: the product, the Pal persona, the PayPal and Claude integrations, the catalog, the video. Built with Claude Code as my pair programmer.
 
 ## Built with (tags)
 paypal, paypal-checkout, paypal-payouts, claude, anthropic, next.js, react, typescript, tailwind, vercel, supabase, ag-grid, zod
