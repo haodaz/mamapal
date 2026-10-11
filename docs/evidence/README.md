@@ -51,6 +51,26 @@ offer child care vouchers to families that are not on cash assistance". The chec
 Known gap: the checker confirms the quote is on an official page, not that the page is for her county (WIC's quote
 came from another New York county's site).
 
+## Stress test: three demo households (2026-10-11)
+
+Three fictional households in three states (`src/lib/personas.ts`), each signed in with its demo code, then the
+benefits finder and a month run, all three at once against the local server. The checked benefits reports are saved
+in `src/data/personas/*.json` and every visitor's copy starts with them.
+
+| Household | Benefits search | Rules found on their page | No source | Checker couldn't read | Application links open | Est. help / month |
+|---|---|---|---|---|---|---|
+| Rosa, Columbus OH (2-year-old, pregnant, on SNAP + Medicaid) | 203 s | 10 of 12, all official | 2 | 0 | 12 of 12 | $2,459 |
+| Maya, Houston TX (4-month-old on formula) | 237 s | 5 (4 official) | 5 | 1 | 9 | $2,264 |
+| Keisha, Fresno CA (10-month-old with a dairy allergy, 4-year-old) | 244 s | 4 (2 official) | 5 | 3 | 10 | $2,440 |
+
+What it shows: Ohio's program pages are plain HTML and the checker could confirm almost every rule; California's
+and Texas's pages mostly refuse robots or never got a quote, so those cards honestly say "couldn't read" or "no
+source". Keisha's report used her child's medical note (WIC covers dairy-free formula with a doctor's form).
+
+The month runs stopped at the price step: the Anthropic account ran out of credit mid-test ("Your credit balance is
+too low"). Each run kept the steps it had finished (stock, plan) and shows "try again from this step"; they resume
+from there once credit is added. The month-run results for these households will be added then.
+
 ## What the checker verifies (no model involved)
 
 - Every link is opened: `ok` (the page shows that price), `opens`, `blocked` (the store refuses robots), `dead` (dropped).

@@ -4,16 +4,29 @@ import type { State, Opportunity, Profile, MonthArchive, Supplies } from "./type
 import { derive } from "./types";
 
 import { createClient } from "@supabase/supabase-js";
+import { cookies } from "next/headers";
 
-// Single-user demo store. Persistence, in order of preference:
-//   1. Supabase table `app_state` (one row, jsonb) when SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY (or SUPABASE_ANON_KEY) are set — needed on Vercel/Render, whose disks don't persist.
-//   2. data/state.json on disk (local dev).
+// Demo store: one JSON state per household. Persistence, in order of preference:
+//   1. Supabase table `app_state` (one row per household, jsonb) when SUPABASE_URL + a key are set — needed on Vercel, whose disks don't persist.
+//   2. data/state.json (or data/state-<row>.json) on disk (local dev).
 //   3. in-memory fallback.
-// Boundary: NOT multi-user; one shared state per deployment.
+// Which row: the `mp_row` cookie set at sign-in (each demo code gets its own private copy); without it, STATE_ROW_ID or "default".
+// Boundary: a household is whoever holds the cookie. This is not authentication.
 
-const FILE = path.join(process.cwd(), "data", "state.json");
-const ROW_ID = process.env.STATE_ROW_ID ?? "default";
-let memory: State | null = null;
+export const ROW_COOKIE = "mp_row";
+const DEFAULT_ROW = process.env.STATE_ROW_ID ?? "default";
+export const validRow = (r: string | undefined | null): r is string => !!r && /^[a-z0-9-]{1,48}$/.test(r);
+const memory = new Map<string, State>();
+
+async function currentRow(): Promise<string> {
+  try {
+    const r = (await cookies()).get(ROW_COOKIE)?.value;
+    return validRow(r) ? r : DEFAULT_ROW;
+  } catch {
+    return DEFAULT_ROW; // outside a request (scripts)
+  }
+}
+const fileFor = (row: string) => path.join(process.cwd(), "data", row === "default" ? "state.json" : `state-${row}.json`);
 
 function supabase() {
   const url = process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -22,25 +35,25 @@ function supabase() {
   return createClient(url, key, { auth: { persistSession: false } });
 }
 
-async function readRaw(): Promise<string | null> {
+async function readRaw(row: string): Promise<string | null> {
   const sb = supabase();
   if (sb) {
-    const { data, error } = await sb.from("app_state").select("state").eq("id", ROW_ID).maybeSingle();
+    const { data, error } = await sb.from("app_state").select("state").eq("id", row).maybeSingle();
     if (error) throw new Error(`supabase read: ${error.message}`);
     return data ? JSON.stringify(data.state) : null;
   }
-  return fs.readFile(FILE, "utf8");
+  return fs.readFile(fileFor(row), "utf8");
 }
 
-async function writeRaw(state: State): Promise<void> {
+async function writeRaw(row: string, state: State): Promise<void> {
   const sb = supabase();
   if (sb) {
-    const { error } = await sb.from("app_state").upsert({ id: ROW_ID, state, updated_at: new Date().toISOString() });
+    const { error } = await sb.from("app_state").upsert({ id: row, state, updated_at: new Date().toISOString() });
     if (error) throw new Error(`supabase write: ${error.message}`);
     return;
   }
-  await fs.mkdir(path.dirname(FILE), { recursive: true });
-  await fs.writeFile(FILE, JSON.stringify(state, null, 2));
+  await fs.mkdir(path.dirname(fileFor(row)), { recursive: true });
+  await fs.writeFile(fileFor(row), JSON.stringify(state, null, 2));
 }
 
 function monthKey(d = new Date()) {
@@ -76,6 +89,8 @@ export function emptySupplies(): Supplies {
   const now = new Date().toISOString();
   return { diapers: { qty: 0, as_of: now }, formula: { qty: 0, as_of: now }, wipes: { qty: 0, as_of: now } };
 }
+
+export function freshState(): State { return fresh(); }
 
 function fresh(): State {
   return {
@@ -121,51 +136,56 @@ function rollover(state: State): State {
   };
 }
 
-export async function loadState(): Promise<State> {
+export async function loadState(row?: string): Promise<State> {
+  const r = row ?? (await currentRow());
   // With Supabase, never trust the per-instance memory cache: on Vercel each function instance has its own,
   // so a write from one instance would be invisible (and later clobbered) by another. One small read per request instead.
-  if (memory && !supabase()) return memory;
+  const cached = memory.get(r);
+  if (cached && !supabase()) return cached;
+  let st: State;
   try {
-    const raw = await readRaw();
+    const raw = await readRaw(r);
     if (!raw) throw new Error("empty");
     const s = JSON.parse(raw) as Partial<State>;
-    memory = { ...fresh(), ...s };
+    st = { ...fresh(), ...s };
     // migrate older profile shapes
     const legacy = s as unknown as { baby_age_months?: number; profile?: { children_ages?: number[] } };
-    memory.profile = { ...DEFAULT_PROFILE, ...(s.profile ?? {}) };
-    if (!Array.isArray(memory.profile.children) || !memory.profile.children.length) {
+    st.profile = { ...DEFAULT_PROFILE, ...(s.profile ?? {}) };
+    if (!Array.isArray(st.profile.children) || !st.profile.children.length) {
       const ages = legacy.profile?.children_ages ?? [];
-      memory.profile.children = ages.length
+      st.profile.children = ages.length
         ? ages.map((y) => ({ name: "", born: defaultBorn(Math.round(y * 12)) }))
         : [{ name: "", born: defaultBorn(legacy.baby_age_months ?? 6) }];
     }
     // migrate old opportunity shape
-    memory.opportunities = memory.opportunities.map((o) => ({ ...SEED_OPPORTUNITIES.find((x) => x.id === o.id), ...o } as Opportunity));
-    if (!Array.isArray(memory.history)) memory.history = [];
-    memory.supplies = { ...emptySupplies(), ...(s.supplies ?? {}) };
+    st.opportunities = st.opportunities.map((o) => ({ ...SEED_OPPORTUNITIES.find((x) => x.id === o.id), ...o } as Opportunity));
+    if (!Array.isArray(st.history)) st.history = [];
+    st.supplies = { ...emptySupplies(), ...(s.supplies ?? {}) };
     // new calendar month: archive the old one automatically
-    if (memory.month !== monthKey()) {
-      memory = rollover(memory);
-      await saveState(memory);
+    if (st.month !== monthKey()) {
+      st = rollover(st);
+      await saveState(st, r);
     }
   } catch (e) {
     if ((e as Error).message !== "empty" && !/ENOENT/.test((e as Error).message)) console.warn("[store] load failed, starting fresh:", (e as Error).message);
-    memory = fresh();
+    st = fresh();
   }
-  return memory!;
+  memory.set(r, st);
+  return st;
 }
 
-export async function saveState(state: State): Promise<void> {
-  memory = state;
+export async function saveState(state: State, row?: string): Promise<void> {
+  const r = row ?? (await currentRow());
+  memory.set(r, state);
   try {
-    await writeRaw(state);
+    await writeRaw(r, state);
   } catch (e) {
     console.warn("[store] write failed, keeping state in memory only:", (e as Error).message);
   }
 }
 
 export async function resetState(): Promise<State> {
-  const keep = memory ?? (await loadState());
+  const keep = await loadState();
   const s = rollover(keep);
   await saveState(s);
   return s;

@@ -17,6 +17,8 @@ export default function MePage() {
   const [editing, setEditing] = useState(false);
   const [saved, setSaved] = useState(false);
   const [report, setReport] = useState<ResourceReport | null>(null);
+  const [demo, setDemo] = useState<string | null>(null);
+  useEffect(() => { fetch("/api/login", { cache: "no-store" }).then((r) => r.json()).then((j) => setDemo(j.demo ? j.name : null)).catch(() => {}); }, []);
   async function logout() {
     await fetch("/api/login", { method: "DELETE" });
     window.location.href = "/intro";
@@ -50,6 +52,12 @@ export default function MePage() {
       <div className="text-xs text-muted"><span className="text-primary">{t("pillar.manage")}</span></div>
       <h2 className="text-2xl font-semibold tracking-tight">{state.profile.name || t("home.mom")}</h2>
       <p className="text-sm text-muted">{t("me.subtitle")}</p>
+      {demo && (
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-primary/30 bg-primary-soft/60 px-4 py-2 text-xs">
+          <span>{t("me.demo", { name: demo })}</span>
+          <button onClick={async () => { await fetch("/api/login", { method: "DELETE" }); window.location.href = "/login"; }} className="text-primary">{t("me.switch")} →</button>
+        </div>
+      )}
 
       {/* Status card: compact, edit opens the form */}
       <section className="mt-5 rounded-2xl border border-line bg-panel p-5 shadow-sm">

@@ -2,7 +2,7 @@
 
 **Pal cares · Pal cuts · Pal claims. A pal for a mother's hardest month.**
 
-Live demo: https://mamapal.vercel.app (sign in with any name; it's a demo session, no password).
+Live demo: https://mamapal.vercel.app. Pick a demo household on the sign-in page (codes `MAYA-DEMO`, `ROSA-DEMO`, `KEISHA-DEMO`); each opens your own private copy, so nothing you do reaches another visitor. Or start your own household with any name. All three households are fictional; the places and programs are real.
 Demo video (2:55): https://youtu.be/jDOPtrLy4sY
 
 Built for the [PayPal AI Hackathon](https://paypalaihackathon.devpost.com/) by a mother who lives on this budget.
@@ -82,7 +82,7 @@ To pay in the demo, log into the PayPal popup with that same sandbox Personal ac
 
 - Sandbox only. Orders are paid to our own sandbox business account; the app does not place orders at Walmart or anywhere else. The merchant names are the agent's buying advice, not integrations.
 - Prices are the model's realistic US retail estimates, not live quotes.
-- Single shared state per deployment. The sign-in is a demo cookie, not authentication: anyone who signs in sees and changes the same month.
+- One state per household, chosen by a cookie set at sign-in. This is not authentication: whoever holds the cookie is the household. Demo codes give each visitor a fresh copy; the copies start with an empty ledger because money only moves through real PayPal sandbox calls.
 - The pantry tracks three consumables and only learns about purchases made through Pal; buy elsewhere and you fix the number in Me.
 - Price checks are what web search found that day; stock and shipping vary.
 - The brand surveys are seeded examples; there is no brand marketplace behind them yet.

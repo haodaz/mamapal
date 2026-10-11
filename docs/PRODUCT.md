@@ -72,7 +72,7 @@ Pal cares · Pal cuts · Pal claims（它管 · 它砍 · 它领）。一个月 
 - AI：`@anthropic-ai/sdk`，模型 `claude-opus-5`。判定用 `messages.parse` + Zod；资源查询和比价用 `messages.stream` + `web_search_20260209` + 结构化输出（max_tokens 32k，effort medium），资源查询有两步兜底。
 - PayPal：`src/lib/paypal.ts` 直连沙盒 REST（Orders v2 create/capture，Payouts v1；注意 Payouts 的金额字段是 `currency` 不是 `currency_code`）。前端 PayPal JS SDK 按钮。
 - 状态：单用户一份 JSON。配了 Supabase 就存 `app_state` 表的一行（`STATE_ROW_ID` 选哪一行；本地 `.env.local` 设成 `dev`，线上演示是 `default`，本地测试不碰线上数据）（Vercel 多实例必须每次读表，不走内存缓存）；否则 `data/state.json`。
-- 登录：`/api/login` 写 `mp_session` cookie，`src/middleware.ts` 没 cookie 的页面请求跳 `/intro`。不是真正的认证，状态仍是共享的一份。
+- 登录：`/api/login` 写 `mp_session` + `mp_row` 两个 cookie，`src/middleware.ts` 没 cookie 的页面请求跳 `/intro`。每个家庭一行状态：演示码（MAYA-DEMO / ROSA-DEMO / KEISHA-DEMO，`src/lib/personas.ts`）给访客复制一份私有副本（行名 `maya-xxxxxx`），互不影响；用名字登录是一个新的空家庭，先走五步引导。没有 `mp_row` 的老 cookie 落到 `STATE_ROW_ID` 或 `default`。不是真正的认证。三个演示家庭都是虚构的（休斯顿喝奶粉的 4 个月宝宝、哥伦布孕期 + 2 岁、弗雷斯诺牛奶过敏的 10 个月 + 4 岁），地点和项目是真的；提前算好的福利报告放在 `src/data/personas/*.json`，副本直接带上。「我」页顶部提示「你在 X 家演示数据的副本里 · 换一个家庭」。
 - 形象：通义万相 `wan2.2-t2i-plus` 出图，`scripts/cutout.mjs` 去白底成透明立绘。原图在 `docs/pal-candidates`、`docs/pal-poses`，立绘在 `public/pal-*.png`。
 - 部署：GitHub `main` 自动部署到 Vercel。环境变量：ANTHROPIC_API_KEY、PAYPAL_CLIENT_ID、PAYPAL_CLIENT_SECRET、NEXT_PUBLIC_PAYPAL_CLIENT_ID、PAYOUT_RECEIVER_EMAIL、SUPABASE_URL、SUPABASE_SERVICE_ROLE_KEY。
 
@@ -101,6 +101,7 @@ Pal cares · Pal cuts · Pal claims（它管 · 它砍 · 它领）。一个月 
 
 ## 变更日志
 
+- 10-11：第二轮第 3 条，多家庭：每个家庭一行状态（cookie `mp_row`），三个虚构演示家庭 + 演示码，登录页改成三张家庭卡 + 自己开始 + 输入邀请码，「我」页显示当前副本与切换；三家各跑一遍福利查询和月度管家做压力测试。
 - 10-11：第二轮第 2 条，出处核对：共用的 `src/lib/verify.ts`（开链接、找原文、判断官方）；资源查询带原话和出处、自动退回补找一次、`/api/resources/verify` 免费复核；比价按钮也核对链接。证据见 docs/evidence。
 - 10-11：第二轮开始。月度管家（目标驱动、分步存档、自查退回重做、真实链接核对、每步成本）；比价抽成共用的 `findOffers`；购物车卡片显示「放进购物车的价」、晚些再买、检查摘要。
 
