@@ -1,0 +1,433 @@
+{
+ "resources": {
+  "generated_at": "2026-10-11T23:36:58.688Z",
+  "lang": "en",
+  "profile": {
+   "name": "Maya",
+   "zip": "77036",
+   "state": "TX",
+   "household_size": 2,
+   "monthly_income": 1650,
+   "children": [
+    {
+     "born": "2026-06",
+     "name": "Leo"
+    }
+   ],
+   "diapers_per_day": 8,
+   "formula_ml_per_day": 800,
+   "pregnant": false,
+   "on_snap": false,
+   "on_medicaid": false
+  },
+  "summary": "With a 4-month-old and $1,650 a month for two people, she is under 100% of the poverty line and qualifies for most major programs; realistically about $1,700-$2,000 a month in food, health coverage, child care and tax credits. Tomorrow: apply for SNAP and Children's Medicaid in one application at YourTexasBenefits.com, then call Texas WIC at 1-800-942-3678.",
+  "items": [
+   {
+    "id": "ccap",
+    "name": "Child Care Scholarship (CCS, Texas CCDF subsidy - Workforce Solutions Gulf Coast)",
+    "category": "childcare",
+    "scope": "state",
+    "eligibility": "likely",
+    "why": "Income far below the state limit and she works. Infant care slots are prioritized for low-income working parents.",
+    "value": "Most of infant day care paid; small co-pay. Worth $600-$900/mo",
+    "monthly_value_estimate": 600,
+    "steps": [
+     "Call 2-1-1 and ask for Workforce Solutions child care services.",
+     "Apply online with Workforce Solutions Gulf Coast.",
+     "Submit 30 days of pay stubs and the baby's birth certificate.",
+     "Ask to be put on the waiting list if one exists."
+    ],
+    "documents": [
+     "Photo ID",
+     "Baby's birth certificate",
+     "Proof of Houston address",
+     "Last 30 days of pay stubs",
+     "Work or school schedule",
+     "Social Security numbers"
+    ],
+    "apply_url": null,
+    "phone": "211",
+    "verify_note": "Could not confirm the current income limit or waitlist status online. Confirm with Workforce Solutions Gulf Coast.",
+    "source_url": null,
+    "source_quote": null,
+    "check": {
+     "source": "none",
+     "apply": "none",
+     "official": false,
+     "at": "2026-10-11T23:35:42.589Z"
+    }
+   },
+   {
+    "id": "eitc",
+    "name": "Earned Income Tax Credit and Child Tax Credit (free help through VITA)",
+    "category": "tax",
+    "scope": "federal",
+    "eligibility": "likely",
+    "why": "She works and has one qualifying child, so she can claim both credits even with no tax owed.",
+    "value": "Roughly $4,000-$6,000 once a year as a refund",
+    "monthly_value_estimate": 400,
+    "steps": [
+     "Get the baby a Social Security number if not done.",
+     "Find a free VITA tax site by calling 2-1-1.",
+     "File a 2026 return even if income is low.",
+     "Ask the preparer to check both EITC and the Child Tax Credit."
+    ],
+    "documents": [
+     "Photo ID",
+     "Social Security cards for her and baby",
+     "W-2s or 1099s",
+     "Bank account number for direct deposit",
+     "Last year's tax return if any"
+    ],
+    "apply_url": "https://www.irs.gov/credits-deductions/individuals/earned-income-tax-credit-eitc",
+    "phone": "1-800-906-9887",
+    "verify_note": "Exact credit amounts depend on 2026 filing rules. A VITA volunteer can calculate them free.",
+    "source_url": null,
+    "source_quote": null,
+    "check": {
+     "source": "none",
+     "apply": "ok",
+     "official": false,
+     "at": "2026-10-11T23:35:42.589Z"
+    }
+   },
+   {
+    "id": "head-start",
+    "name": "Early Head Start (birth to age 3)",
+    "category": "childcare",
+    "scope": "federal",
+    "eligibility": "likely",
+    "why": "Early Head Start takes children under 3 from families at or below 100% of poverty. Her income is below that line.",
+    "value": "Free infant care, home visits, developmental screening",
+    "monthly_value_estimate": 400,
+    "steps": [
+     "Call 2-1-1 and ask for Early Head Start near ZIP 77036.",
+     "Contact BakerRipley or Gulf Coast Community Services to apply.",
+     "Turn in proof of income and the birth certificate.",
+     "Accept a waiting list spot if offered."
+    ],
+    "documents": [
+     "Baby's birth certificate",
+     "Proof of income or SNAP/TANF letter",
+     "Proof of Houston address",
+     "Baby's immunization record",
+     "Photo ID"
+    ],
+    "apply_url": null,
+    "phone": "211",
+    "verify_note": "Could not confirm a Houston program's open slots. Local Early Head Start seats are limited; ask about the waiting list.",
+    "source_url": "https://headstart.gov/policy/45-cfr-chap-xiii/1302-12-determining-verifying-documenting-eligibility",
+    "source_quote": "A pregnant woman or a child is eligible if: (i) The family's income is equal to or below the poverty line",
+    "check": {
+     "source": "not_found",
+     "apply": "none",
+     "official": true,
+     "at": "2026-10-11T23:36:57.353Z"
+    }
+   },
+   {
+    "id": "snap",
+    "name": "SNAP food benefits (Lone Star Card)",
+    "category": "food",
+    "scope": "federal",
+    "eligibility": "likely",
+    "why": "Texas allows gross income up to 165% of poverty; for two people that is about $2,909 a month. She earns $1,650.",
+    "value": "Up to $546/mo for a household of 2; likely $300-$450",
+    "monthly_value_estimate": 350,
+    "steps": [
+     "Create an account at YourTexasBenefits.com.",
+     "Apply for SNAP and Medicaid in the same form.",
+     "Upload pay stubs and ID.",
+     "Answer the phone interview call from HHSC."
+    ],
+    "documents": [
+     "Photo ID",
+     "Proof of Houston address",
+     "Last 30 days of pay stubs",
+     "Social Security numbers",
+     "Rent or lease and utility bills",
+     "Baby's birth certificate"
+    ],
+    "apply_url": "https://www.yourtexasbenefits.com",
+    "phone": "211",
+    "verify_note": "Benefit amount depends on rent and child care costs. Report them to raise the award.",
+    "source_url": "https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-1340-income-limits",
+    "source_quote": "gross income below or equal to 165 percent Federal Poverty",
+    "check": {
+     "source": "found",
+     "apply": "ok",
+     "official": true,
+     "at": "2026-10-11T23:35:42.589Z"
+    }
+   },
+   {
+    "id": "medicaid",
+    "name": "Children's Medicaid / CHIP for the baby",
+    "category": "health",
+    "scope": "state",
+    "eligibility": "likely",
+    "why": "Babies under age 1 qualify at roughly 198-203% of poverty in Texas. Her income is near 94% of poverty.",
+    "value": "Free doctor visits, shots, prescriptions for the baby",
+    "monthly_value_estimate": 300,
+    "steps": [
+     "Apply at YourTexasBenefits.com in the same form as SNAP.",
+     "Choose a STAR health plan when approved.",
+     "Pick a pediatrician close to 77036.",
+     "Book the 6-month well-baby check."
+    ],
+    "documents": [
+     "Baby's birth certificate",
+     "Social Security numbers",
+     "Proof of income",
+     "Photo ID",
+     "Proof of address"
+    ],
+    "apply_url": "https://www.yourtexasbenefits.com",
+    "phone": "211",
+    "verify_note": "Could not confirm the exact 2026 income chart on an official page. Adult Medicaid in Texas is much stricter; ask about Healthy Texas Women for herself.",
+    "source_url": null,
+    "source_quote": null,
+    "check": {
+     "source": "none",
+     "apply": "ok",
+     "official": false,
+     "at": "2026-10-11T23:35:42.589Z"
+    }
+   },
+   {
+    "id": "wic",
+    "name": "Texas WIC",
+    "category": "food",
+    "scope": "state",
+    "eligibility": "likely",
+    "why": "The baby is under 5 and her income is under the WIC limit. SNAP or Medicaid approval also makes her income eligible.",
+    "value": "Free formula or food, plus $50-$100/mo in food benefits",
+    "monthly_value_estimate": 75,
+    "steps": [
+     "Call 1-800-942-3678 for the clinic near 77036.",
+     "Book an appointment and bring the baby.",
+     "Bring proof of income and address.",
+     "Load the WIC card and shop at WIC stores."
+    ],
+    "documents": [
+     "Photo ID",
+     "Baby's birth certificate",
+     "Proof of Houston address",
+     "Recent pay stubs",
+     "Medicaid or SNAP letter if any",
+     "Baby's immunization record"
+    ],
+    "apply_url": "https://texaswic.org/apply",
+    "phone": "1-800-942-3678",
+    "verify_note": "Current posted limit for a household of 2 is about $3,337 a month. Confirm at the clinic.",
+    "source_url": "https://www.hhs.texas.gov/sites/default/files/documents/wic-24035.pdf",
+    "source_quote": "Applicants on Medicaid, TANF or SNAP may already meet the income eligibility guidelines for WIC. Households with income up to 185% of the federal poverty level are eligible.",
+    "check": {
+     "source": "unreachable",
+     "apply": "ok",
+     "official": true,
+     "at": "2026-10-11T23:36:57.353Z"
+    }
+   },
+   {
+    "id": "liheap",
+    "name": "CEAP utility help (LIHEAP in Texas, run by BakerRipley)",
+    "category": "utilities",
+    "scope": "state",
+    "eligibility": "likely",
+    "why": "Harris County residents at low income can get electric or gas bills paid. Applications are taken in person by appointment.",
+    "value": "Several hundred dollars toward past-due electric bills",
+    "monthly_value_estimate": 50,
+    "steps": [
+     "Call 2-1-1 or 713-696-7900 for an appointment.",
+     "Gather the last electric bill and all income proof.",
+     "Attend the in-person appointment.",
+     "Ask about crisis help if a shut-off notice exists."
+    ],
+    "documents": [
+     "Photo ID",
+     "Social Security cards for all in home",
+     "Most recent electric or gas bill",
+     "Proof of income for past 30 days",
+     "Proof of address",
+     "Baby's birth certificate"
+    ],
+    "apply_url": "https://unitedwayhouston.org/ceap/",
+    "phone": "713-696-7900",
+    "verify_note": "Texas does not post this application online and funds run out. Call early in the month.",
+    "source_url": "https://www.tdhca.state.tx.us/community-affairs/ceap/guidance.htm",
+    "source_quote": "Eligibility for CEAP is calculated at 150% of Federal Poverty Income Guidelines.",
+    "check": {
+     "source": "found",
+     "apply": "ok",
+     "official": true,
+     "at": "2026-10-11T23:36:57.353Z"
+    }
+   },
+   {
+    "id": "diaper-bank",
+    "name": "Houston Lone Star Diaper Bank / Houston Diaper Bank",
+    "category": "diapers",
+    "scope": "local",
+    "eligibility": "likely",
+    "why": "Houston diaper banks give free diapers and wipes to low-income families with an infant. No income paperwork at most sites.",
+    "value": "About 50-75 free diapers a month, worth $40-$60",
+    "monthly_value_estimate": 40,
+    "steps": [
+     "Check Diaper Day dates at lonestardiaperbank.org.",
+     "Call 2-1-1 for the nearest partner site to 77036.",
+     "Bring ID and the baby's size.",
+     "Ask about free wipes and formula too."
+    ],
+    "documents": [
+     "Photo ID",
+     "Baby's birth certificate or clinic card",
+     "Proof of address"
+    ],
+    "apply_url": "https://www.lonestardiaperbank.org/",
+    "phone": "211",
+    "verify_note": "Distribution days and partner sites change monthly. Confirm before traveling.",
+    "source_url": "https://www.lonestardiaperbank.org/who-we-are",
+    "source_quote": "Our diaper bank offers relief to families by providing free diapers and baby products",
+    "check": {
+     "source": "found",
+     "apply": "ok",
+     "official": false,
+     "at": "2026-10-11T23:35:42.589Z"
+    }
+   },
+   {
+    "id": "food-pantry",
+    "name": "Houston Food Bank pantry network",
+    "category": "food",
+    "scope": "local",
+    "eligibility": "likely",
+    "why": "Pantries serve anyone in need. Most sites in 77036 need only ID and an address, no income test.",
+    "value": "Free groceries weekly, roughly $40-$80 of food",
+    "monthly_value_estimate": 40,
+    "steps": [
+     "Call 2-1-1 for the closest pantry to 77036.",
+     "Check the pantry's open hours before going.",
+     "Bring bags and a way to carry food.",
+     "Ask if they stock baby food and formula."
+    ],
+    "documents": [
+     "Photo ID",
+     "Proof of address",
+     "Number of people in household"
+    ],
+    "apply_url": "https://www.houstonfoodbank.org/find-help/",
+    "phone": "211",
+    "verify_note": "Hours vary by site. Some pantries limit visits to once a month.",
+    "source_url": null,
+    "source_quote": null,
+    "check": {
+     "source": "none",
+     "apply": "ok",
+     "official": false,
+     "at": "2026-10-11T23:35:42.589Z"
+    }
+   },
+   {
+    "id": "lifeline",
+    "name": "Lifeline phone and internet discount",
+    "category": "utilities",
+    "scope": "federal",
+    "eligibility": "likely",
+    "why": "Income at or below 135% of poverty qualifies, about $2,381 a month for two. SNAP or Medicaid also qualifies her.",
+    "value": "$9.25 off phone or internet each month; some plans become free",
+    "monthly_value_estimate": 9,
+    "steps": [
+     "Apply at CheckLifeline.org.",
+     "Upload the SNAP or Medicaid approval letter.",
+     "Pick a Lifeline provider after approval.",
+     "Recertify once a year."
+    ],
+    "documents": [
+     "Photo ID",
+     "Social Security number",
+     "SNAP or Medicaid award letter",
+     "Proof of address"
+    ],
+    "apply_url": null,
+    "phone": "1-800-234-9473",
+    "verify_note": "Only one Lifeline benefit per household. Texas also has a state phone discount; ask the provider.",
+    "source_url": "https://www.usac.org/lifeline/",
+    "source_quote": "A consumer can qualify for the Lifeline benefit if their income is 135% or less than the federal poverty guidelines",
+    "check": {
+     "source": "found",
+     "apply": "dead",
+     "official": true,
+     "at": "2026-10-11T23:35:42.589Z"
+    }
+   },
+   {
+    "id": "211",
+    "name": "2-1-1 Texas (United Way HELPLINE)",
+    "category": "community",
+    "scope": "state",
+    "eligibility": "likely",
+    "why": "Free referral line for anyone in Texas. It finds rent help, pantries, child care and baby items near her ZIP.",
+    "value": "Free. Opens the door to local rent, utility and baby-goods help",
+    "monthly_value_estimate": 0,
+    "steps": [
+     "Dial 2-1-1 and pick English.",
+     "Say the ZIP code 77036 and what is needed.",
+     "Ask for Buy Nothing or free baby gear groups.",
+     "Write down each agency name and phone."
+    ],
+    "documents": [
+     "ZIP code",
+     "Household size",
+     "Monthly income"
+    ],
+    "apply_url": "https://www.211texas.org/",
+    "phone": "211",
+    "verify_note": null,
+    "source_url": null,
+    "source_quote": null,
+    "check": {
+     "source": "none",
+     "apply": "ok",
+     "official": false,
+     "at": "2026-10-11T23:35:42.589Z"
+    }
+   },
+   {
+    "id": "tanf",
+    "name": "TANF cash help",
+    "category": "cash",
+    "scope": "state",
+    "eligibility": "unlikely",
+    "why": "Texas TANF is for families with almost no income. Earnings of $1,650 a month are well above the budget test.",
+    "value": "Up to about $300/mo cash for a parent and one child, if approved",
+    "monthly_value_estimate": 0,
+    "steps": [
+     "Apply at YourTexasBenefits.com only if work hours stop.",
+     "Check the TANF box on the same SNAP application.",
+     "Ask about the one-time $1,000 crisis payment.",
+     "Report any job loss right away."
+    ],
+    "documents": [
+     "Photo ID",
+     "Social Security numbers",
+     "Baby's birth certificate",
+     "Proof of income",
+     "Bank statements"
+    ],
+    "apply_url": "https://www.hhs.texas.gov/services/financial/cash/tanf-cash-help",
+    "phone": "211",
+    "verify_note": "Worth applying only if income drops. Asset limit is about $1,000.",
+    "source_url": "https://www.hhs.texas.gov/services/financial/cash/tanf-cash-help",
+    "source_quote": "Families who can get TANF cash help have little to no money or don’t have a way to get money.",
+    "check": {
+     "source": "found",
+     "apply": "ok",
+     "official": true,
+     "at": "2026-10-11T23:35:42.589Z"
+    }
+   }
+  ],
+  "checked_at": "2026-10-11T23:36:58.688Z"
+ }
+}

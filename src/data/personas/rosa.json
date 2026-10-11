@@ -1,0 +1,434 @@
+{
+ "resources": {
+  "generated_at": "2026-10-11T23:36:24.916Z",
+  "lang": "en",
+  "profile": {
+   "name": "Rosa",
+   "zip": "43207",
+   "state": "OH",
+   "household_size": 3,
+   "monthly_income": 2100,
+   "children": [
+    {
+     "born": "2024-08",
+     "name": "Mateo"
+    },
+    {
+     "born": "2026-12",
+     "name": "Baby"
+    }
+   ],
+   "diapers_per_day": 4,
+   "formula_ml_per_day": 0,
+   "pregnant": true,
+   "on_snap": true,
+   "on_medicaid": true
+  },
+  "summary": "Realistically she can claim about $1,500–$2,400 a month in combined value: SNAP and Medicaid she already has, plus WIC, child care help, Early Head Start, diapers, HEAP and Lifeline. Tomorrow: call the Help Me Grow Helpline at 1-800-755-4769 to book a WIC appointment for her pregnancy and her 2-year-old.",
+  "items": [
+   {
+    "id": "snap",
+    "name": "SNAP (Ohio Food Assistance)",
+    "category": "food",
+    "scope": "federal",
+    "eligibility": "likely",
+    "why": "She is already enrolled. Adding the new baby raises her household to 4 and should raise the monthly benefit.",
+    "value": "About $500/mo now; more after the birth",
+    "monthly_value_estimate": 500,
+    "steps": [
+     "Report the pregnancy and due date to Franklin County JFS",
+     "Add the newborn within 10 days of birth",
+     "Report child care and housing costs as deductions",
+     "Complete the renewal interview on time"
+    ],
+    "documents": [
+     "Photo ID",
+     "Pay stubs (last 30 days)",
+     "Proof of address",
+     "Rent and utility bills",
+     "Newborn birth certificate or hospital paper"
+    ],
+    "apply_url": "https://benefits.ohio.gov",
+    "phone": "1-844-640-6446",
+    "verify_note": "Benefit amount depends on deductions; ask the caseworker for a recalculation after the baby is born.",
+    "source_url": "https://codes.ohio.gov/ohio-administrative-code/rule-5101:4-7-01",
+    "source_quote": "Reporting requirements ensure AGs receive an accurate SNAP benefit amount",
+    "check": {
+     "source": "found",
+     "apply": "ok",
+     "official": true,
+     "at": "2026-10-11T23:36:23.742Z"
+    }
+   },
+   {
+    "id": "ccap",
+    "name": "Publicly Funded Child Care (Ohio PFCC voucher)",
+    "category": "childcare",
+    "scope": "state",
+    "eligibility": "likely",
+    "why": "Income limit is 145% of poverty. For a family of 3 that is roughly $3,200/mo; she earns $2,100 and must work or study.",
+    "value": "Most or all of day care cost paid, often $500–$800/mo",
+    "monthly_value_estimate": 600,
+    "steps": [
+     "Apply through the Ohio Benefits site",
+     "Submit proof of work or school hours",
+     "Pick a provider with a Step Up To Quality rating",
+     "Report the new baby to add the infant"
+    ],
+    "documents": [
+     "Photo ID",
+     "Pay stubs",
+     "Work or school schedule",
+     "Children's birth certificates",
+     "Proof of Franklin County address"
+    ],
+    "apply_url": "https://benefits.ohio.gov",
+    "phone": "1-866-635-3748",
+    "verify_note": "If income later rises above 145% FPL, ask about the Child Care Choice Voucher (146%–200% FPL).",
+    "source_url": "https://benefits.ohio.gov/wps/portal/gov/obssp/home/resources/assistance-programs/04-early-care-education-services",
+    "source_quote": "Eligibility is based on 145% of the federal poverty level and at 150% for families with a child with special needs.",
+    "check": {
+     "source": "found",
+     "apply": "ok",
+     "official": true,
+     "at": "2026-10-11T23:35:26.737Z"
+    }
+   },
+   {
+    "id": "head-start",
+    "name": "Early Head Start / Head Start (Child Development Council of Franklin County)",
+    "category": "childcare",
+    "scope": "federal",
+    "eligibility": "likely",
+    "why": "Income at or below the federal poverty guideline qualifies. Her $25,200 a year for 3 is under it. Early Head Start also serves pregnant women.",
+    "value": "Free early learning, home visits, meals; worth $400–$700/mo",
+    "monthly_value_estimate": 500,
+    "steps": [
+     "Call Child Development Council of Franklin County",
+     "Ask for Early Head Start as a pregnant woman",
+     "Enroll the 2-year-old in Early Head Start",
+     "Join the waitlist if classrooms are full"
+    ],
+    "documents": [
+     "Proof of income (pay stubs or tax return)",
+     "Child's birth certificate",
+     "Immunization record",
+     "Proof of address",
+     "Proof of pregnancy from clinic"
+    ],
+    "apply_url": "https://eclkc.ohs.acf.hhs.gov/center-locator",
+    "phone": "1-866-763-6481",
+    "verify_note": "Confirm the nearest site to ZIP 43207 and current waitlist length by phone.",
+    "source_url": "https://headstart.gov/programs/article/head-start-approach",
+    "source_quote": "Head Start services are for children from birth to compulsory school age, as well as pregnant women and expectant families.",
+    "check": {
+     "source": "found",
+     "apply": "ok",
+     "official": true,
+     "at": "2026-10-11T23:36:23.742Z"
+    }
+   },
+   {
+    "id": "eitc",
+    "name": "EITC and Child Tax Credit (free help at VITA)",
+    "category": "tax",
+    "scope": "federal",
+    "eligibility": "likely",
+    "why": "Working parent with two children and low income. Both credits are refundable, so she gets money even with no tax owed.",
+    "value": "Often $6,000–$9,000 as one lump refund",
+    "monthly_value_estimate": 500,
+    "steps": [
+     "Book a free VITA appointment in January",
+     "File a return even if income is low",
+     "Claim both children, including the newborn",
+     "Ask about Ohio's state credits while there"
+    ],
+    "documents": [
+     "Photo ID",
+     "Social Security cards for her and both children",
+     "W-2s and any 1099s",
+     "Bank account number for direct deposit",
+     "Last year's tax return if she has it"
+    ],
+    "apply_url": "https://irs.treasury.gov/freetaxprep/",
+    "phone": "2-1-1",
+    "verify_note": "Newborn needs a Social Security number before filing; request it at the hospital.",
+    "source_url": "https://www.irs.gov/taxtopics/tc601",
+    "source_quote": "EITC is a refundable tax credit, which means that even if you don't owe any tax, you can still receive a refund.",
+    "check": {
+     "source": "found",
+     "apply": "ok",
+     "official": true,
+     "at": "2026-10-11T23:36:23.742Z"
+    }
+   },
+   {
+    "id": "wic",
+    "name": "WIC (Ohio Women, Infants and Children)",
+    "category": "food",
+    "scope": "federal",
+    "eligibility": "likely",
+    "why": "WIC limit is 185% of poverty; counting the unborn baby her family size is 4. SNAP and Medicaid also qualify her automatically.",
+    "value": "Monthly food card plus fruit/veg money; free formula if needed",
+    "monthly_value_estimate": 110,
+    "steps": [
+     "Call 1-800-755-4769 for the nearest clinic",
+     "Book one appointment for her and the 2-year-old",
+     "Bring the child to the appointment",
+     "Ask about medical formula coverage if prescribed"
+    ],
+    "documents": [
+     "Photo ID",
+     "Proof of pregnancy or due date",
+     "Medicaid or SNAP card",
+     "Proof of address",
+     "Child's immunization record"
+    ],
+    "apply_url": "https://odh.ohio.gov/know-our-programs/women-infants-children",
+    "phone": "1-800-755-4769",
+    "verify_note": "Being on Medicaid or SNAP makes her income-eligible automatically; say so when booking.",
+    "source_url": "https://odh.ohio.gov/know-our-programs/women-infants-children/resources/ohio-wic-program-eligibility",
+    "source_quote": "Meets income guidelines - 185% of Federal Poverty Income Guidelines.",
+    "check": {
+     "source": "found",
+     "apply": "ok",
+     "official": true,
+     "at": "2026-10-11T23:35:26.737Z"
+    }
+   },
+   {
+    "id": "food-pantry",
+    "name": "Food pantries and 211 (Mid-Ohio Food Collective)",
+    "category": "food",
+    "scope": "local",
+    "eligibility": "likely",
+    "why": "Pantries in Franklin County serve by address, not by income test. Several sites serve the 43207 south side.",
+    "value": "Free groceries weekly or twice a month",
+    "monthly_value_estimate": 100,
+    "steps": [
+     "Call 2-1-1 for the closest pantry to 43207",
+     "Check the pantry's open hours online",
+     "Bring bags or a cart",
+     "Ask about diapers and formula while there"
+    ],
+    "documents": [
+     "Photo ID",
+     "Proof of address (mail or bill)",
+     "Number of people in household"
+    ],
+    "apply_url": "https://mofc.org/find-food/",
+    "phone": "2-1-1",
+    "verify_note": "Each pantry sets its own visit limit; call before going.",
+    "source_url": null,
+    "source_quote": null,
+    "check": {
+     "source": "none",
+     "apply": "ok",
+     "official": false,
+     "at": "2026-10-11T23:35:26.737Z"
+    }
+   },
+   {
+    "id": "diaper-bank",
+    "name": "Columbus Diaper Bank and Bloom Free Store",
+    "category": "diapers",
+    "scope": "local",
+    "eligibility": "likely",
+    "why": "Columbus Diaper Bank is the National Diaper Bank Network member for her area; free stores serve children ages 0-3.",
+    "value": "Roughly 50 free diapers a month per child, plus baby clothes",
+    "monthly_value_estimate": 80,
+    "steps": [
+     "Call 2-1-1 for the nearest diaper distribution partner",
+     "Register with Bloom Free Store before the first visit",
+     "Ask the WIC clinic for diaper referrals",
+     "Request newborn sizes before the due date"
+    ],
+    "documents": [
+     "Photo ID",
+     "Proof of address",
+     "Child's birth certificate or Medicaid card"
+    ],
+    "apply_url": "https://nationaldiaperbanknetwork.org/member-directory/",
+    "phone": "2-1-1",
+    "verify_note": "Diapers are given through partner agencies, not directly at the bank. Confirm the pickup site.",
+    "source_url": "https://nationaldiaperbanknetwork.org/member-directory/",
+    "source_quote": "Columbus – Columbus Diaper Bank",
+    "check": {
+     "source": "found",
+     "apply": "ok",
+     "official": true,
+     "at": "2026-10-11T23:35:26.737Z"
+    }
+   },
+   {
+    "id": "liheap",
+    "name": "HEAP and Winter Crisis Program (Ohio energy help)",
+    "category": "utilities",
+    "scope": "state",
+    "eligibility": "likely",
+    "why": "HEAP limit is 175% of poverty, about $3,930 a month for 3 people. She is well under at $2,100.",
+    "value": "One-time bill credit, usually a few hundred dollars, plus PIPP monthly payment cap",
+    "monthly_value_estimate": 60,
+    "steps": [
+     "Apply online at the Ohio energy help site",
+     "Apply to PIPP Plus at the same time",
+     "Call the Winter Crisis line if shutoff is threatened",
+     "Send copies of the last 30 days of income"
+    ],
+    "documents": [
+     "Photo ID for all adults",
+     "Social Security numbers for everyone",
+     "Recent gas and electric bills",
+     "Proof of income (last 30 days)",
+     "Proof of address"
+    ],
+    "apply_url": "https://energyhelp.ohio.gov",
+    "phone": "1-800-282-0880",
+    "verify_note": "Winter Crisis help usually opens November 1. Check the current program year dates.",
+    "source_url": "https://www.occ.ohio.gov/factsheet/home-energy-assistance-program-heap-and-winter-crisis-program",
+    "source_quote": "To qualify for HEAP, the total household income must be at or below 175 percent of the federal income guidelines for households with up to seven people",
+    "check": {
+     "source": "found",
+     "apply": "ok",
+     "official": true,
+     "at": "2026-10-11T23:35:26.737Z"
+    }
+   },
+   {
+    "id": "medicaid",
+    "name": "Ohio Medicaid (and Healthy Start for the children)",
+    "category": "health",
+    "scope": "state",
+    "eligibility": "likely",
+    "why": "She is enrolled. Pregnancy coverage uses a higher income limit, and the baby is covered automatically for the first year.",
+    "value": "$0 doctor, hospital and birth costs; also unlocks Lifeline",
+    "monthly_value_estimate": 0,
+    "steps": [
+     "Report the pregnancy to her county caseworker now",
+     "Pick an OB and a pediatrician in her plan",
+     "Add the newborn to her case after birth",
+     "Ask her plan about pregnancy reward programs"
+    ],
+    "documents": [
+     "Medicaid card",
+     "Photo ID",
+     "Proof of pregnancy and due date",
+     "Proof of income",
+     "Newborn's hospital paperwork"
+    ],
+    "apply_url": "https://benefits.ohio.gov",
+    "phone": "1-800-324-8680",
+    "verify_note": "Confirm current pregnancy and child income limits with the county office; published figures vary by source.",
+    "source_url": "https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-4-02",
+    "source_quote": "a child is automatically eligible for medical assistance as of the child's date of birth, and remains eligible until the child reaches the age of one",
+    "check": {
+     "source": "found",
+     "apply": "ok",
+     "official": true,
+     "at": "2026-10-11T23:36:23.742Z"
+    }
+   },
+   {
+    "id": "early-intervention",
+    "name": "Help Me Grow: home visiting and Early Intervention",
+    "category": "health",
+    "scope": "state",
+    "eligibility": "likely",
+    "why": "Home visiting serves pregnant women and new babies. Early Intervention serves any child under 3 with a delay, with no income test.",
+    "value": "Free nurse or coach visits, developmental checks, therapy if needed",
+    "monthly_value_estimate": 0,
+    "steps": [
+     "Call 1-800-755-4769 and ask for home visiting",
+     "Refer the 2-year-old if speech or walking worries her",
+     "Refer the newborn if born preterm",
+     "Keep the evaluation appointment at home"
+    ],
+    "documents": [
+     "Proof of pregnancy or child's birth date",
+     "Proof of address",
+     "Medicaid card",
+     "Any hospital or pediatrician notes"
+    ],
+    "apply_url": "https://odh.ohio.gov/know-our-programs/help-me-grow/refer-to-help-me-grow",
+    "phone": "1-800-755-4769",
+    "verify_note": "Preterm birth or low birth weight can qualify the baby automatically; ask the intake worker.",
+    "source_url": "https://fcf.ohio.gov/system-of-care/early-intervention",
+    "source_quote": "a statewide system that provides coordinated early intervention services to parents of eligible children under the age of three with developmental delays or disabilities",
+    "check": {
+     "source": "found",
+     "apply": "ok",
+     "official": true,
+     "at": "2026-10-11T23:36:23.742Z"
+    }
+   },
+   {
+    "id": "lifeline",
+    "name": "Lifeline phone and internet discount",
+    "category": "utilities",
+    "scope": "federal",
+    "eligibility": "likely",
+    "why": "Being on SNAP or Medicaid qualifies her automatically. One discount per household.",
+    "value": "$9.25 off a phone or internet bill each month",
+    "monthly_value_estimate": 9,
+    "steps": [
+     "Apply at lifelinesupport.org through the National Verifier",
+     "Upload her SNAP or Medicaid letter",
+     "Choose a participating carrier",
+     "Recertify once a year when reminded"
+    ],
+    "documents": [
+     "Photo ID",
+     "Social Security number (last 4)",
+     "SNAP or Medicaid approval letter",
+     "Proof of address"
+    ],
+    "apply_url": "https://www.lifelinesupport.org/",
+    "phone": "1-800-234-9473",
+    "verify_note": "Some carriers offer free plans on top of Lifeline; compare before signing.",
+    "source_url": "https://www.fcc.gov/lifeline-consumers",
+    "source_quote": "You qualify if your household income is at or below 135% of the Federal Poverty Guidelines or if you participate in one of these programs:",
+    "check": {
+     "source": "found",
+     "apply": "ok",
+     "official": true,
+     "at": "2026-10-11T23:35:26.737Z"
+    }
+   },
+   {
+    "id": "tanf",
+    "name": "Ohio Works First (TANF cash assistance)",
+    "category": "cash",
+    "scope": "state",
+    "eligibility": "unlikely",
+    "why": "Cash assistance uses a much lower income limit than SNAP, usually around half the poverty line. Her $2,100 is likely over it.",
+    "value": "Small monthly cash payment if income drops; also makes Head Start automatic",
+    "monthly_value_estimate": 0,
+    "steps": [
+     "Ask the county worker to screen her for OWF",
+     "Reapply right away if work hours are cut",
+     "Ask about Prevention, Retention and Contingency one-time help",
+     "Ask whether a TANF letter speeds Head Start entry"
+    ],
+    "documents": [
+     "Photo ID",
+     "Social Security numbers for all",
+     "Pay stubs",
+     "Children's birth certificates",
+     "Proof of address"
+    ],
+    "apply_url": "https://benefits.ohio.gov",
+    "phone": "1-844-640-6446",
+    "verify_note": "I could not confirm the 2026 Ohio Works First payment standard for a family of 3. Ask Franklin County JFS for the current figure.",
+    "source_url": null,
+    "source_quote": null,
+    "check": {
+     "source": "none",
+     "apply": "ok",
+     "official": false,
+     "at": "2026-10-11T23:35:26.737Z"
+    }
+   }
+  ],
+  "checked_at": "2026-10-11T23:36:24.916Z"
+ }
+}

@@ -1,0 +1,439 @@
+{
+ "resources": {
+  "generated_at": "2026-10-11T23:37:06.524Z",
+  "lang": "en",
+  "profile": {
+   "name": "Keisha",
+   "zip": "93702",
+   "state": "CA",
+   "household_size": 3,
+   "monthly_income": 1900,
+   "children": [
+    {
+     "born": "2025-12",
+     "name": "Amara",
+     "notes": "dairy (cow's milk protein) allergy, confirmed by her pediatrician"
+    },
+    {
+     "born": "2022-08",
+     "name": "Jordan"
+    }
+   ],
+   "diapers_per_day": 6,
+   "formula_ml_per_day": 0,
+   "pregnant": false,
+   "on_snap": false,
+   "on_medicaid": true
+  },
+  "summary": "Realistically about $1,000–$1,400 a month in new help: CalFresh (~$450), Head Start/Early Head Start child care, WIC food plus allergy formula, diapers, Lifeline, plus roughly $10,000 a year in tax credits. Tomorrow: apply for CalFresh at BenefitsCal.com and call California WIC at 1-888-942-2229 to get the 10-month-old's dairy-free formula covered.",
+  "items": [
+   {
+    "id": "eitc",
+    "name": "EITC + Child Tax Credit + CalEITC and Young Child Tax Credit",
+    "category": "tax",
+    "scope": "federal",
+    "eligibility": "likely",
+    "why": "Earned income near $22,800 with two children under 6 is in the maximum range for EITC, CTC, CalEITC and YCTC.",
+    "value": "Roughly $9,000–$12,000 refund per year; CalEITC adds the $1,154 Young Child Tax Credit for the 10-month-old",
+    "monthly_value_estimate": 600,
+    "steps": [
+     "File a 2026 tax return even with low income",
+     "Book free VITA help (call 800-906-9887 or dial 211)",
+     "Claim both children and the Young Child Tax Credit",
+     "Request direct deposit to avoid fees"
+    ],
+    "documents": [
+     "Photo ID",
+     "Social Security cards for her and both children",
+     "W-2s or pay stubs",
+     "Child care provider receipts",
+     "Bank account and routing number",
+     "Last year's tax return if any"
+    ],
+    "apply_url": "https://www.ftb.ca.gov/file/personal/credits/california-earned-income-tax-credit.html",
+    "phone": "800-906-9887",
+    "verify_note": "Credit amounts change each filing year; a VITA volunteer should run her exact numbers.",
+    "source_url": null,
+    "source_quote": null,
+    "check": {
+     "source": "none",
+     "apply": "ok",
+     "official": false,
+     "at": "2026-10-11T23:35:37.685Z"
+    }
+   },
+   {
+    "id": "head-start",
+    "name": "Head Start / Early Head Start (Fresno EOC Head Start 0 to 5)",
+    "category": "childcare",
+    "scope": "federal",
+    "eligibility": "likely",
+    "why": "Income about $22,800 a year is under 100% of poverty for three, and both children are in the birth-to-five age range.",
+    "value": "Free full-day preschool for the 4-year-old and Early Head Start services for the baby; saves $600+ a month in care",
+    "monthly_value_estimate": 600,
+    "steps": [
+     "Apply online at fresnoeoc.org Head Start 0 to 5",
+     "Ask for Early Head Start for the 10-month-old",
+     "Bring income and birth documents to the enrollment appointment",
+     "Tell staff about the milk allergy for the meal plan"
+    ],
+    "documents": [
+     "Children's birth certificates",
+     "Proof of income (pay stubs)",
+     "Proof of Fresno address",
+     "Immunization records",
+     "Medi-Cal card",
+     "Doctor's allergy note"
+    ],
+    "apply_url": "https://fresnoeoc.org/head-start-0-to-5/",
+    "phone": null,
+    "verify_note": "Openings vary by center; ask to be put on the waiting list for the nearest 93702 site.",
+    "source_url": "https://headstart.gov/ersea/article/poverty-guidelines-determining-eligibility-participation-head-start-programs",
+    "source_quote": "Children from birth to age five who are from families with incomes below the poverty guidelines are eligible for Head Start services.",
+    "check": {
+     "source": "found",
+     "apply": "ok",
+     "official": true,
+     "at": "2026-10-11T23:36:57.515Z"
+    }
+   },
+   {
+    "id": "snap",
+    "name": "CalFresh (SNAP in California)",
+    "category": "food",
+    "scope": "state",
+    "eligibility": "likely",
+    "why": "Her $1,900 a month is far under the CalFresh gross limit for a household of three, and California has no asset test.",
+    "value": "About $400–$550 a month on an EBT card, plus free school and summer meal links",
+    "monthly_value_estimate": 450,
+    "steps": [
+     "Apply at BenefitsCal.com for Fresno County",
+     "Upload pay stubs and ID in the portal",
+     "Answer the phone interview call within 30 days",
+     "Report rent and utility costs to raise the benefit"
+    ],
+    "documents": [
+     "Photo ID",
+     "Social Security numbers",
+     "Last 30 days of pay stubs",
+     "Rent receipt or lease",
+     "Utility bill",
+     "Children's birth certificates"
+    ],
+    "apply_url": "https://benefitscal.com/",
+    "phone": "877-847-3663",
+    "verify_note": "Final amount depends on rent and utilities; ask the worker for expedited service if she has under $150 cash.",
+    "source_url": "https://www.cdss.ca.gov/inforesources/cdss-programs/calfresh/eligibility-and-issuance-requirements",
+    "source_quote": "Most CalFresh households are subject to a gross income determination test. ... The maximum gross allowed is 200% of the Federal poverty level (FPL).",
+    "check": {
+     "source": "unreachable",
+     "apply": "ok",
+     "official": true,
+     "at": "2026-10-11T23:36:57.515Z"
+    }
+   },
+   {
+    "id": "medicaid",
+    "name": "Medi-Cal (Medicaid in California)",
+    "category": "health",
+    "scope": "state",
+    "eligibility": "likely",
+    "why": "She is already enrolled. Keep it active; it also opens doors to WIC, Lifeline and utility discounts.",
+    "value": "Free doctor visits, allergy specialist, prescriptions and dental for all three; worth $300+ a month",
+    "monthly_value_estimate": 300,
+    "steps": [
+     "Keep her address current with Fresno County so renewal mail arrives",
+     "Return the yearly renewal packet on time",
+     "Ask the pediatrician for an allergy specialist referral",
+     "Request transportation to appointments, a covered Medi-Cal benefit"
+    ],
+    "documents": [
+     "Medi-Cal BIC cards",
+     "Proof of address",
+     "Renewal packet",
+     "Pay stubs if asked"
+    ],
+    "apply_url": "https://benefitscal.com/",
+    "phone": "800-541-5555",
+    "verify_note": "Already enrolled. Confirm the baby and the 4-year-old are both on the case, not just her.",
+    "source_url": null,
+    "source_quote": null,
+    "check": {
+     "source": "none",
+     "apply": "ok",
+     "official": false,
+     "at": "2026-10-11T23:35:37.685Z"
+    }
+   },
+   {
+    "id": "wic",
+    "name": "California WIC (Women, Infants and Children)",
+    "category": "food",
+    "scope": "state",
+    "eligibility": "likely",
+    "why": "Income under $4,212 a month for three qualifies, and Medi-Cal enrollment makes her automatically income-eligible.",
+    "value": "About $120 a month in food benefits for two children, plus prescribed dairy-free formula for the baby",
+    "monthly_value_estimate": 120,
+    "steps": [
+     "Call 1-888-942-2229 to book a Fresno WIC appointment",
+     "Ask for a medical formula request form for the milk allergy",
+     "Have the pediatrician document the cow's milk protein allergy",
+     "Load benefits on the WIC card and shop at approved stores"
+    ],
+    "documents": [
+     "Photo ID",
+     "Medi-Cal card",
+     "Children's birth certificates",
+     "Proof of 93702 address",
+     "Pediatrician's allergy note",
+     "Children's immunization record"
+    ],
+    "apply_url": "https://www.phfewic.org/en/",
+    "phone": "888-942-2229",
+    "verify_note": "Specialty formula needs the doctor's written medical documentation; WIC decides which brands it covers.",
+    "source_url": "https://www.cdph.ca.gov/Programs/CFH/DWICSN/CDPH%20Document%20Library/LocalAgencies/WPPM/980-1060WICIncomeGuidelinesTable.pdf",
+    "source_quote": "WIC INCOME GUIDELINES ... Gross Income 185% Federal Poverty Level ... 3 · $50,542 · $4,212 · $2,106 · $1,944 · $972",
+    "check": {
+     "source": "unreachable",
+     "apply": "ok",
+     "official": true,
+     "at": "2026-10-11T23:36:57.515Z"
+    }
+   },
+   {
+    "id": "diaper-bank",
+    "name": "Central California Food Bank diaper program (NDBN member, Fresno)",
+    "category": "diapers",
+    "scope": "local",
+    "eligibility": "likely",
+    "why": "It is the National Diaper Bank Network member serving Fresno; distributions are open to local low-income families.",
+    "value": "Free diapers and wipes each month, worth about $40–$70",
+    "monthly_value_estimate": 40,
+    "steps": [
+     "Call the Central California Food Bank for the diaper distribution schedule",
+     "Go to the nearest 93702 distribution site",
+     "Bring the baby's size and age",
+     "Pick up groceries at the same visit"
+    ],
+    "documents": [
+     "Photo ID",
+     "Proof of address",
+     "Child's birth certificate or Medi-Cal card"
+    ],
+    "apply_url": "https://nationaldiaperbanknetwork.org/member-directory/",
+    "phone": "559-237-3663",
+    "verify_note": "Diaper supply is limited and site-based; confirm the current day and location by phone.",
+    "source_url": "https://nationaldiaperbanknetwork.org/member-directory/",
+    "source_quote": "Fresno – Central California Food Bank",
+    "check": {
+     "source": "found",
+     "apply": "ok",
+     "official": true,
+     "at": "2026-10-11T23:35:37.685Z"
+    }
+   },
+   {
+    "id": "lifeline",
+    "name": "California LifeLine (discount phone and internet)",
+    "category": "utilities",
+    "scope": "state",
+    "eligibility": "likely",
+    "why": "Medi-Cal enrollment qualifies a household for LifeLine; one discount per household.",
+    "value": "Free or near-free cell service; often $20–$40 a month saved",
+    "monthly_value_estimate": 30,
+    "steps": [
+     "Pick a LifeLine carrier at californialifeline.com",
+     "Apply through the carrier using her Medi-Cal enrollment",
+     "Return the PIN letter from the LifeLine administrator by the deadline",
+     "Ask the carrier about low-cost home internet too"
+    ],
+    "documents": [
+     "Photo ID",
+     "Medi-Cal card or award letter",
+     "Proof of 93702 address",
+     "PIN letter from LifeLine"
+    ],
+    "apply_url": "https://www.californialifeline.com/en",
+    "phone": "866-272-0349",
+    "verify_note": "Income and program rules were not verified today; confirm current qualifying programs on the LifeLine site.",
+    "source_url": null,
+    "source_quote": null,
+    "check": {
+     "source": "none",
+     "apply": "blocked",
+     "official": false,
+     "at": "2026-10-11T23:35:37.685Z"
+    }
+   },
+   {
+    "id": "liheap",
+    "name": "LIHEAP energy bill help (Fresno EOC Energy Services)",
+    "category": "utilities",
+    "scope": "federal",
+    "eligibility": "likely",
+    "why": "Fresno County residents under 60% of state median income get one energy payment per program year.",
+    "value": "One payment toward the power or gas bill, up to $3,000; plus CARE rate discount of 20–35%",
+    "monthly_value_estimate": 0,
+    "steps": [
+     "Apply online through Fresno EOC Energy Services",
+     "Upload six weeks of pay stubs and the full energy bill",
+     "Ask about free weatherization at the same time",
+     "Call PG&E separately to enroll in CARE"
+    ],
+    "documents": [
+     "California ID",
+     "Social Security card",
+     "Pay stubs for the last six weeks",
+     "All pages of the current energy bill",
+     "Proof of Fresno County address"
+    ],
+    "apply_url": "http://www.fresnoeoc.org/liheap/eligibility",
+    "phone": null,
+    "verify_note": "Paper applications ended; applications are online only and funds run out during the year.",
+    "source_url": "https://liheapch.acf.gov/profiles/California.htm",
+    "source_quote": "Heating, Cooling, Crisis, & Weatherization: 60% State Median Income",
+    "check": {
+     "source": "unreachable",
+     "apply": "ok",
+     "official": true,
+     "at": "2026-10-11T23:35:37.685Z"
+    }
+   },
+   {
+    "id": "211",
+    "name": "211 Fresno County, food pantries and free baby goods",
+    "category": "community",
+    "scope": "local",
+    "eligibility": "likely",
+    "why": "211 is open to everyone and routes by ZIP to pantries, rent help and baby supply closets near 93702.",
+    "value": "Free groceries weekly, clothing, car seats, holiday help; easily $100+ a month in goods",
+    "monthly_value_estimate": 0,
+    "steps": [
+     "Dial 211 and give ZIP 93702",
+     "Ask for the closest weekly food pantry and baby supply closet",
+     "Join a Fresno Buy Nothing group on Facebook for free clothes and gear",
+     "Ask the library about free storytime and Reach Out and Read books"
+    ],
+    "documents": [
+     "Photo ID",
+     "Proof of address",
+     "Number of people in the household"
+    ],
+    "apply_url": null,
+    "phone": "211",
+    "verify_note": "Pantry hours change often; call 211 the same week before going.",
+    "source_url": null,
+    "source_quote": null,
+    "check": {
+     "source": "none",
+     "apply": "dead",
+     "official": false,
+     "at": "2026-10-11T23:35:37.685Z"
+    }
+   },
+   {
+    "id": "ccap",
+    "name": "California child care subsidy (CCDF / Alternative Payment Program, Fresno)",
+    "category": "childcare",
+    "scope": "state",
+    "eligibility": "maybe",
+    "why": "Her income is well under the state ceiling, but Fresno subsidy slots are limited and run from a waiting list.",
+    "value": "Free or low-cost licensed child care or a paid relative provider; worth $300–$800 a month",
+    "monthly_value_estimate": 300,
+    "steps": [
+     "Join the Fresno County centralized eligibility list for child care",
+     "Submit income and work or school schedule",
+     "Choose a licensed provider or an approved family member",
+     "Recheck the waitlist every 60 days"
+    ],
+    "documents": [
+     "Photo ID",
+     "Pay stubs",
+     "Children's birth certificates",
+     "Proof of 93702 address",
+     "Work or school schedule"
+    ],
+    "apply_url": "https://www.cdss.ca.gov/inforesources/child-care-and-development",
+    "phone": "211",
+    "verify_note": "The correct Fresno intake agency and current income ceiling were not confirmed today; call 211 for the local resource and referral agency.",
+    "source_url": null,
+    "source_quote": null,
+    "check": {
+     "source": "none",
+     "apply": "ok",
+     "official": false,
+     "at": "2026-10-11T23:35:37.685Z"
+    }
+   },
+   {
+    "id": "tanf",
+    "name": "CalWORKs (TANF cash aid in California)",
+    "category": "cash",
+    "scope": "state",
+    "eligibility": "maybe",
+    "why": "Applicants subtract $450 per worker from earnings, then compare to the MBSAC limit; $1,450 may be just over the limit for three.",
+    "value": "Monthly cash aid plus automatic child care and Head Start eligibility if approved",
+    "monthly_value_estimate": 0,
+    "steps": [
+     "Apply on BenefitsCal.com at the same time as CalFresh",
+     "Report all earned income honestly",
+     "Ask the worker to run the MBSAC applicant test",
+     "Ask about one-time Homeless Assistance or diversion payment if behind on rent"
+    ],
+    "documents": [
+     "Photo ID",
+     "Social Security cards",
+     "Children's birth certificates",
+     "Pay stubs",
+     "Rent receipt or lease",
+     "Bank statements"
+    ],
+    "apply_url": "https://benefitscal.com/",
+    "phone": "877-847-3663",
+    "verify_note": "The 2026 MBSAC figure for a family of three was not confirmed; let the county test it rather than assume she is over.",
+    "source_url": "https://ca.db101.org/ca/programs/income_support/calworks/program2.htm",
+    "source_quote": "Subtract $450 of earned income for each working family member",
+    "check": {
+     "source": "found",
+     "apply": "ok",
+     "official": false,
+     "at": "2026-10-11T23:35:37.685Z"
+    }
+   },
+   {
+    "id": "early-intervention",
+    "name": "Early Start (IDEA Part C) through Central Valley Regional Center",
+    "category": "health",
+    "scope": "state",
+    "eligibility": "maybe",
+    "why": "Free evaluation for any baby under 3 with a developmental or medical concern; a food allergy alone may not qualify.",
+    "value": "Free developmental evaluation, feeding and nutrition support, therapy if a delay is found",
+    "monthly_value_estimate": 0,
+    "steps": [
+     "Call the Early Start BabyLine at 800-515-2229",
+     "Ask the pediatrician to fax a referral for feeding concerns",
+     "Accept the free evaluation within 45 days",
+     "Ask about WIC and nutrition follow-up if a feeding issue is found"
+    ],
+    "documents": [
+     "Child's birth certificate",
+     "Medi-Cal card",
+     "Pediatrician's notes on the milk allergy",
+     "Proof of address"
+    ],
+    "apply_url": "https://earlystartneighborhood.org/central-directory/the-early-start-system/referral-to-california-early-start/",
+    "phone": "800-515-2229",
+    "verify_note": "Eligibility needs a 25% delay or an established risk condition; the evaluation itself is free either way.",
+    "source_url": "https://earlystartneighborhood.org/central-directory/the-early-start-system/referral-to-california-early-start/",
+    "source_quote": "To request an assessment for Early Start services, start by contacting the regional center in your county.",
+    "check": {
+     "source": "found",
+     "apply": "ok",
+     "official": false,
+     "at": "2026-10-11T23:35:37.685Z"
+    }
+   }
+  ],
+  "checked_at": "2026-10-11T23:37:06.524Z"
+ }
+}
