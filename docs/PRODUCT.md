@@ -1,6 +1,6 @@
 # MamaPal · 产品与开发记录
 
-> 内部页面，无入口，地址 `/doc`。随做随更新，避免细节遗漏。最后更新：2026-10-03。
+> 内部页面，无入口，地址 `/doc`。随做随更新，避免细节遗漏。最后更新：2026-10-11。
 > 比赛：PayPal AI Hackathon，截止 2026-11-12 下午 2 点（太平洋时间）。仓库 github.com/haodaz/mamapal，线上 mamapal.vercel.app。
 
 ## 一句话
@@ -45,6 +45,13 @@ Pal cares · Pal cuts · Pal claims（它管 · 它砍 · 它领）。一个月 
 - 成长时间轴 `src/components/BabyTimeline.tsx`：按 stages 的九段画轨道，当前段按月龄进度点亮，列出本段「正在学」和下一段「接下来」的典型里程碑（`MILESTONES`，CDC 式范围，不是诊断）。
 - 换月自动归档：日历翻页或点「重置本月」，本月判定与账单整体存入 `history`。
 
+### 月度管家（Month run，第二轮的核心，2026-10-11）
+- 首页欢迎卡第一个按钮「Plan the rest of the month / 帮我排好这个月剩下的」。给 Pal 一个目标（用剩下的钱让宝宝这个月什么都不缺），它分步自己做完，每一步做完就存档（`state.runs`），断了从下一步接着做；失败的那一步有「从这一步重试」。
+- 五步（`src/lib/month-run.ts`）：① 盘点（不用模型：能花多少、留多少备用、还剩几天、三样消耗品撑到哪天、这个阶段的必需品、这个月已经买过什么、可能能领的福利）② 排计划（Claude 结构化输出：现在买 / 晚些买并给最晚日期 / 这个月不买；整包、自有品牌、马斯洛顺序、医疗备注优先、能领的先领；不许在文字里写金额）③ 查真实价格（Claude + 联网搜索，复用比价的 `findOffers`）④ 检查（不用模型：逐个打开链接，页面上看到这个价 / 能开 / 店家挡机器人 / 失效去掉；服务器重算钱；够不够用到月底；晚买日期在用完之前；必需品没够就不买成长和开心类；不重复买；文字里有金额就退回）⑤ 交购物车（一个普通 Plan，带 `run_id`、`later`、`checks`，PayPal 按钮照旧，妈妈自己确认付款）。
+- 检查不过的处理：计划问题退回②重排（最多 2 次），没找到价格的只把那几样退回③再查一次；还解决不了的全部写进「请你看一眼」，不悄悄丢掉。
+- 每一步记时间、token、搜索次数、估算花费；卡片底部写「这一次：X 秒，AI 花了 $Y」。
+- 证据：`docs/evidence/`（三次真实运行的完整记录 + 从运行里发现的 5 个毛病和各自的修法）。
+
 ### Pal cuts（它砍）
 - 输入一段话 → Claude 结构化输出：每项 BUY / SWAP / SKIP / DEFER、平替名、价格、商家、理由、优先级、库存类型与数量。金额全部服务器重算，不信模型算术。
 - 系统提示要点：饭钱锁死不能动；网红/品牌/小红书推荐一律可疑；健康安全第一且该看医生就说；按马斯洛分钱；库存够两周以上的消耗品判 defer；语气对物狠对人暖，短句，不惊叹。
@@ -63,13 +70,14 @@ Pal cares · Pal cuts · Pal claims（它管 · 它砍 · 它领）。一个月 
 - Next.js 16 App Router + Tailwind 4 + TypeScript。字体 Inter + Noto Sans SC / 苹方。配色 Ant Design 中性灰底 + 标准蓝 #1677ff；红只给「砍」，绿只给「钱回来」。
 - AI：`@anthropic-ai/sdk`，模型 `claude-opus-5`。判定用 `messages.parse` + Zod；资源查询和比价用 `messages.stream` + `web_search_20260209` + 结构化输出（max_tokens 32k，effort medium），资源查询有两步兜底。
 - PayPal：`src/lib/paypal.ts` 直连沙盒 REST（Orders v2 create/capture，Payouts v1；注意 Payouts 的金额字段是 `currency` 不是 `currency_code`）。前端 PayPal JS SDK 按钮。
-- 状态：单用户一份 JSON。配了 Supabase 就存 `app_state` 表的一行（Vercel 多实例必须每次读表，不走内存缓存）；否则 `data/state.json`。
+- 状态：单用户一份 JSON。配了 Supabase 就存 `app_state` 表的一行（`STATE_ROW_ID` 选哪一行；本地 `.env.local` 设成 `dev`，线上演示是 `default`，本地测试不碰线上数据）（Vercel 多实例必须每次读表，不走内存缓存）；否则 `data/state.json`。
 - 登录：`/api/login` 写 `mp_session` cookie，`src/middleware.ts` 没 cookie 的页面请求跳 `/intro`。不是真正的认证，状态仍是共享的一份。
 - 形象：通义万相 `wan2.2-t2i-plus` 出图，`scripts/cutout.mjs` 去白底成透明立绘。原图在 `docs/pal-candidates`、`docs/pal-poses`，立绘在 `public/pal-*.png`。
 - 部署：GitHub `main` 自动部署到 Vercel。环境变量：ANTHROPIC_API_KEY、PAYPAL_CLIENT_ID、PAYPAL_CLIENT_SECRET、NEXT_PUBLIC_PAYPAL_CLIENT_ID、PAYOUT_RECEIVER_EMAIL、SUPABASE_URL、SUPABASE_SERVICE_ROLE_KEY。
 
 ## 已验证
 
+- 2026-10-11：月度管家本地连跑三次（dev 行）：第 1 次 $0.78 / 136 秒但输出有 3 个检查没抓到的毛病；第 2 次 $1.95 / 223 秒抓到包装规格错配，但对生鲜反复搜；第 3 次 $1.02 / 173 秒，全部定价，开了 20 个链接，8 个在店铺页面上看到价格，没有遗留问题。
 - 2026-10-03：全网比价，$43 清单 55 秒查到 IKEA ANTILOP $24.99、Walmart 磨牙饼 $3.84（带链接），合计降到 $31.83；登录门禁、模拟登录、库存入账与提醒本地验证通过。
 - 2026-10-02：判定 $105 → $18（11 秒）；中文输入；皇后区档案资源查询 12 项（2 分钟）；Payouts 批次 LX5UMD75ANHG4；Orders 建单 + 妈妈本人确认 capture 1RM22261GF492652U（$147）；线上 Vercel 判定 19 秒。
 
@@ -90,6 +98,8 @@ Pal cares · Pal cuts · Pal claims（它管 · 它砍 · 它领）。一个月 
 - 真账号与按人分表。
 
 ## 变更日志
+
+- 10-11：第二轮开始。月度管家（目标驱动、分步存档、自查退回重做、真实链接核对、每步成本）；比价抽成共用的 `findOffers`；购物车卡片显示「放进购物车的价」、晚些再买、检查摘要。
 
 - 10-02：骨架、判定、PayPal 两条路、资源查询、五页面响应式、中英文、Supabase、Vercel 上线、Pal 形象与首页对话化、AG Grid 账本。
 - 10-03（续）：问 Pal 识别来源页面；纯提问直接回答；母婴用品知识库（`scripts/build-catalog.mjs` → `src/lib/catalog.json`，含孕期，由 Claude 按阶段穷举，每项含中英名、类别、层级、月龄范围、每月/一次性、自有品牌价、用量、省钱办法、母乳/奶粉适用、是否必需）。

@@ -2,7 +2,10 @@ export type Verdict = "buy" | "swap" | "skip" | "defer";
 
 export type SupplyType = "diapers" | "formula" | "wipes";
 
-export type Offer = { merchant: string; price: number; url: string | null; note: string | null };
+// check: what the verifier saw when it opened the link. ok = page opened and showed this price;
+// opens = page opened, price not visible to a robot; blocked = the store refuses robots (link not disproven); dead = 404 / no such page.
+export type LinkCheck = "ok" | "opens" | "blocked" | "dead";
+export type Offer = { merchant: string; price: number; url: string | null; note: string | null; check?: LinkCheck; picked?: boolean }; // picked = the price the month run put in the cart
 
 export type PlanItem = {
   requested: string;
@@ -33,6 +36,45 @@ export type Plan = {
   compared_at?: string;
   paypal_order_id?: string;
   paypal_capture_id?: string;
+  run_id?: string; // set when the cart came out of a month run
+  later?: LaterBuy[]; // what the run scheduled for later this month (not in this cart)
+  checks?: RunChecks; // what the verifier confirmed before the cart reached her
+};
+
+// ---- Month run: one goal ("keep the baby covered this month"), several steps, each saved as it finishes ----
+export type LaterBuy = { name: string; pack: string; price: number; buy_by: string | null; merchant: string | null; why: string };
+export type RunChecks = { links: Record<LinkCheck, number>; issues: string[]; revisions: number };
+export type RunStepKey = "stock" | "plan" | "prices" | "verify" | "cart";
+export type RunStep = {
+  key: RunStepKey;
+  attempt: number; // 0 = first pass, 1+ = revision after the verifier sent it back
+  status: "pending" | "running" | "done" | "failed";
+  summary?: string; // one plain line for her, in the run's language
+  notes?: string[]; // verify steps: what was sent back and why
+  ms?: number;
+  usage?: { input: number; output: number; searches: number; cost: number };
+  error?: string;
+};
+export type RunItem = {
+  need: string; name: string; pack: string; packs: number; unit_price: number;
+  supply_type: SupplyType | "none"; per_pack: number; merchant: string | null;
+  when: "now" | "later"; buy_by: string | null; tier: 1 | 2 | 3; why: string; benefit: string | null;
+  offers?: Offer[];
+};
+export type RunIssue = { check: string; problem: string; fix_by: "planner" | "prices" | "mom" };
+export type MonthRun = {
+  id: string;
+  created_at: string;
+  lang: "en" | "zh";
+  goal: string;
+  status: "running" | "done" | "failed";
+  steps: RunStep[];
+  stock?: { available: number; spend_cap: number; days_left: number; month_end: string; lines: string[]; supplies: { type: SupplyType; rate: number; left: number; days: number | null; tracked: boolean; need: number; runout: string | null }[]; musts: { need: string; cost: number }[]; bought: string[]; benefits: string[] };
+  draft?: { headline: string; note: string; items: RunItem[]; skipped: { need: string; why: string }[] };
+  issues?: RunIssue[];
+  links?: Record<LinkCheck, number>;
+  plan_id?: string;
+  total_cost?: number;
 };
 
 export type LedgerEntry = {
@@ -129,6 +171,7 @@ export type State = {
   knowledge?: Record<string, Guide>; // key = stage|id|lang (slow-changing memory)
   market?: Record<string, Market>; // key = stage|id|lang (retrieved, refreshable)
   owned?: string[]; // one-time items she already has
+  runs?: MonthRun[]; // month runs, newest last (kept to the last few)
 };
 
 export function derive(state: State) {

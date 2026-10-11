@@ -27,9 +27,9 @@ export function PlanCard({ plan, onPaid, onError }: { plan: Plan; onPaid: (r: un
   return (
     <article className={`rounded-2xl border ${paid ? "border-green/40" : "border-line"} bg-panel shadow-sm`}>
       <header className="border-b border-line px-5 py-4">
-        <div className="text-xs text-muted"><span className="text-primary">{t("pillar.cut")}</span>{plan.items.length > 0 && <> · {paid ? t("plan.paid_label") : t("plan.filter_label")}</>}</div>
+        <div className="text-xs text-muted"><span className="text-primary">{t(plan.run_id ? "pillar.manage" : "pillar.cut")}</span>{plan.items.length > 0 && <> · {paid ? t("plan.paid_label") : plan.run_id ? t("run.cart") : t("plan.filter_label")}</>}</div>
         <h2 className="mt-1 text-lg font-semibold leading-snug">{plan.headline}</h2>
-        <p className="mt-1 text-sm text-muted">“{plan.ask}”</p>
+        {!plan.run_id && <p className="mt-1 text-sm text-muted">“{plan.ask}”</p>}
       </header>
       <ul className="divide-y divide-line">
         {plan.items.map((it, i) => {
@@ -39,7 +39,7 @@ export function PlanCard({ plan, onPaid, onError }: { plan: Plan; onPaid: (r: un
               <span className={`num mt-0.5 h-fit rounded border px-1.5 py-0.5 text-[11px] font-semibold ${VERDICT_CLS[it.verdict]}`}>{t(`verdict.${it.verdict}` as const)}</span>
               <div className="min-w-0">
                 <div className="text-sm">
-                  <span className="text-muted line-through decoration-red/60">{it.requested}</span>
+                  {plan.run_id ? <span className="text-xs text-muted">{it.requested}</span> : <span className="text-muted line-through decoration-red/60">{it.requested}</span>}
                   {keep && it.buy_name && (
                     <>
                       <span className="mx-2 text-muted">→</span>
@@ -52,30 +52,52 @@ export function PlanCard({ plan, onPaid, onError }: { plan: Plan; onPaid: (r: un
                 {it.offers && it.offers.length > 0 && (
                   <ul className="num mt-1.5 space-y-0.5 text-xs">
                     {it.offers.map((o, k) => (
-                      <li key={k} className={k === 0 ? "text-green" : "text-muted"}>
-                        {k === 0 && <span className="mr-1 rounded border border-green/40 px-1 text-[10px]">{t("compare.best")}</span>}
-                        {o.url ? <a href={o.url} target="_blank" rel="noreferrer" className="underline decoration-dotted underline-offset-2">{o.merchant}</a> : o.merchant} ${o.price.toFixed(2)}{o.note && <span className="ml-1 opacity-80">· {o.note}</span>}
+                      <li key={k} className={(plan.run_id ? o.picked : k === 0) ? "text-green" : "text-muted"}>
+                        {(plan.run_id ? o.picked : k === 0) && <span className="mr-1 rounded border border-green/40 px-1 text-[10px]">{t(plan.run_id ? "run.in_cart" : "compare.best")}</span>}
+                        {o.url ? <a href={o.url} target="_blank" rel="noreferrer" className="underline decoration-dotted underline-offset-2">{o.merchant}</a> : o.merchant} ${o.price.toFixed(2)}{o.note && <span className="ml-1 opacity-80">· {o.note}</span>}{o.check && <span className={`ml-1.5 rounded border px-1 text-[10px] ${o.check === "ok" ? "border-green/40 text-green" : "border-line text-muted"}`}>{t(`run.check.${o.check === "dead" ? "blocked" : o.check}` as const)}</span>}
                       </li>
                     ))}
                   </ul>
                 )}
               </div>
               <div className="num text-right text-sm">
-                <div className="text-muted line-through decoration-red/60">${it.requested_price.toFixed(0)}</div>
+                {!plan.run_id && <div className="text-muted line-through decoration-red/60">${it.requested_price.toFixed(0)}</div>}
                 {keep && it.buy_price != null ? <div className="text-fg">${it.buy_price.toFixed(0)}</div> : <div className="text-red">$0</div>}
               </div>
             </li>
           );
         })}
       </ul>
+      {plan.later && plan.later.length > 0 && (
+        <section className="border-t border-line px-5 py-3">
+          <div className="text-xs font-medium text-muted">{t("run.later")}</div>
+          <ul className="mt-1.5 space-y-1 text-sm">
+            {plan.later.map((l, i) => (
+              <li key={i} className="flex items-baseline justify-between gap-3">
+                <span className="min-w-0">{l.name}<span className="ml-2 text-xs text-muted">{l.why}</span></span>
+                <span className="num shrink-0 text-xs text-muted">{l.buy_by ? t("run.by", { date: l.buy_by.slice(5) }) : ""} · ${l.price.toFixed(0)}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+      {plan.checks && (
+        <section className="border-t border-line px-5 py-3 text-xs text-muted">
+          <div className="font-medium">{t("run.checked")}</div>
+          <div className="num mt-0.5">{t("run.checked_line", { ok: plan.checks.links.ok, open: plan.checks.links.opens + plan.checks.links.blocked, dead: plan.checks.links.dead, rev: plan.checks.revisions })}</div>
+          {plan.checks.issues.length > 0 && (
+            <div className="mt-1.5 text-amber"><span className="font-medium">{t("run.for_you")}</span><ul className="mt-0.5 list-disc pl-4">{plan.checks.issues.map((x, i) => <li key={i}>{x}</li>)}</ul></div>
+          )}
+        </section>
+      )}
       <footer className="space-y-3 border-t border-line px-5 py-4">
-        {plan.items.length > 0 && <div className="num flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 text-sm">
+        {plan.items.length > 0 && !plan.run_id && <div className="num flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 text-sm">
           <span className="whitespace-nowrap text-muted">{t("plan.asked")} ${plan.requested_total.toFixed(2)}</span>
           <span className="whitespace-nowrap text-red">{t("plan.intercepted")} −${plan.intercepted.toFixed(2)}</span>
           <span className="whitespace-nowrap text-base font-semibold text-fg">{t("plan.pay")} ${plan.approved_total.toFixed(2)}</span>
         </div>}
         <p className="text-sm text-muted">{plan.note}</p>
-        {!paid && plan.approved_total > 0 && (
+        {!paid && plan.approved_total > 0 && !plan.run_id && (
           <div className="flex flex-wrap items-center gap-3 text-xs">
             <button onClick={compare} disabled={comparing} className="rounded-full border border-primary/40 px-3 py-1.5 text-primary disabled:opacity-50">{comparing ? t("compare.busy") : t("compare.button")}</button>
             {plan.compared_at && <span className="text-muted">{t("compare.done", { date: plan.compared_at.slice(0, 10) })}</span>}

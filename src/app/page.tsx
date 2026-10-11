@@ -10,10 +10,11 @@ import { NeedsCard } from "@/components/NeedsCard";
 import { PlanCard } from "@/components/PlanCard";
 import { BabyAvatar } from "@/components/BabyAvatar";
 import { SpendCard } from "@/components/SpendCard";
+import { RunCard } from "@/components/RunCard";
 import { childNeeds } from "@/lib/stages";
 import { supplyStatus } from "@/lib/inventory";
 import { monthsSince, formatAge } from "@/lib/age";
-import type { Plan, ResourceReport, SupplyType } from "@/lib/types";
+import type { MonthRun, Plan, ResourceReport, SupplyType } from "@/lib/types";
 
 type Tab = "money" | "pantry" | "needs" | "claims";
 
@@ -25,11 +26,13 @@ export default function Home() {
   const [ask, setAsk] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [thread, setThread] = useState<{ ask: string; plan: Plan }[]>([]);
+  const [thread, setThread] = useState<({ ask: string; plan: Plan; run?: undefined } | { run: MonthRun; ask?: undefined; plan?: undefined })[]>([]);
+  const [lastRun, setLastRun] = useState<MonthRun | null>(null);
   const [tab, setTab] = useState<Tab>("money");
   const box = useRef<HTMLTextAreaElement>(null);
   const end = useRef<HTMLDivElement>(null);
   useEffect(() => { fetch("/api/resources", { cache: "no-store" }).then((r) => r.json()).then((j) => setReport(j.resources)); }, []);
+  useEffect(() => { fetch("/api/run", { cache: "no-store" }).then((r) => r.json()).then((j) => setLastRun(j.run)).catch(() => {}); }, []);
   useEffect(() => { if (data && data.state.onboarded === false) router.replace("/welcome"); }, [data, router]);
   useEffect(() => { if (thread.length || busy) end.current?.scrollIntoView({ behavior: "smooth", block: "end" }); }, [thread.length, busy]);
   const onMoney = useCallback(() => refresh(), [refresh]);
@@ -42,7 +45,8 @@ export default function Home() {
   const kidName = first?.name || (lang === "zh" ? "宝宝" : "Baby");
   const needsTotal = kids.reduce((s, c) => s + childNeeds(c, state.profile).total, 0);
   const claimable = report ? report.items.filter((i) => i.eligibility !== "unlikely").reduce((s, i) => s + i.monthly_value_estimate, 0) : null;
-  const latest = [...state.plans].reverse().find((p) => p.items.length > 0 && !thread.some((x) => x.plan.id === p.id));
+  const showLastRun = lastRun && lastRun.created_at.slice(0, 7) === state.month && !thread.length;
+  const latest = [...state.plans].reverse().find((p) => p.items.length > 0 && !p.run_id && !thread.some((x) => x.plan?.id === p.id));
   const pantry = supplyStatus(state).filter((x) => x.tracked);
   const low = pantry.filter((x) => x.low);
   const sname = (k: SupplyType) => t(`supply.${k}` as const);
@@ -57,6 +61,17 @@ export default function Home() {
     ...(latest ? [{ icon: MessageCircle, text: t("pal.line.verdict", { saved: money(latest.intercepted) }) }] : []),
   ];
   const quick = [...low.map((x) => t("supply.ask", { item: sname(x.type) })), t("pal.q1"), t("pal.q2", { name: kidName }), t("pal.q3")];
+
+  async function startRun() {
+    if (busy) return;
+    setError(null);
+    try {
+      const r = await fetch("/api/run", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ lang }) });
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.error ?? "failed");
+      setThread((th) => [...th, { run: j.run }]);
+    } catch (e) { setError((e as Error).message); }
+  }
 
   async function submit() {
     if (!ask.trim() || busy) return;
@@ -136,13 +151,16 @@ export default function Home() {
   );
   const Thread = () => (
     <>
-      {latest && !thread.length && (
+      {showLastRun && <PalMsg wide><RunCard initial={lastRun!} plans={state.plans} onChange={onMoney} onError={onError} /></PalMsg>}
+      {latest && !thread.length && !showLastRun && (
         <div className="space-y-3">
           <Mine>{latest.ask}</Mine>
           <PalMsg wide><PlanCard plan={latest} onPaid={onMoney} onError={onError} /></PalMsg>
         </div>
       )}
-      {thread.map(({ ask: a, plan }) => (
+      {thread.map(({ ask: a, plan, run }) => run ? (
+        <PalMsg key={run.id} wide><RunCard initial={run} plans={state.plans} onChange={onMoney} onError={onError} /></PalMsg>
+      ) : (
         <div key={plan.id} className="space-y-3">
           <Mine>{a}</Mine>
           <PalMsg wide><PlanCard plan={state.plans.find((p) => p.id === plan.id) ?? plan} onPaid={onMoney} onError={onError} /></PalMsg>
@@ -169,7 +187,7 @@ export default function Home() {
           <div className="mt-4"><Numbers /></div>
           {low.length > 0 && <div className="mt-4 rounded-xl border border-amber/40 bg-amber/5 px-3 py-2 text-sm text-amber">{low.map((x) => t("supply.low", { item: sname(x.type), d: x.days ?? 0 })).join(" ")}</div>}
           <div className="mt-4 text-[11px] text-muted">{t("pal.quick")}</div>
-          <div className="mt-1.5 flex flex-wrap gap-2">{quick.map((q) => <button key={q} onClick={() => { setAsk(q); box.current?.focus(); }} className="rounded-full border border-line bg-panel px-3 py-1.5 text-sm hover:border-primary hover:text-primary">{q}</button>)}</div>
+          <div className="mt-1.5 flex flex-wrap gap-2"><button onClick={startRun} className="rounded-full border border-primary bg-primary px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:opacity-90">{t("run.start")}</button>{quick.map((q) => <button key={q} onClick={() => { setAsk(q); box.current?.focus(); }} className="rounded-full border border-line bg-panel px-3 py-1.5 text-sm hover:border-primary hover:text-primary">{q}</button>)}</div>
         </section>
       </div>
 

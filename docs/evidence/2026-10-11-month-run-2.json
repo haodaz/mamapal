@@ -1,0 +1,442 @@
+{
+  "id": "run_mv4ebdkl4w2h",
+  "created_at": "2026-10-11T22:29:32.661Z",
+  "goal": "Keep the baby covered until the month ends, on what is left",
+  "status": "done",
+  "total_cost_usd": 1.945,
+  "seconds": 223,
+  "steps": [
+    {
+      "key": "stock",
+      "attempt": 0,
+      "status": "done",
+      "summary": "$115 free (keeping $12 aside), 21 days left; 1 consumable won't last the month, 9 other must-haves to cover.",
+      "seconds": 0,
+      "usage": {
+        "cost": 0,
+        "input": 0,
+        "output": 0,
+        "searches": 0
+      }
+    },
+    {
+      "key": "plan",
+      "attempt": 0,
+      "status": "done",
+      "summary": "9 things now for about $56, 3 scheduled for later, 6 left for another month.",
+      "seconds": 41.7,
+      "usage": {
+        "cost": 0.099,
+        "input": 2864,
+        "output": 3265,
+        "searches": 0
+      }
+    },
+    {
+      "key": "prices",
+      "attempt": 0,
+      "status": "done",
+      "summary": "Searched 9 items, found 18 real offers with links; 1 items had none.",
+      "seconds": 109,
+      "usage": {
+        "cost": 1.382,
+        "input": 209550,
+        "output": 6181,
+        "searches": 18
+      }
+    },
+    {
+      "key": "verify",
+      "attempt": 0,
+      "status": "done",
+      "summary": "opened 18 links: 6 showed the price, 11 open or block robots, 1 dead and dropped; money, coverage to month end and order checked: 1 items still unpriced, searching again.",
+      "notes": [
+        "Bananas, avocados and sweet potatoes, about 4 lb total: no store offer found yet."
+      ],
+      "seconds": 3.1,
+      "usage": {
+        "cost": 0,
+        "input": 0,
+        "output": 0,
+        "searches": 0
+      }
+    },
+    {
+      "key": "prices",
+      "attempt": 1,
+      "status": "done",
+      "summary": "Searched 1 items, found 2 real offers with links; 1 items had none.",
+      "seconds": 36,
+      "usage": {
+        "cost": 0.283,
+        "input": 45574,
+        "output": 1387,
+        "searches": 2
+      }
+    },
+    {
+      "key": "verify",
+      "attempt": 1,
+      "status": "done",
+      "summary": "opened 16 links: 5 showed the price, 11 open or block robots, 0 dead and dropped; money, coverage to month end and order checked: 1 items still unpriced, searching again.",
+      "notes": [
+        "Bananas, avocados and sweet potatoes, about 4 lb total: no store offer found yet."
+      ],
+      "seconds": 2.7,
+      "usage": {
+        "cost": 0,
+        "input": 0,
+        "output": 0,
+        "searches": 0
+      }
+    },
+    {
+      "key": "prices",
+      "attempt": 2,
+      "status": "done",
+      "summary": "Searched 1 items, found 0 real offers with links; 1 items had none.",
+      "seconds": 27.8,
+      "usage": {
+        "cost": 0.181,
+        "input": 26595,
+        "output": 1118,
+        "searches": 2
+      }
+    },
+    {
+      "key": "verify",
+      "attempt": 2,
+      "status": "done",
+      "summary": "opened 16 links: 5 showed the price, 11 open or block robots, 0 dead and dropped; money, coverage to month end and order checked: 1 items still unpriced, searching again.",
+      "notes": [
+        "Bananas, avocados and sweet potatoes, about 4 lb total: no store offer found yet."
+      ],
+      "seconds": 3,
+      "usage": {
+        "cost": 0,
+        "input": 0,
+        "output": 0,
+        "searches": 0
+      }
+    },
+    {
+      "key": "cart",
+      "attempt": 0,
+      "status": "done",
+      "summary": "Cart ready: 9 items for $63, $52 left after; 3 later buys scheduled; 5 things for you to look at. You approve the payment in PayPal; Pal never pays for you.",
+      "seconds": 0,
+      "usage": {
+        "cost": 0,
+        "input": 0,
+        "output": 0,
+        "searches": 0
+      }
+    }
+  ],
+  "stock": {
+    "available": 115.17,
+    "spend_cap": 103.65,
+    "days_left": 21,
+    "lines": [
+      "diapers: 129 diapers left, about 21 days; 0 diapers short of month end",
+      "wipes not tracked, counting the whole month: 189 wipes"
+    ]
+  },
+  "issues_left_for_her": [
+    {
+      "check": "pack",
+      "fix_by": "mom",
+      "problem": "Parent's Choice Fresh Scent Baby Wipes, 400 ct box: store prices ($4.00, $6.00) are far from the $15.84 estimate, likely a different pack size. Check the pack before you pay."
+    },
+    {
+      "check": "pack",
+      "fix_by": "mom",
+      "problem": "Parent's Choice Iron-Fortified Baby Oatmeal Cereal, 8 oz: store prices ($4.69, $6.55) are far from the $1.98 estimate, likely a different pack size. Check the pack before you pay."
+    },
+    {
+      "check": "pack",
+      "fix_by": "mom",
+      "problem": "Equate Prenatal Multivitamin tablets, 100 ct: store prices ($15.58) are far from the $8.97 estimate, likely a different pack size. Check the pack before you pay."
+    },
+    {
+      "check": "price",
+      "fix_by": "mom",
+      "problem": "Parent's Choice Iron-Fortified Baby Oatmeal Cereal, 8 oz: the stores block robots, so no page confirmed the price. Check it before you pay."
+    },
+    {
+      "check": "price",
+      "fix_by": "mom",
+      "problem": "Bananas, avocados and sweet potatoes, about 4 lb total: no store offer found yet."
+    }
+  ],
+  "links": {
+    "ok": 5,
+    "dead": 0,
+    "opens": 8,
+    "blocked": 3
+  },
+  "items": [
+    {
+      "need": "wipes",
+      "name": "Parent's Choice Fresh Scent Baby Wipes, 400 ct box",
+      "packs": 1,
+      "unit_price": 15.84,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": null,
+      "offers": [
+        {
+          "merchant": "Walmart",
+          "price": 4,
+          "url": "https://www.walmart.com/c/kp/single-banana",
+          "check": "ok"
+        },
+        {
+          "merchant": "Aldi",
+          "price": 6,
+          "url": null,
+          "check": "blocked"
+        }
+      ]
+    },
+    {
+      "need": "Baby food: iron-rich foods, cereal, produce",
+      "name": "Parent's Choice Iron-Fortified Baby Oatmeal Cereal, 8 oz",
+      "packs": 2,
+      "unit_price": 1.98,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "WIC food benefit / SNAP",
+      "offers": [
+        {
+          "merchant": "Hannaford",
+          "price": 4.69,
+          "url": "https://hannaford.com/product/earths-best-organic-iron-fortified-whole-grain-oatmeal-baby-cereal-8-oz-box/129853",
+          "check": "blocked"
+        },
+        {
+          "merchant": "Natural Grocers",
+          "price": 6.55,
+          "url": "https://www.naturalgrocers.com/products/organic-iron-fortified-whole-grain-oatmeal-baby-cereal-8-oz",
+          "check": "blocked"
+        }
+      ]
+    },
+    {
+      "need": "Baby food: iron-rich foods, cereal, produce",
+      "name": "Parent's Choice Stage 2 baby food jars, 4 oz, variety 12-pack",
+      "packs": 1,
+      "unit_price": 7.41,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "SNAP",
+      "offers": [
+        {
+          "merchant": "Walmart",
+          "price": 7.41,
+          "url": "https://www.walmart.com/ip/CON-VARIETY-PACK/18039218211",
+          "check": "opens"
+        },
+        {
+          "merchant": "Walmart",
+          "price": 9.97,
+          "url": "https://www.walmart.com/ip/ORG-VARIETY/14698158499",
+          "check": "opens"
+        }
+      ]
+    },
+    {
+      "need": "Baby food: iron-rich foods, cereal, produce",
+      "name": "Bananas, avocados and sweet potatoes, about 4 lb total",
+      "packs": 1,
+      "unit_price": 6,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "SNAP / WIC fruit and veg benefit",
+      "offers": []
+    },
+    {
+      "need": "Baby food: iron-rich foods, cereal, produce",
+      "name": "Great Value plain whole milk yogurt, 32 oz tub",
+      "packs": 1,
+      "unit_price": 2.64,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "SNAP",
+      "offers": [
+        {
+          "merchant": "Walmart",
+          "price": 2.64,
+          "url": "https://www.walmart.com/c/kp/great-value-plain-yogurt",
+          "check": "ok"
+        },
+        {
+          "merchant": "Instacart (Walmart)",
+          "price": 2.64,
+          "url": "https://www.instacart.com/products/18617131-great-value-yogurt-nonfat-plain-32-oz",
+          "check": "ok"
+        },
+        {
+          "merchant": "Walmart",
+          "price": 5.17,
+          "url": "https://www.walmart.com/search?q=plain+yogurt",
+          "check": "ok"
+        }
+      ]
+    },
+    {
+      "need": "Vitamin D drops",
+      "name": "Equate Infant Vitamin D3 Drops, 400 IU, 1.69 fl oz",
+      "packs": 1,
+      "unit_price": 11.97,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "Medicaid clinic may give a bottle free",
+      "offers": [
+        {
+          "merchant": "Walmart",
+          "price": 7.03,
+          "url": "https://www.walmart.com/ip/Equate-Infant-Childrens-Vitamin-D3-Drops/743879156",
+          "check": "opens"
+        },
+        {
+          "merchant": "Walmart",
+          "price": 11.97,
+          "url": "https://www.walmart.com/c/kp/baby-vitamin-d-drops",
+          "check": "ok"
+        }
+      ]
+    },
+    {
+      "need": "Infant acetaminophen",
+      "name": "Equate Infants' Acetaminophen 160 mg/5 mL, 1 fl oz with syringe",
+      "packs": 1,
+      "unit_price": 3.48,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": null,
+      "offers": [
+        {
+          "merchant": "Walmart",
+          "price": 3.48,
+          "url": "https://www.walmart.com/ip/Equate-Children-s-Pain-and-Fever-Acetaminophen-160-mg-per-5-mL-Bubble-Gum-Flavor-4-Fluid-Ounce/10324463",
+          "check": "opens"
+        },
+        {
+          "merchant": "Walmart",
+          "price": 4.16,
+          "url": "https://www.walmart.com/ip/Equate-Infants-Pain-and-Fever-Acetaminophen-160-mg-per-5-mL-Grape-Flavor-2-Fluid-Ounces/5162310842",
+          "check": "opens"
+        }
+      ]
+    },
+    {
+      "need": "Baby wash / shampoo & lotion",
+      "name": "Equate Tear-Free Baby Wash & Shampoo, 15 oz",
+      "packs": 1,
+      "unit_price": 2.97,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": null,
+      "offers": [
+        {
+          "merchant": "Walmart",
+          "price": 2.97,
+          "url": "https://www.walmart.com/ip/Equate-Baby-Wash-Shampoo-18-fl-oz/54088054",
+          "check": "opens"
+        },
+        {
+          "merchant": "Walmart",
+          "price": 8.97,
+          "url": "https://www.walmart.com/ip/Equate-Tear-Free-Baby-Wash-Shampoo-28-Fl-Oz/24073997",
+          "check": "opens"
+        }
+      ]
+    },
+    {
+      "need": "Postnatal / prenatal vitamin for mom",
+      "name": "Equate Prenatal Multivitamin tablets, 100 ct",
+      "packs": 1,
+      "unit_price": 8.97,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "Medicaid may cover with a prescription",
+      "offers": [
+        {
+          "merchant": "Walmart",
+          "price": 15.58,
+          "url": "https://business.walmart.com/browse/healthcare/prenatal/equate/9480970_7642657_1723948_8697271_8317628/YnJhbmQ6RXF1YXRl",
+          "check": "opens"
+        }
+      ]
+    },
+    {
+      "need": "Nursing pads",
+      "name": "Parent's Choice Disposable Nursing Pads, 60 ct",
+      "packs": 1,
+      "unit_price": 4.97,
+      "when": "later",
+      "buy_by": "2026-10-24",
+      "tier": 1,
+      "benefit": null,
+      "offers": []
+    },
+    {
+      "need": "Bottles + size 2/3 nipples",
+      "name": "Parent's Choice silicone nipples, medium flow, 2 ct",
+      "packs": 1,
+      "unit_price": 3.97,
+      "when": "later",
+      "buy_by": "2026-10-28",
+      "tier": 1,
+      "benefit": null,
+      "offers": []
+    },
+    {
+      "need": "Mom's water bottle & snacks",
+      "name": "Great Value trail mix and granola bars, store brand",
+      "packs": 1,
+      "unit_price": 6.48,
+      "when": "later",
+      "buy_by": "2026-10-24",
+      "tier": 1,
+      "benefit": "SNAP",
+      "offers": []
+    }
+  ],
+  "skipped": [
+    {
+      "why": "129 left covers six a day through month end; nothing to buy.",
+      "need": "diapers"
+    },
+    {
+      "why": "Claim the free Queens Diaper Bank pack instead of paying.",
+      "need": "diapers (next month)"
+    },
+    {
+      "why": "She is not on formula, and WIC would cover it anyway.",
+      "need": "Formula"
+    },
+    {
+      "why": "Plain lanolin can wait; ask WIC breastfeeding peer for free samples.",
+      "need": "Nipple cream"
+    },
+    {
+      "why": "Reuse a bottle at home or ask on Buy Nothing.",
+      "need": "Mom's water bottle"
+    },
+    {
+      "why": "Wash is enough this month; skin needs little in cool weather.",
+      "need": "Baby lotion"
+    }
+  ]
+}

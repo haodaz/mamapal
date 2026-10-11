@@ -1,0 +1,378 @@
+{
+  "id": "run_mv4eh2hvrbgv",
+  "created_at": "2026-10-11T22:33:58.243Z",
+  "goal": "Keep the baby covered until the month ends, on what is left",
+  "status": "done",
+  "total_cost_usd": 1.024,
+  "seconds": 173,
+  "steps": [
+    {
+      "key": "stock",
+      "attempt": 0,
+      "status": "done",
+      "summary": "$115 free (keeping $12 aside), 21 days left; 1 consumable won't last the month, 9 other must-haves to cover.",
+      "seconds": 0,
+      "usage": {
+        "cost": 0,
+        "input": 0,
+        "output": 0,
+        "searches": 0
+      }
+    },
+    {
+      "key": "plan",
+      "attempt": 0,
+      "status": "done",
+      "summary": "9 things now for about $68, 1 scheduled for later, 2 left for another month.",
+      "seconds": 32.1,
+      "usage": {
+        "cost": 0.073,
+        "input": 2864,
+        "output": 2735,
+        "searches": 0
+      }
+    },
+    {
+      "key": "prices",
+      "attempt": 0,
+      "status": "done",
+      "summary": "Searched 9 items, found 5 real offers with links; 7 items had none.",
+      "seconds": 62,
+      "usage": {
+        "cost": 0.38,
+        "input": 42714,
+        "output": 1874,
+        "searches": 12
+      }
+    },
+    {
+      "key": "verify",
+      "attempt": 0,
+      "status": "done",
+      "summary": "opened 5 links: 3 showed the price, 2 open or block robots, 0 dead and dropped; money, coverage to month end and order checked: 7 items still unpriced, searching again.",
+      "notes": [
+        "Parent's Choice Stage 2 baby food variety, 16 jars (4 oz each): no store offer found yet.",
+        "Equate Baby Vitamin D Drops, 50 ml: no store offer found yet.",
+        "Equate Infants' Acetaminophen 160 mg/5 ml, 2 oz with syringe: no store offer found yet.",
+        "Equate Prenatal Vitamin tablets, 100 ct: no store offer found yet.",
+        "Parent's Choice Disposable Nursing Pads, 60 ct: no store offer found yet.",
+        "Equate Lanolin Nipple Cream, 1.5 oz: no store offer found yet.",
+        "Equate Tear-Free Baby Wash & Shampoo, 15 oz: no store offer found yet."
+      ],
+      "seconds": 2.3,
+      "usage": {
+        "cost": 0,
+        "input": 0,
+        "output": 0,
+        "searches": 0
+      }
+    },
+    {
+      "key": "prices",
+      "attempt": 1,
+      "status": "done",
+      "summary": "Searched 7 items, found 15 real offers with links.",
+      "seconds": 73.6,
+      "usage": {
+        "cost": 0.571,
+        "input": 75223,
+        "output": 3413,
+        "searches": 11
+      }
+    },
+    {
+      "key": "verify",
+      "attempt": 1,
+      "status": "done",
+      "summary": "opened 20 links: 8 showed the price, 12 open or block robots, 0 dead and dropped; money, coverage to month end and order checked: all passed.",
+      "notes": [],
+      "seconds": 2.9,
+      "usage": {
+        "cost": 0,
+        "input": 0,
+        "output": 0,
+        "searches": 0
+      }
+    },
+    {
+      "key": "cart",
+      "attempt": 0,
+      "status": "done",
+      "summary": "Cart ready: 9 items for $76, $39 left after; 1 later buys scheduled. You approve the payment in PayPal; Pal never pays for you.",
+      "seconds": 0,
+      "usage": {
+        "cost": 0,
+        "input": 0,
+        "output": 0,
+        "searches": 0
+      }
+    }
+  ],
+  "stock": {
+    "available": 115.17,
+    "spend_cap": 103.65,
+    "days_left": 21,
+    "lines": [
+      "diapers: 129 diapers left, about 21 days; 0 diapers short of month end",
+      "wipes not tracked, counting the whole month: 189 wipes"
+    ]
+  },
+  "issues_left_for_her": [],
+  "links": {
+    "ok": 8,
+    "dead": 0,
+    "opens": 12,
+    "blocked": 0
+  },
+  "items": [
+    {
+      "need": "wipes",
+      "name": "Parent's Choice Fresh Scent Baby Wipes, 800 ct box (10 packs)",
+      "packs": 1,
+      "unit_price": 18.5,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": null,
+      "offers": [
+        {
+          "merchant": "Walmart",
+          "price": 6.82,
+          "url": "https://www.walmart.com/ip/Parent-s-Choice-Fresh-Scent-Baby-Wipes-8-packs-of-100-800-count/44162658",
+          "check": "opens"
+        },
+        {
+          "merchant": "Walmart",
+          "price": 18.5,
+          "url": "https://www.walmart.com/ip/Parent-s-Choice-Fresh-Scent-Quilted-Baby-Wipes-800-Count/35261411",
+          "check": "opens"
+        }
+      ]
+    },
+    {
+      "need": "Baby food: iron-rich foods, cereal, produce",
+      "name": "Parent's Choice Iron-Fortified Infant Oatmeal Cereal, 16 oz",
+      "packs": 1,
+      "unit_price": 6.49,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "WIC food benefits / SNAP",
+      "offers": [
+        {
+          "merchant": "Price Chopper/Market 32",
+          "price": 6.49,
+          "url": "https://shop.pricechopper.com/store/price-chopper-ny/products/3318442-gerber-oatmeal-single-grain-cereal-16-oz",
+          "check": "ok"
+        },
+        {
+          "merchant": "Coborn's",
+          "price": 6.79,
+          "url": "https://shop.coborns.com/store/coborns-marketplace/products/3318442-gerber-oatmeal-single-grain-cereal-16-oz",
+          "check": "ok"
+        },
+        {
+          "merchant": "Tops Markets",
+          "price": 7.29,
+          "url": "https://shop.topsmarkets.com/store/tops-markets/products/3318442-gerber-oatmeal-single-grain-cereal-16-oz",
+          "check": "ok"
+        }
+      ]
+    },
+    {
+      "need": "Baby food: iron-rich foods, cereal, produce",
+      "name": "Parent's Choice Stage 2 baby food variety, 16 jars (4 oz each)",
+      "packs": 1,
+      "unit_price": 11.98,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "SNAP (EBT covers baby food)",
+      "offers": [
+        {
+          "merchant": "Walmart",
+          "price": 11.98,
+          "url": "https://www.walmart.com/browse/baby/parents-choice-baby-food/5427_133283_1001448_1923039",
+          "check": "opens"
+        },
+        {
+          "merchant": "Walmart (Gerber 2nd Foods)",
+          "price": 14.24,
+          "url": "https://www.walmart.com/ip/Gerber-2nd-Foods-Stage-2-Baby-Food-Carrots-4-oz-Tub-2-count-Pack-of-16/44923229",
+          "check": "opens"
+        },
+        {
+          "merchant": "Walmart (Gerber 2nd Foods)",
+          "price": 14.97,
+          "url": "https://www.walmart.com/ip/Gerber-2nd-Foods-Breakfast-Dinner-Puree-Classics-Baby-Food-Variety-Pack-4-oz-Tub-16-Pack/448869699",
+          "check": "opens"
+        }
+      ]
+    },
+    {
+      "need": "Vitamin D drops",
+      "name": "Equate Baby Vitamin D Drops, 50 ml",
+      "packs": 1,
+      "unit_price": 10.49,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": null,
+      "offers": [
+        {
+          "merchant": "Walmart",
+          "price": 7.98,
+          "url": "https://www.walmart.com/ip/Equate-Infant-Childrens-Vitamin-D3-Drops/743879156",
+          "check": "opens"
+        },
+        {
+          "merchant": "Enfamil.com",
+          "price": 10.49,
+          "url": "https://www.enfamil.com/products/enfamil-d-vi-sol-drops/liquid-drops-bottle-50-ml-bottle/",
+          "check": "ok"
+        },
+        {
+          "merchant": "Walmart (Enfamil D-Vi-Sol)",
+          "price": 11.97,
+          "url": "https://www.walmart.com/ip/Enfamil-D-Vi-Sol-Vitamin-D-Supplement-Drops-for-Infants-50-mL-dropper-bottle/194039855",
+          "check": "opens"
+        }
+      ]
+    },
+    {
+      "need": "Infant acetaminophen",
+      "name": "Equate Infants' Acetaminophen 160 mg/5 ml, 2 oz with syringe",
+      "packs": 1,
+      "unit_price": 5.49,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "Medicaid covers the doctor call if fever lasts",
+      "offers": [
+        {
+          "merchant": "Walmart",
+          "price": 4.97,
+          "url": "https://www.walmart.com/ip/Equate-Infants-Pain-and-Fever-Acetaminophen-160-mg-per-5-mL-Grape-Flavor-2-Fluid-Ounces/5162310842",
+          "check": "opens"
+        },
+        {
+          "merchant": "Target (up&up)",
+          "price": 5.49,
+          "url": "https://www.target.com/p/infants-39-dye-free-acetaminophen-fever-reducer-pain-reliever-liquid-grape-2-fl-oz-up-38-up-8482/-/A-21569964",
+          "check": "ok"
+        }
+      ]
+    },
+    {
+      "need": "Postnatal / prenatal vitamin for mom",
+      "name": "Equate Prenatal Vitamin tablets, 100 ct",
+      "packs": 1,
+      "unit_price": 8.98,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": null,
+      "offers": [
+        {
+          "merchant": "Walmart",
+          "price": 8.98,
+          "url": "https://www.walmart.com/c/kp/prenatal-vitamins-equate",
+          "check": "ok"
+        },
+        {
+          "merchant": "Target (up&up)",
+          "price": 11.37,
+          "url": "https://www.target.com/p/prenatal-vitamin-dietary-supplement-tablets-100ct-up-up-153/-/A-11004432",
+          "check": "opens"
+        },
+        {
+          "merchant": "Walmart (Equate Prenatal Advanced)",
+          "price": 14.88,
+          "url": "https://www.walmart.com/ip/Equate-Daily-Prenatal-Multi-DHA-60-Ct/21349356",
+          "check": "opens"
+        }
+      ]
+    },
+    {
+      "need": "Nursing pads",
+      "name": "Parent's Choice Disposable Nursing Pads, 60 ct",
+      "packs": 1,
+      "unit_price": 4.97,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": null,
+      "offers": [
+        {
+          "merchant": "Walmart",
+          "price": 4.97,
+          "url": "https://www.walmart.com/browse/baby/lanolin-and-nipple-creams/lansinoh/5427_133283_9009806/YnJhbmQ6TGFuc2lub2gie",
+          "check": "ok"
+        }
+      ]
+    },
+    {
+      "need": "Nipple cream",
+      "name": "Equate Lanolin Nipple Cream, 1.5 oz",
+      "packs": 1,
+      "unit_price": 5.97,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": null,
+      "offers": [
+        {
+          "merchant": "Walmart",
+          "price": 5.97,
+          "url": "https://www.walmart.com/browse/baby/lanolin-and-nipple-creams/lansinoh/5427_133283_9009806/YnJhbmQ6TGFuc2lub2gie",
+          "check": "opens"
+        },
+        {
+          "merchant": "Walmart (Lansinoh)",
+          "price": 10.57,
+          "url": "https://www.walmart.com/ip/Lansinoh-Lanolin-Nipple-Cream-Safe-for-Breastfeeding-Baby-100-Natural-1-41-oz/14966825",
+          "check": "opens"
+        }
+      ]
+    },
+    {
+      "need": "Baby wash / shampoo & lotion",
+      "name": "Equate Tear-Free Baby Wash & Shampoo, 15 oz",
+      "packs": 1,
+      "unit_price": 2.97,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": null,
+      "offers": [
+        {
+          "merchant": "Walmart",
+          "price": 2.97,
+          "url": "https://www.walmart.com/browse/baby/parent-s-choice-baby-food/5427_4549164_1923039",
+          "check": "ok"
+        }
+      ]
+    },
+    {
+      "need": "Bottles + size 2/3 nipples",
+      "name": "Parent's Choice Silicone Bottle Nipples, Medium Flow, 2 ct",
+      "packs": 1,
+      "unit_price": 3.47,
+      "when": "later",
+      "buy_by": "2026-10-26",
+      "tier": 1,
+      "benefit": null,
+      "offers": []
+    }
+  ],
+  "skipped": [
+    {
+      "why": "129 left covers 6 a day through month end; none needed.",
+      "need": "diapers"
+    },
+    {
+      "why": "Use SNAP groceries and a refilled bottle you already have.",
+      "need": "Mom's water bottle & snacks"
+    }
+  ]
+}

@@ -1,0 +1,359 @@
+{
+  "id": "run_mv4e63l5rfq2",
+  "created_at": "2026-10-11T22:25:26.441Z",
+  "goal": "Keep the baby covered until the month ends, on what is left",
+  "status": "done",
+  "total_cost_usd": 0.781,
+  "seconds": 136,
+  "steps": [
+    {
+      "key": "stock",
+      "attempt": 0,
+      "status": "done",
+      "summary": "$115 free (keeping $12 aside), 21 days left; 1 consumables won't last the month, 9 other must-haves to cover.",
+      "seconds": 0,
+      "usage": {
+        "cost": 0,
+        "input": 0,
+        "output": 0,
+        "searches": 0
+      }
+    },
+    {
+      "key": "plan",
+      "attempt": 0,
+      "status": "done",
+      "summary": "11 things now for about $73, 3 scheduled for later, 4 left for another month.",
+      "seconds": 63.4,
+      "usage": {
+        "cost": 0.143,
+        "input": 2826,
+        "output": 5060,
+        "searches": 0
+      }
+    },
+    {
+      "key": "prices",
+      "attempt": 0,
+      "status": "done",
+      "summary": "Found 9 real offers across stores, each with a link.",
+      "seconds": 70.3,
+      "usage": {
+        "cost": 0.638,
+        "input": 88910,
+        "output": 3731,
+        "searches": 10
+      }
+    },
+    {
+      "key": "verify",
+      "attempt": 0,
+      "status": "done",
+      "summary": "opened 9 links: 1 showed the price, 8 open or block robots, 0 dead and dropped; money, coverage to month end and order checked: all passed.",
+      "seconds": 2.7,
+      "usage": {
+        "cost": 0,
+        "input": 0,
+        "output": 0,
+        "searches": 0
+      }
+    },
+    {
+      "key": "cart",
+      "attempt": 0,
+      "status": "done",
+      "summary": "Cart ready: 11 items for $64, $51 left after; 3 later buys scheduled; 7 things for you to look at. You approve the payment in PayPal; Pal never pays for you.",
+      "seconds": 0,
+      "usage": {
+        "cost": 0,
+        "input": 0,
+        "output": 0,
+        "searches": 0
+      }
+    }
+  ],
+  "stock": {
+    "available": 115.17,
+    "spend_cap": 103.65,
+    "days_left": 21,
+    "lines": [
+      "diapers: 129 diapers left, about 21 days; 0 diapers short of month end",
+      "wipes not tracked, counting the whole month: 189 wipes"
+    ]
+  },
+  "issues_left_for_her": [
+    {
+      "check": "price",
+      "fix_by": "mom",
+      "problem": "Store produce bundle: bananas, sweet potatoes, avocados (about 5 lb): no store page confirmed the price to a robot; check it before you pay."
+    },
+    {
+      "check": "price",
+      "fix_by": "mom",
+      "problem": "Equate Prenatal Vitamin tablets, 100 ct: no store page confirmed the price to a robot; check it before you pay."
+    },
+    {
+      "check": "price",
+      "fix_by": "mom",
+      "problem": "Great Value granola bars 12 ct plus peanut butter 16 oz: no store page confirmed the price to a robot; check it before you pay."
+    },
+    {
+      "check": "price",
+      "fix_by": "mom",
+      "problem": "Parent's Choice Silicone Bottle Nipples, Stage 3, 2 ct: no store page confirmed the price to a robot; check it before you pay."
+    },
+    {
+      "check": "price",
+      "fix_by": "mom",
+      "problem": "Equate Infant Vitamin D3 Drops, 0.34 fl oz: no store page confirmed the price to a robot; check it before you pay."
+    },
+    {
+      "check": "price",
+      "fix_by": "mom",
+      "problem": "Equate Infant Pain & Fever Acetaminophen, 2 fl oz: no store page confirmed the price to a robot; check it before you pay."
+    },
+    {
+      "check": "price",
+      "fix_by": "mom",
+      "problem": "Equate Tear-Free Baby Wash & Shampoo, 15 oz: no store page confirmed the price to a robot; check it before you pay."
+    }
+  ],
+  "links": {
+    "ok": 1,
+    "dead": 0,
+    "opens": 6,
+    "blocked": 2
+  },
+  "items": [
+    {
+      "need": "wipes",
+      "name": "Parent's Choice Fragrance-Free Baby Wipes, 720 ct (9 packs of 80)",
+      "packs": 1,
+      "unit_price": 1.78,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": null,
+      "offers": [
+        {
+          "merchant": "Walmart",
+          "price": 1.78,
+          "url": "https://www.walmart.com/ip/Parent-s-Choice-Fragrance-Free-Baby-Wipes-80-Count-Select-for-More-Options/16935727",
+          "check": "opens"
+        },
+        {
+          "merchant": "Aldi",
+          "price": 5.49,
+          "url": "https://www.aldi.us/products/baby-items/diapers-wipes-wash/detail/ps/p/little-journey-jumbo-pack-diapers-newborn/",
+          "check": "opens"
+        },
+        {
+          "merchant": "Walmart",
+          "price": 17.96,
+          "url": "https://www.walmart.com/ip/Parent-s-Choice-Fragrance-Free-Baby-Wipes-900-Count/101685539",
+          "check": "opens"
+        }
+      ]
+    },
+    {
+      "need": "Baby food: iron-rich foods, cereal, produce",
+      "name": "Parent's Choice Iron-Fortified Oatmeal Baby Cereal, 8 oz",
+      "packs": 2,
+      "unit_price": 1.98,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "WIC covers infant cereal",
+      "offers": [
+        {
+          "merchant": "Walmart",
+          "price": 3.88,
+          "url": "https://www.walmart.com/c/kp/baby-oatmeal",
+          "check": "ok"
+        },
+        {
+          "merchant": "Stop & Shop",
+          "price": 5.29,
+          "url": "https://stopandshop.com/product/earths-best-organic-iron-fortified-whole-grain-oatmeal-baby-cereal-8-oz-box/129853",
+          "check": "blocked"
+        },
+        {
+          "merchant": "Natural Grocers",
+          "price": 6.55,
+          "url": "https://www.naturalgrocers.com/products/organic-iron-fortified-whole-grain-oatmeal-baby-cereal-8-oz",
+          "check": "blocked"
+        }
+      ]
+    },
+    {
+      "need": "Baby food: iron-rich foods, cereal, produce",
+      "name": "Parent's Choice Stage 2 fruit & veggie pouches, 12 ct variety",
+      "packs": 1,
+      "unit_price": 9.97,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "SNAP pays for this",
+      "offers": [
+        {
+          "merchant": "Walmart",
+          "price": 9.97,
+          "url": "https://www.walmart.com/ip/ORG-VARIETY/14698158499",
+          "check": "opens"
+        },
+        {
+          "merchant": "Walmart",
+          "price": 10.44,
+          "url": "https://www.walmart.com/ip/CON-VARIETY-PACK/18039218211",
+          "check": "opens"
+        }
+      ]
+    },
+    {
+      "need": "Baby food: iron-rich foods, cereal, produce",
+      "name": "Store produce bundle: bananas, sweet potatoes, avocados (about 5 lb)",
+      "packs": 1,
+      "unit_price": 7,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "SNAP pays for this",
+      "offers": []
+    },
+    {
+      "need": "Postnatal / prenatal vitamin for mom",
+      "name": "Equate Prenatal Vitamin tablets, 100 ct",
+      "packs": 1,
+      "unit_price": 8.44,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": null,
+      "offers": []
+    },
+    {
+      "need": "Nursing pads",
+      "name": "Parent's Choice Disposable Nursing Pads, 60 ct",
+      "packs": 1,
+      "unit_price": 4.97,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": null,
+      "offers": [
+        {
+          "merchant": "Walmart",
+          "price": 11.5,
+          "url": "https://www.walmart.com/ip/Parent-s-Choice-Ultra-Disposable-Nursing-Pads-60-Count/997689454",
+          "check": "opens"
+        }
+      ]
+    },
+    {
+      "need": "Mom's water bottle & snacks",
+      "name": "Great Value granola bars 12 ct plus peanut butter 16 oz",
+      "packs": 1,
+      "unit_price": 8,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "SNAP pays for this",
+      "offers": []
+    },
+    {
+      "need": "Bottles + size 2/3 nipples",
+      "name": "Parent's Choice Silicone Bottle Nipples, Stage 3, 2 ct",
+      "packs": 2,
+      "unit_price": 2.47,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": null,
+      "offers": []
+    },
+    {
+      "need": "Vitamin D drops",
+      "name": "Equate Infant Vitamin D3 Drops, 0.34 fl oz",
+      "packs": 1,
+      "unit_price": 6.97,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": null,
+      "offers": []
+    },
+    {
+      "need": "Infant acetaminophen",
+      "name": "Equate Infant Pain & Fever Acetaminophen, 2 fl oz",
+      "packs": 1,
+      "unit_price": 4.97,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "Medicaid covers the doctor visit if fever lasts",
+      "offers": []
+    },
+    {
+      "need": "Baby wash / shampoo & lotion",
+      "name": "Equate Tear-Free Baby Wash & Shampoo, 15 oz",
+      "packs": 1,
+      "unit_price": 2.97,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": null,
+      "offers": []
+    },
+    {
+      "need": "Baby food: iron-rich foods, cereal, produce",
+      "name": "Parent's Choice Stage 2 fruit & veggie pouches, 12 ct variety",
+      "packs": 1,
+      "unit_price": 8.88,
+      "when": "later",
+      "buy_by": "2026-10-22",
+      "tier": 1,
+      "benefit": "SNAP pays for this",
+      "offers": []
+    },
+    {
+      "need": "diapers",
+      "name": "Parent's Choice Diapers Size 3, 44 ct jumbo pack",
+      "packs": 1,
+      "unit_price": 9.97,
+      "when": "later",
+      "buy_by": "2026-10-28",
+      "tier": 1,
+      "benefit": "Queens Diaper Bank: free pack every two months, claim it first",
+      "offers": []
+    },
+    {
+      "need": "Nipple cream",
+      "name": "Equate Nipple Cream, 0.5 oz",
+      "packs": 1,
+      "unit_price": 3.97,
+      "when": "later",
+      "buy_by": "2026-10-28",
+      "tier": 2,
+      "benefit": null,
+      "offers": []
+    }
+  ],
+  "skipped": [
+    {
+      "why": "You bought four cans this month and WIC refills free",
+      "need": "formula"
+    },
+    {
+      "why": "Wash is enough now; skin cream can wait",
+      "need": "Baby lotion"
+    },
+    {
+      "why": "New nipples on your old bottles do the job",
+      "need": "New bottles"
+    },
+    {
+      "why": "Library story time and Buy Nothing groups are free",
+      "need": "Toys or books"
+    }
+  ]
+}
