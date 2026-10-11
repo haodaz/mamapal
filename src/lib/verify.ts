@@ -59,7 +59,7 @@ export async function checkQuote(url: string, quote: string): Promise<{ result: 
 }
 
 // Government (.gov, .us, .mil) or a small list of national program networks.
-const OFFICIAL = ["nationaldiaperbanknetwork.org", "211.org", "benefits.gov", "healthcare.gov", "irs.gov", "lifelinesupport.org", "feedingamerica.org", "headstart.gov", "reachoutandread.org"];
+const OFFICIAL = ["nationaldiaperbanknetwork.org", "usac.org", "211.org", "benefits.gov", "healthcare.gov", "irs.gov", "lifelinesupport.org", "feedingamerica.org", "headstart.gov", "reachoutandread.org"];
 export function isOfficial(url: string | null | undefined) {
   if (!url) return false;
   try {
