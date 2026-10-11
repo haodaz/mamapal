@@ -8,6 +8,7 @@ import { supplyStatus } from "./inventory";
 import { monthsSince } from "./age";
 import { findOffers } from "./compare-agent";
 import { newId } from "./store";
+import { openLink } from "./verify";
 
 // Month run: Pal is handed one goal ("keep the baby covered until the month ends on what is left") and works it
 // in steps: take stock → plan → find real prices → verify → hand her one cart. Each step is saved as soon as it
@@ -168,22 +169,6 @@ async function priceItems(state: State, run: MonthRun) {
 }
 
 // ---------- step 4: verify (no model; it checks the model's work) ----------
-async function openLink(url: string, price: number): Promise<LinkCheck> {
-  try {
-    const ctl = new AbortController();
-    const timer = setTimeout(() => ctl.abort(), 8000);
-    const r = await fetch(url, { redirect: "follow", signal: ctl.signal, headers: { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129 Safari/537.36", Accept: "text/html" } });
-    clearTimeout(timer);
-    if (r.status === 404 || r.status === 410) return "dead";
-    if (!r.ok) return "blocked";
-    const html = (await r.text()).slice(0, 2_000_000);
-    const p = price.toFixed(2);
-    return html.includes(p) || html.includes(`"price":${p}`) || html.includes(`${Math.floor(price)}<`) ? "ok" : "opens";
-  } catch (e) {
-    return /ENOTFOUND|EAI_AGAIN/.test(String((e as Error).cause ?? e)) ? "dead" : "blocked";
-  }
-}
-
 async function verifyDraft(run: MonthRun) {
   const s = run.stock!, items = run.draft!.items;
   const issues: RunIssue[] = [];

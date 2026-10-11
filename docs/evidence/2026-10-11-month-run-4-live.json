@@ -1,0 +1,170 @@
+{
+  "where": "https://mamapal.vercel.app (Vercel, production)",
+  "id": "run_mv4f2wn2cuhz",
+  "goal": "Keep the baby covered until the month ends, on what is left",
+  "status": "done",
+  "total_cost_usd": 1.582,
+  "seconds": 279,
+  "steps": [
+    {
+      "key": "stock",
+      "attempt": 0,
+      "status": "done",
+      "summary": "$115 free (keeping $12 aside), 21 days left; 1 consumable won't last the month, 9 other must-haves to cover.",
+      "notes": null,
+      "usage": {
+        "cost": 0,
+        "input": 0,
+        "output": 0,
+        "searches": 0
+      },
+      "seconds": 0.0
+    },
+    {
+      "key": "plan",
+      "attempt": 0,
+      "status": "done",
+      "summary": "13 things now for about $87, 1 scheduled for later, 2 left for another month.",
+      "notes": null,
+      "usage": {
+        "cost": 0.108,
+        "input": 2864,
+        "output": 3652,
+        "searches": 0
+      },
+      "seconds": 44.5
+    },
+    {
+      "key": "prices",
+      "attempt": 0,
+      "status": "done",
+      "summary": "Searched 13 items, found 17 real offers with links; 7 items had none.",
+      "notes": null,
+      "usage": {
+        "cost": 0.514,
+        "input": 62331,
+        "output": 3292,
+        "searches": 12
+      },
+      "seconds": 65.4
+    },
+    {
+      "key": "verify",
+      "attempt": 0,
+      "status": "done",
+      "summary": "opened 17 links: 3 showed the price, 14 open or block robots, 0 dead and dropped; money, coverage to month end and order checked: 7 items still unpriced, searching again.",
+      "notes": [
+        "Bananas, sweet potatoes and avocado (fresh produce bundle): no store offer found yet.",
+        "Equate Nipple Cream, 1.5 oz: no store offer found yet.",
+        "Reusable 32 oz water bottle plus store-brand granola bars and nuts: no store offer found yet.",
+        "Parent's Choice Baby Bottles 9 oz, 3-pack with size 2 nipples: no store offer found yet.",
+        "Equate Infants' Pain and Fever Acetaminophen, 1 oz: no store offer found yet.",
+        "Equate Tear-Free Baby Wash and Shampoo, 15 oz: no store offer found yet.",
+        "Used board books from a local Buy Nothing group: no store offer found yet."
+      ],
+      "usage": {
+        "cost": 0,
+        "input": 0,
+        "output": 0,
+        "searches": 0
+      },
+      "seconds": 2.0
+    },
+    {
+      "key": "prices",
+      "attempt": 1,
+      "status": "done",
+      "summary": "Searched 7 items, found 7 real offers with links; 3 items had none.",
+      "notes": null,
+      "usage": {
+        "cost": 0.376,
+        "input": 52097,
+        "output": 2234,
+        "searches": 6
+      },
+      "seconds": 37.5
+    },
+    {
+      "key": "verify",
+      "attempt": 1,
+      "status": "done",
+      "summary": "opened 24 links: 3 showed the price, 20 open or block robots, 1 dead and dropped; money, coverage to month end and order checked: 1 problems, sent back.",
+      "notes": [
+        "now + later costs $103.96, over the $103.65 cap by $0.31. Cut tier 3, then tier 2, then smaller packs.",
+        "Bananas, sweet potatoes and avocado (fresh produce bundle): no store offer found yet.",
+        "Reusable 32 oz water bottle plus store-brand granola bars and nuts: no store offer found yet.",
+        "Used board books from a local Buy Nothing group: no store offer found yet."
+      ],
+      "usage": {
+        "cost": 0,
+        "input": 0,
+        "output": 0,
+        "searches": 0
+      },
+      "seconds": 1.7
+    },
+    {
+      "key": "plan",
+      "attempt": 2,
+      "status": "done",
+      "summary": "Revised after the check: 13 things now for about $72, 1 scheduled for later, 3 left for another month.",
+      "notes": null,
+      "usage": {
+        "cost": 0.117,
+        "input": 2933,
+        "output": 4451,
+        "searches": 0
+      },
+      "seconds": 54.2
+    },
+    {
+      "key": "prices",
+      "attempt": 2,
+      "status": "done",
+      "summary": "Searched 13 items, found 22 real offers with links.",
+      "notes": null,
+      "usage": {
+        "cost": 0.467,
+        "input": 51124,
+        "output": 3652,
+        "searches": 12
+      },
+      "seconds": 66.0
+    },
+    {
+      "key": "verify",
+      "attempt": 2,
+      "status": "done",
+      "summary": "opened 22 links: 0 showed the price, 21 open or block robots, 1 dead and dropped; money, coverage to month end and order checked: all passed.",
+      "notes": [],
+      "usage": {
+        "cost": 0,
+        "input": 0,
+        "output": 0,
+        "searches": 0
+      },
+      "seconds": 8.0
+    },
+    {
+      "key": "cart",
+      "attempt": 0,
+      "status": "done",
+      "summary": "Cart ready: 13 items for $71, $44 left after; 1 later buy scheduled. You approve the payment in PayPal; Pal never pays for you.",
+      "notes": null,
+      "usage": {
+        "cost": 0,
+        "input": 0,
+        "output": 0,
+        "searches": 0
+      },
+      "seconds": 0.0
+    }
+  ],
+  "links": {
+    "ok": 0,
+    "dead": 1,
+    "opens": 20,
+    "blocked": 1
+  },
+  "issues_left_for_her": []
+}

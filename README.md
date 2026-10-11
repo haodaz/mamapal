@@ -48,6 +48,8 @@ Every step is saved as it finishes, so a timeout resumes at the next step. Three
 
 **What you can claim.** She enters ZIP, state, household size, income, children's ages. Claude, with web search over official sites, returns every program she likely qualifies for in her area: WIC, SNAP under its state name, Medicaid/CHIP, the nearest diaper bank, Head Start, child care subsidy, HEAP/LIHEAP, Lifeline, EITC/CTC, 211, pantries, free-goods groups. Each one carries the single rule that decides her eligibility, what it is worth per month, three to four steps, the documents to bring, and the official link. A Queens, NY profile on $1,200/month found 12 programs worth roughly $1,500/month in about two minutes.
 
+**Every rule carries its source, and the source is checked.** For each program Claude must give the official page it read and the deciding rule copied word for word. The server opens that page and looks for the words (found / numbers match / not on the page / couldn't read it), marks whether the source is a government site, opens every application link and drops dead ones. Weak sources are sent back once for a search that only accepts official pages. "Check every source again" re-runs the checks with no AI cost. The price check on any verdict card opens every store link the same way. Details and before/after numbers: [`docs/evidence/`](docs/evidence/README.md).
+
 Everything that touches money is a real PayPal sandbox API call. Nothing is faked on screen. The UI is bilingual (English / 简体中文, toggle top right); the agent answers in the chosen language.
 
 ## Stack

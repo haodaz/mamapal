@@ -1,0 +1,163 @@
+{
+  "generated_at": "2026-10-11T22:55:22.502Z",
+  "checked_at": "2026-10-11T22:56:18.024Z",
+  "household": "demo profile: Queens NY, 2 people, $1,200/month",
+  "items": [
+    {
+      "name": "EITC + Child Tax Credit (federal, NY State and NYC credits)",
+      "category": "tax",
+      "scope": "federal",
+      "source_url": null,
+      "source_quote": null,
+      "check": {
+        "at": "2026-10-11T22:56:17.433Z",
+        "apply": "ok",
+        "source": "none",
+        "official": false
+      }
+    },
+    {
+      "name": "Medicaid / Child Health Plus (NY State of Health)",
+      "category": "health",
+      "scope": "state",
+      "source_url": "https://www.health.ny.gov/health_care/child_health_plus/eligibility_and_cost.htm",
+      "source_quote": "There is no monthly premium for families whose income is less than 2.2 times the poverty level.",
+      "check": {
+        "at": "2026-10-11T22:56:17.433Z",
+        "apply": "ok",
+        "source": "found",
+        "official": true
+      }
+    },
+    {
+      "name": "Early Head Start (NYC EarlyLearn, birth to 3)",
+      "category": "childcare",
+      "scope": "federal",
+      "source_url": "https://acf.gov/sites/default/files/documents/ohs/report-to-congres-hs-eligibility-2022.pdf",
+      "source_quote": "Family income is at or below the 100 percent HHS poverty guideline",
+      "check": {
+        "at": "2026-10-11T22:56:17.433Z",
+        "apply": "none",
+        "source": "unreachable",
+        "official": true
+      }
+    },
+    {
+      "name": "SNAP (food stamps, applied for through ACCESS HRA in NYC)",
+      "category": "food",
+      "scope": "state",
+      "source_url": "https://otda.ny.gov/fair%20hearing%20images/2026-9/Redacted_9235645Z.pdf",
+      "source_quote": "the gross income threshold for categorical eligibility for SNAP for households with earned income ... increased from 130 percent of federal poverty level to 150 percent of the federal poverty level",
+      "check": {
+        "at": "2026-10-11T22:56:17.433Z",
+        "apply": "ok",
+        "source": "unreachable",
+        "official": true
+      }
+    },
+    {
+      "name": "WIC (New York State WIC Program)",
+      "category": "food",
+      "scope": "state",
+      "source_url": "https://www.washingtoncountyny.gov/180/WIC-Eligibility",
+      "source_quote": "Provide proof that his / her household income is at or below 185% of the poverty guideline",
+      "check": {
+        "at": "2026-10-11T22:56:17.433Z",
+        "apply": "ok",
+        "source": "unreachable",
+        "official": true
+      }
+    },
+    {
+      "name": "Food pantries and 311 / Plentiful (NYC's 211)",
+      "category": "community",
+      "scope": "local",
+      "source_url": null,
+      "source_quote": null,
+      "check": {
+        "at": "2026-10-11T22:56:17.433Z",
+        "apply": "ok",
+        "source": "none",
+        "official": false
+      }
+    },
+    {
+      "name": "Queens Diaper Bank (Public Health Solutions)",
+      "category": "diapers",
+      "scope": "local",
+      "source_url": "https://healthsolutions.org/family-support/queens-diaper-bank/",
+      "source_quote": "The Queens Diaper Bank is open two days a month by appointment only and provides diapers once every two months per child",
+      "check": {
+        "at": "2026-10-11T22:56:17.433Z",
+        "apply": "ok",
+        "source": "found",
+        "official": false
+      }
+    },
+    {
+      "name": "Free baby goods: Buy Nothing groups, Baby2Baby partners, Reach Out and Read",
+      "category": "community",
+      "scope": "local",
+      "source_url": null,
+      "source_quote": null,
+      "check": {
+        "at": "2026-10-11T22:56:17.433Z",
+        "apply": "ok",
+        "source": "none",
+        "official": false
+      }
+    },
+    {
+      "name": "HEAP (Home Energy Assistance Program, heating help)",
+      "category": "utilities",
+      "scope": "state",
+      "source_url": "https://www.ny.gov/services/apply-heating-assistance-heap",
+      "source_quote": "The Regular Heating Benefit helps income-eligible New Yorkers pay the cost of heating their homes.",
+      "check": {
+        "at": "2026-10-11T22:56:17.433Z",
+        "apply": "blocked",
+        "source": "unreachable",
+        "official": true
+      }
+    },
+    {
+      "name": "Lifeline phone and internet discount",
+      "category": "utilities",
+      "scope": "federal",
+      "source_url": "https://www.fcc.gov/lifeline-consumers",
+      "source_quote": "You qualify if your household income is at or below 135% of the Federal Poverty Guidelines",
+      "check": {
+        "at": "2026-10-11T22:56:17.433Z",
+        "apply": "ok",
+        "source": "found",
+        "official": true
+      }
+    },
+    {
+      "name": "Cash Assistance (TANF, NYC HRA)",
+      "category": "cash",
+      "scope": "state",
+      "source_url": null,
+      "source_quote": null,
+      "check": {
+        "at": "2026-10-11T22:56:17.433Z",
+        "apply": "ok",
+        "source": "none",
+        "official": false
+      }
+    },
+    {
+      "name": "NYC child care voucher (ACS, CCDF subsidy)",
+      "category": "childcare",
+      "scope": "local",
+      "source_url": "https://www.nyc.gov/site/acs/early-care/apply-child-care.page",
+      "source_quote": "the City is no longer able to offer child care vouchers to families that are not on cash assistance",
+      "check": {
+        "at": "2026-10-11T22:56:17.433Z",
+        "apply": "ok",
+        "source": "found",
+        "official": true
+      }
+    }
+  ]
+}

@@ -128,7 +128,16 @@ export type Resource = {
   apply_url: string | null;
   phone: string | null;
   verify_note: string | null;
+  source_url?: string | null; // official page that states the deciding rule
+  source_quote?: string | null; // that rule copied word for word from the page (never translated)
+  check?: ResourceCheck; // what the verifier found when it opened those pages
 };
+
+// source: was source_quote really on source_url? apply: does the application link open? official: .gov / national network.
+export type ResourceCheck = { source: "found" | "close" | "not_found" | "unreachable" | "none"; apply: LinkCheck | "none"; official: boolean; at: string };
+// Government programs must cite a government page; charities and community groups cite their own site.
+export const GOV_CATEGORIES: ResourceCategory[] = ["food", "health", "cash", "childcare", "utilities", "tax"];
+export const needsOfficial = (r: { category: ResourceCategory; scope: "federal" | "state" | "local" }) => GOV_CATEGORIES.includes(r.category) && r.scope !== "local";
 
 export type ResourceReport = {
   generated_at: string;
@@ -136,6 +145,7 @@ export type ResourceReport = {
   profile: Profile;
   summary: string;
   items: Resource[];
+  checked_at?: string;
 };
 
 export type Supplies = Record<SupplyType, { qty: number; as_of: string }>;

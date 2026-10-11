@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { loadState, saveState } from "@/lib/store";
 import { comparePrices } from "@/lib/compare-agent";
-import { derive, round } from "@/lib/types";
+import { derive, round, type Offer } from "@/lib/types";
+import { openLink } from "@/lib/verify";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 180;
@@ -17,8 +18,10 @@ export async function POST(_req: Request, ctx: { params: Promise<{ id: string }>
     for (const r of results) {
       const it = plan.items[r.index];
       if (!it) continue;
-      it.offers = r.offers;
-      const best = r.offers[0];
+      // open every link: dead ones are dropped, the rest carry what the page showed
+      const offers: Offer[] = await Promise.all(r.offers.map(async (o) => ({ ...o, check: o.url ? await openLink(o.url, o.price) : ("blocked" as const) })));
+      it.offers = offers.filter((o) => o.check !== "dead").sort((a, b) => a.price - b.price);
+      const best = it.offers[0];
       if (best && it.buy_price != null && best.price < it.buy_price) {
         it.buy_price = round(best.price);
         it.merchant = best.merchant;

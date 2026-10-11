@@ -1,4 +1,6 @@
-# Evidence: month runs
+# Evidence
+
+## Month runs
 
 Real runs of the month-run agent (`src/lib/month-run.ts`) against the demo household, saved step by step.
 Names are replaced with "the baby"; nothing else is edited. Each file has every step's summary, time, tokens,
@@ -9,6 +11,7 @@ searches and cost, the offers with the link check the verifier did, and what was
 | [1](2026-10-11-month-run-1.json) | 5 | 136 s | $0.78 | Passed the first checker, but reading the output showed three defects the checker missed (below). |
 | [2](2026-10-11-month-run-2.json) | 9 | 223 s | $1.95 | New checker caught pack-size mismatches; prose stated no money; but it searched three times for fresh produce that has no online listing, and the price step alone cost $1.38. |
 | [3](2026-10-11-month-run-3.json) | 7 | 173 s | $1.02 | Cheaper first price pass left 7 items unpriced; the checker sent only those back for one more search; then all passed, 20 links opened, 8 prices seen on the store page, nothing left for her to check. |
+| [4, live](2026-10-11-month-run-4-live.json) | 9 | 279 s | $1.58 | On the deployed site (Vercel). Re-priced 7 items, then the checker sent the plan back once; the revision passed. Every step stayed inside the function time limit. From Vercel no store page showed the price to the robot (0 of 22): stores block data-center traffic harder than a home connection. |
 
 ## Defects found in the runs, and the fix for each
 
@@ -25,6 +28,28 @@ searches and cost, the offers with the link check the verifier did, and what was
    and never found. Fix: at most one extra price pass per run.
 5. **Price step too expensive (run 2).** 20 searches at medium effort cost $1.38. Fix: up to 1.5 searches per item
    (max 12) at low effort, plus the targeted second pass from fix 3. Run 3's two price passes together: $0.95.
+
+## Benefit sources
+
+The benefits finder must now give, for every program, the official page it read and the deciding rule **copied word for
+word** from that page. The server opens the page and looks for the quote (`src/lib/verify.ts`); it also opens every
+application link and removes dead ones. Programs whose rule has no source, whose quote was not on the page, or whose
+source is not a government page (for government programs) are sent back once for a search that only accepts official pages.
+
+Demo household (Queens, NY), two searches on 2026-10-11:
+
+| | First search (no send-back) | After the send-back pass ([file](2026-10-11-benefit-sources.json)) |
+|---|---|---|
+| Rule found on an official page | 2 of 12 | 3 of 12 government programs + the diaper bank on its own site |
+| Source was not official | Medicaid from a third-party blog, Lifeline from a phone company's page | replaced by health.ny.gov and fcc.gov, both quotes found word for word |
+| Checker could not read the source | 3 (state .gov sites refuse robots) | 4 (3 refuse robots, 1 is a PDF) |
+| No source given | 6 | 4 (tax credits, pantries, Buy Nothing, cash assistance) |
+| Application links | 11 open, 1 dead and removed (on the older report) | 10 open, 1 refused robots |
+
+A finding worth keeping: the quote for the NYC child care voucher, found on nyc.gov, says the city "is no longer able to
+offer child care vouchers to families that are not on cash assistance". The check surfaces the rule that actually decides it.
+Known gap: the checker confirms the quote is on an official page, not that the page is for her county (WIC's quote
+came from another New York county's site).
 
 ## What the checker verifies (no model involved)
 
