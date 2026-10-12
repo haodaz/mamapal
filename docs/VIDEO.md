@@ -6,25 +6,29 @@
 用的是虚构的 Maya 家（休斯顿，Leo 4 个月）。片子里：介绍页「Pal 自己能做的」（含那次检查拦下奶粉断档的真实记录）→ 演示家庭登录 → 输入 Instagram 推的两样东西，Pal 砍掉并补上快用完的奶粉和尿布 → 右侧面板看判定 → PayPal 沙盒付款、capture id → 月度管家五步（这一次一遍过：12 个链接、4 个在店铺页面看到价格、$0.39）→ 福利出处原话（德州 SNAP）→ 品牌调研 Payouts $2 → 账本。
 
 ## YouTube
-**标题**：MamaPal: hand Pal the month (PayPal AI Hackathon)
+**标题**：MamaPal: Pal cares, Pal cuts, Pal claims — an AI pal for a family's hardest month
 
 **描述**：
-MamaPal is an AI pal for a family's hardest month. Hand Pal the month and it takes stock, plans, finds real prices, and then a checker that is not the AI opens every link and recomputes every number before you see one cart. You pay it yourself in PayPal; Pal never pays on its own.
+Pal cares, Pal cuts, Pal claims. MamaPal is an AI pal for a family's hardest month, built on Claude and PayPal.
+
+Pal cares: it knows the baby's month. Hand Pal the month and it takes stock, plans, finds real prices, and then a checker that is not the AI opens every link and recomputes every number before you see one cart.
+Pal cuts: say what the feed told you to buy. Pal keeps what the baby needs, swaps the rest for store brands, and you pay for exactly that cart with PayPal. Pal never pays on its own.
+Pal claims: the help you likely qualify for where you live, each rule quoted from the official page and checked there, plus brand surveys that pay back through PayPal Payouts.
 
 In this video (a fictional demo household, Maya in Houston):
 0:00 What MamaPal is
 0:12 Hand Pal the month: what the checker caught in a real run
 0:32 Three demo households, each a private copy
-0:47 "Instagram says buy…": Pal cuts it and adds what is about to run out
-1:18 PayPal Checkout (sandbox): one button for the approved cart, capture ID on the card
-1:32 The month run, step by step, with time and AI cost
-2:10 Benefits she can claim, each rule quoted from the official page
+0:47 Pal cuts: "Instagram says buy..." becomes what the baby needs
+1:18 PayPal Checkout (sandbox): one button, capture ID on the card
+1:32 Pal cares: the month run, step by step, with time and AI cost
+2:10 Pal claims: each rule quoted from the official page
 2:29 A brand survey paid back through PayPal Payouts
 2:35 Every dollar in the ledger with its PayPal ID
 
 Try it: https://mamapal.vercel.app (codes MAYA-DEMO, ROSA-DEMO, KEISHA-DEMO)
 Code (MIT): https://github.com/haodaz/mamapal
-Built with Claude and PayPal (Orders v2, Payouts v1, JS SDK), Next.js, Supabase. Sandbox only.
+Built for the PayPal AI Hackathon with Claude and PayPal (Orders v2, Payouts v1, JS SDK), Next.js and Supabase. PayPal sandbox only; no real money moves.
 
 ---
 
