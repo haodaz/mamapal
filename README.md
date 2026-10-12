@@ -3,7 +3,7 @@
 **Pal cares · Pal cuts · Pal claims. A pal for a mother's hardest month.**
 
 Live demo: https://mamapal.vercel.app. Pick a demo household on the sign-in page (codes `MAYA-DEMO`, `ROSA-DEMO`, `KEISHA-DEMO`); each opens your own private copy, so nothing you do reaches another visitor. Or start your own household with any name. All three households are fictional; the places and programs are real.
-Demo video (2:55): https://youtu.be/jDOPtrLy4sY
+Demo video (2:44): https://youtu.be/Vu4-fOuxg_A (first version, Oct 4: https://youtu.be/jDOPtrLy4sY)
 
 Built for the [PayPal AI Hackathon](https://paypalaihackathon.devpost.com/) by a mother who lives on this budget.
 

@@ -10,7 +10,7 @@ Pal cares, Pal cuts, Pal claims. A pal for a mother's hardest month.
 
 ## Links
 - Try it: https://mamapal.vercel.app — open a demo household with `MAYA-DEMO`, `ROSA-DEMO` or `KEISHA-DEMO` (each opens your own private copy), or start your own with any name
-- Video (2:44): NEW_YOUTUBE_LINK  (first version: https://youtu.be/jDOPtrLy4sY)
+- Video (2:44): https://youtu.be/Vu4-fOuxg_A  (first version: https://youtu.be/jDOPtrLy4sY)
 - Code (MIT): https://github.com/haodaz/mamapal
 
 ## About the project
