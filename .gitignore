@@ -44,3 +44,5 @@ next-env.d.ts
 # demo video working files
 /docs/video/v2/out/
 /docs/video/v2/tts/
+/docs/video/v2/ffmpeg_path.txt
+/docs/video/v2/record.log
