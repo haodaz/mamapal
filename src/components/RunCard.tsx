@@ -1,34 +1,37 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useRef } from "react";
 import { Check, Loader2, X, Circle } from "lucide-react";
 import type { MonthRun, Plan, RunStep } from "@/lib/types";
 import type { Key } from "@/lib/i18n";
 import { useLang } from "./LangProvider";
 import { PlanCard } from "./PlanCard";
 
-// A month run as Pal's message: the steps light up as they finish, then the cart appears under them.
-// This component also drives the run: it asks the server for the next step until the run is done or a step fails.
-export function RunCard({ initial, plans, onChange, onError }: { initial: MonthRun; plans: Plan[]; onChange: () => void; onError: (m: string) => void }) {
-  const { t } = useLang();
-  const [run, setRun] = useState(initial);
-  const driving = useRef(false);
-
-  async function drive(retry = false) {
-    if (driving.current) return;
-    driving.current = true;
+// Keeps a month run going: asks the server for the next step until the run is done or a step fails.
+// Lives with the conversation (not the panel), so closing the panel never stops the run.
+export function useRunDriver(onUpdate: (run: MonthRun, planReady: boolean) => void, onError: (m: string) => void) {
+  const driving = useRef(new Set<string>());
+  const upd = useRef(onUpdate); upd.current = onUpdate;
+  const err = useRef(onError); err.current = onError;
+  return useCallback(async (start: MonthRun, retry = false) => {
+    if (driving.current.has(start.id)) return;
+    driving.current.add(start.id);
     try {
-      let cur = run, first = true;
+      let cur = start, first = true;
       while (cur.status === "running" || (retry && first)) {
         const r = await fetch(`/api/run/${cur.id}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ retry: retry && first }) });
         const j = await r.json();
         if (!r.ok) throw new Error(j.error ?? "run failed");
         cur = j.run; first = false;
-        setRun(cur);
-        if (j.plan) onChange();
+        upd.current(cur, !!j.plan);
       }
-    } catch (e) { onError((e as Error).message); } finally { driving.current = false; }
-  }
-  useEffect(() => { if (initial.status === "running") drive(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    } catch (e) { err.current((e as Error).message); } finally { driving.current.delete(start.id); }
+  }, []);
+}
+
+// The run's steps as they light up, then the cart under them. Display only; useRunDriver moves it forward.
+export function RunCard({ run, plans, onChange, onError, onRetry }: { run: MonthRun; plans: Plan[]; onChange: () => void; onError: (m: string) => void; onRetry: () => void }) {
+  const { t } = useLang();
+  const drive = (_retry: boolean) => onRetry();
 
   const label = (s: RunStep) => t(`run.step.${s.key}${s.attempt > 0 && s.key !== "stock" && s.key !== "cart" ? "_rev" : ""}` as Key);
   const plan = run.plan_id ? plans.find((p) => p.id === run.plan_id) : undefined;

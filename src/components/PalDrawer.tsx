@@ -6,6 +6,7 @@ import { useLang } from "./LangProvider";
 import { PalFace } from "./PalFace";
 import { PlanCard } from "./PlanCard";
 import { MicButton, speak, useVoice } from "./Voice";
+import { announceChange } from "./useAppState";
 import { contextLine, type PalContext } from "@/lib/context";
 import type { Plan } from "@/lib/types";
 
@@ -17,6 +18,7 @@ export function PalDrawer({ ctx, kid, onClose }: { ctx: PalContext | null; kid: 
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [thread, setThread] = useState<{ ask: string; plan: Plan }[]>([]);
+  const [convId, setConvId] = useState<string | null>(null); // questions asked here stay in one conversation
   const end = useRef<HTMLDivElement>(null);
   const box = useRef<HTMLTextAreaElement>(null);
   const submitRef = useRef<(text?: string, spoke?: boolean) => void>(() => {});
@@ -34,10 +36,12 @@ export function PalDrawer({ ctx, kid, onClose }: { ctx: PalContext | null; kid: 
     const q = text.trim();
     setBusy(true); setError(null); setAsk("");
     try {
-      const r = await fetch("/api/plan", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ask: q, lang, context: contextLine(ctx) }) });
+      const r = await fetch("/api/plan", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ask: q, lang, context: contextLine(ctx), conversation_id: convId ?? undefined }) });
       const j = await r.json();
       if (!r.ok) throw new Error(j.error ?? "failed");
       setThread((th) => [...th, { ask: q, plan: j.plan }]);
+      setConvId(j.conversation_id);
+      announceChange();
       if (spoke) speak(`${j.plan.headline} ${j.plan.note}`, lang);
     } catch (e) { setError((e as Error).message); setAsk(q); } finally { setBusy(false); }
   }
@@ -53,7 +57,7 @@ export function PalDrawer({ ctx, kid, onClose }: { ctx: PalContext | null; kid: 
         <header className="flex items-center justify-between rounded-t-3xl border-b border-line bg-panel px-4 py-3">
           <div className="flex items-center gap-2 text-sm font-medium"><PalFace size={26} />{t("chat.title")}</div>
           <div className="flex items-center gap-3">
-            <Link href="/chat" className="text-xs text-primary">{t("pal.history")}</Link>
+            <Link href={convId ? `/?c=${convId}` : "/chat"} className="text-xs text-primary">{t("pal.history")}</Link>
             <button onClick={onClose} className="rounded-full p-1 text-muted hover:bg-bg hover:text-fg" aria-label="close"><X className="h-4 w-4" /></button>
           </div>
         </header>

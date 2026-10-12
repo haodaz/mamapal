@@ -1,81 +1,86 @@
 "use client";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
-import { Wallet, Baby, Package, HandCoins, MessageCircle, type LucideIcon } from "lucide-react";
-import { useAppState } from "@/components/useAppState";
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Wallet, Package, HandCoins, PiggyBank, ShoppingBasket, ListChecks, X, Loader2, Check, AlertTriangle, type LucideIcon } from "lucide-react";
+import { useAppState, announceChange } from "@/components/useAppState";
 import { useLang } from "@/components/LangProvider";
 import { PalFace, PalFigure } from "@/components/PalFace";
-import { NeedsCard } from "@/components/NeedsCard";
 import { PlanCard } from "@/components/PlanCard";
 import { BabyAvatar } from "@/components/BabyAvatar";
-import { SpendCard } from "@/components/SpendCard";
-import { RunCard } from "@/components/RunCard";
+import { RunCard, useRunDriver } from "@/components/RunCard";
 import { MicButton, speak, useVoice } from "@/components/Voice";
+import { useSidebar } from "@/components/Sidebar";
 import { childNeeds } from "@/lib/stages";
 import { supplyStatus } from "@/lib/inventory";
 import { monthsSince, formatAge } from "@/lib/age";
-import type { MonthRun, Plan, ResourceReport, SupplyType } from "@/lib/types";
+import type { Key } from "@/lib/i18n";
+import type { MonthRun, Plan, RunStep } from "@/lib/types";
 
-type Tab = "money" | "pantry" | "needs" | "claims";
+// Home is a conversation with Pal. Pal talks; what it does arrives as small cards in the conversation, and a card
+// opens in a panel on the right (full screen on a phone) only when there is something to look at.
+// The tools she manages herself (this month, budget, claims, me) live in the sidebar.
+
+type Pane = { kind: "plan" | "run"; id: string } | null;
 
 export default function Home() {
+  return <Suspense fallback={null}><Conversation /></Suspense>;
+}
+
+function Conversation() {
   const { t, lang } = useLang();
   const router = useRouter();
+  const params = useSearchParams();
   const { data, refresh } = useAppState();
-  const [report, setReport] = useState<ResourceReport | null>(null);
   const [ask, setAsk] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [thread, setThread] = useState<({ ask: string; plan: Plan; run?: undefined } | { run: MonthRun; ask?: undefined; plan?: undefined })[]>([]);
-  const [lastRun, setLastRun] = useState<MonthRun | null>(null);
-  const [tab, setTab] = useState<Tab>("money");
+  const [pane, setPane] = useState<Pane>(null);
+  const sidebar = useSidebar();
+  const { setPaneOpen } = sidebar;
+  useEffect(() => { setPaneOpen(!!pane); }, [pane, setPaneOpen]);
+  useEffect(() => () => setPaneOpen(false), [setPaneOpen]);
+  const [live, setLive] = useState<Record<string, MonthRun>>({});
+  const [cid, setCid] = useState<string | null>(params.get("c"));
+  const end = useRef<HTMLDivElement>(null);
   const box = useRef<HTMLTextAreaElement>(null);
   const submitRef = useRef<(text?: string, spoke?: boolean) => void>(() => {});
   const voice = useVoice((said) => submitRef.current(said, true), (heard) => setAsk(heard));
-  const end = useRef<HTMLDivElement>(null);
-  useEffect(() => { fetch("/api/resources", { cache: "no-store" }).then((r) => r.json()).then((j) => setReport(j.resources)); }, []);
-  useEffect(() => { fetch("/api/run", { cache: "no-store" }).then((r) => r.json()).then((j) => setLastRun(j.run)).catch(() => {}); }, []);
-  useEffect(() => { if (data && data.state.onboarded === false) router.replace("/welcome"); }, [data, router]);
-  useEffect(() => { if (thread.length || busy) end.current?.scrollIntoView({ behavior: "smooth", block: "end" }); }, [thread.length, busy]);
-  const onMoney = useCallback(() => refresh(), [refresh]);
-  const onError = useCallback((m: string) => setError(m), []);
-  if (!data) return <main className="p-8 text-sm text-muted">{t("loading")}</main>;
-  const { state, derived } = data;
-  const mom = state.profile.name ? `, ${state.profile.name}` : "";
-  const kids = state.profile.children;
-  const first = kids[0];
-  const kidName = first?.name || (lang === "zh" ? "宝宝" : "Baby");
-  const needsTotal = kids.reduce((s, c) => s + childNeeds(c, state.profile).total, 0);
-  const claimable = report ? report.items.filter((i) => i.eligibility !== "unlikely").reduce((s, i) => s + i.monthly_value_estimate, 0) : null;
-  const showLastRun = lastRun && lastRun.created_at.slice(0, 7) === state.month && !thread.length;
-  const latest = [...state.plans].reverse().find((p) => p.items.length > 0 && !p.run_id && !thread.some((x) => x.plan?.id === p.id));
-  const pantry = supplyStatus(state).filter((x) => x.tracked);
-  const low = pantry.filter((x) => x.low);
-  const sname = (k: SupplyType) => t(`supply.${k}` as const);
-  const money = (n: number) => `$${n.toFixed(0)}`;
-  const hello = first?.name ? t("pal.welcome_back", { name: mom, kid: first.name }) : t("pal.welcome_nokid", { name: mom });
 
-  const lines: { icon: LucideIcon; text: string; tone?: string }[] = [
-    { icon: Wallet, text: t("pal.line.money", { available: money(derived.available) }) },
-    ...(first ? [{ icon: Baby, text: t("pal.line.child", { name: kidName, age: formatAge(monthsSince(first.born), lang), needs: money(needsTotal) }) }] : []),
-    ...(pantry.length ? [{ icon: Package, text: low.length ? low.map((x) => t("supply.low", { item: sname(x.type), d: x.days ?? 0 })).join(" ") : t("supply.ok", { items: pantry.map((x) => `${sname(x.type)} ${t("supply.days", { d: x.days ?? 0 })}`).join(", ") }), tone: low.length ? "text-amber" : undefined }] : []),
-    { icon: HandCoins, text: claimable != null ? t("pal.line.claims", { claims: money(claimable) }) : t("pal.line.claims_none") },
-    ...(latest ? [{ icon: MessageCircle, text: t("pal.line.verdict", { saved: money(latest.intercepted) }) }] : []),
-  ];
-  const quick = [...low.map((x) => t("supply.ask", { item: sname(x.type) })), t("pal.q1"), t("pal.q2", { name: kidName }), t("pal.q3")];
+  // The URL decides the conversation: ?c=<id> to continue one, nothing (or ?new=1) for a fresh one.
+  const paramC = params.get("c");
+  const paramNew = params.get("new");
+  useEffect(() => { setCid(paramC); setPane(null); setError(null); }, [paramC, paramNew]);
+  useEffect(() => { if (data && data.state.onboarded === false) router.replace("/welcome"); }, [data, router]);
+
+  const changed = useCallback(() => { refresh(); announceChange(); }, [refresh]);
+  const onRunUpdate = useCallback((run: MonthRun, planReady: boolean) => { setLive((m) => ({ ...m, [run.id]: run })); if (planReady || run.status !== "running") changed(); }, [changed]);
+  const drive = useRunDriver(onRunUpdate, (m) => setError(m));
+
+  const conv = data?.state.conversations?.find((c) => c.id === cid) ?? null;
+  const runOf = useCallback((id: string) => live[id] ?? data?.state.runs?.find((r) => r.id === id), [live, data]);
+  // A run left half-way (closed tab, timeout) carries on when its conversation is opened again.
+  useEffect(() => { for (const it of conv?.items ?? []) if (it.kind === "run") { const r = runOf(it.id); if (r?.status === "running") drive(r); } }, [conv, runOf, drive]);
+  const count = conv?.items.length ?? 0;
+  useEffect(() => { if (count || busy) end.current?.scrollIntoView({ behavior: "smooth", block: "end" }); }, [count, busy]);
+
+  const isDesktop = () => typeof window !== "undefined" && window.matchMedia("(min-width: 768px)").matches;
+  const remember = (id: string) => { if (id !== cid) { setCid(id); router.replace(`/?c=${id}`); } };
 
   async function startRun() {
     if (busy) return;
     setError(null);
     try {
-      const r = await fetch("/api/run", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ lang }) });
+      const r = await fetch("/api/run", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ lang, conversation_id: cid ?? undefined }) });
       const j = await r.json();
       if (!r.ok) throw new Error(j.error ?? "failed");
-      setThread((th) => [...th, { run: j.run }]);
+      setLive((m) => ({ ...m, [j.run.id]: j.run }));
+      remember(j.conversation_id);
+      changed();
+      if (isDesktop()) setPane({ kind: "run", id: j.run.id });
+      drive(j.run);
     } catch (e) { setError((e as Error).message); }
-  }  submitRef.current = submit;
-
+  }
 
   // "plan my month" (typed or said) starts a month run instead of a one-off verdict
   const wantsRun = (s: string) => /\b(plan|sort|cover)\b.*\b(month|rest of)\b|排.*(这个)?月|这个月.*(安排|排)/i.test(s);
@@ -85,173 +90,187 @@ export default function Home() {
     if (wantsRun(text)) { setAsk(""); if (spoke) speak(t("voice.run_ok"), lang); return startRun(); }
     setBusy(true); setError(null); setAsk("");
     try {
-      const r = await fetch("/api/plan", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ask: text, lang }) });
+      const r = await fetch("/api/plan", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ask: text, lang, conversation_id: cid ?? undefined }) });
       const j = await r.json();
       if (!r.ok) throw new Error(j.error ?? "failed");
-      setThread((th) => [...th, { ask: text, plan: j.plan }]);
+      remember(j.conversation_id);
+      changed();
       if (spoke) speak(`${j.plan.headline} ${j.plan.note}`, lang);
-      refresh();
     } catch (e) { setError((e as Error).message); setAsk(text); } finally { setBusy(false); }
   }
+  submitRef.current = submit;
 
-  const PalMsg = ({ children, wide }: { children: React.ReactNode; wide?: boolean }) => (
-    <div className="flex items-start gap-2 md:gap-3">
-      <PalFace size={28} className="mt-1 md:mt-2" />
-      <div className={`min-w-0 flex-1 ${wide ? "" : "max-w-[85%]"}`}>{children}</div>
-    </div>
-  );
-  const Bubble = ({ children }: { children: React.ReactNode }) => (
-    <PalMsg><div className="w-fit rounded-2xl rounded-tl-sm border border-line bg-panel px-4 py-2.5 text-[15px] leading-relaxed shadow-sm">{children}</div></PalMsg>
-  );
+  const brief = useMemo(() => {
+    if (!data) return null;
+    const { state, derived } = data;
+    const first = state.profile.children[0];
+    const pantry = supplyStatus(state).filter((x) => x.tracked);
+    const low = pantry.filter((x) => x.low);
+    const shortest = pantry.reduce<number | null>((m, x) => (x.days == null ? m : m == null ? x.days : Math.min(m, x.days)), null);
+    const claimable = state.resources ? state.resources.items.filter((i) => i.eligibility !== "unlikely").reduce((s, i) => s + i.monthly_value_estimate, 0) : null;
+    const needs = state.profile.children.reduce((s, c) => s + childNeeds(c, state.profile).total, 0);
+    return { state, derived, first, pantry, low, shortest, claimable, needs };
+  }, [data]);
+
+  if (!data || !brief) return <main className="p-8 text-sm text-muted">{t("loading")}</main>;
+  const { state, derived, first, low, shortest, claimable, needs } = brief;
+  const money = (n: number) => `$${n.toFixed(0)}`;
+  const mom = state.profile.name ? `, ${state.profile.name}` : "";
+  const kidName = first?.name || (lang === "zh" ? "宝宝" : "Baby");
+  const hello = first?.name ? t("pal.welcome_back", { name: mom, kid: first.name }) : t("pal.welcome_nokid", { name: mom });
+  const sname = (k: "diapers" | "formula" | "wipes") => t(`supply.${k}` as const);
+  const working = (state.runs ?? []).map((r) => live[r.id] ?? r).find((r) => r.status === "running");
+  const quick = [...low.map((x) => t("supply.ask", { item: sname(x.type) })), t("pal.q1"), t("pal.q2", { name: kidName }), t("pal.q3")];
+  const stepLabel = (s: RunStep) => t(`run.step.${s.key}${s.attempt > 0 && s.key !== "stock" && s.key !== "cart" ? "_rev" : ""}` as Key);
+
+  const counters: { icon: LucideIcon; label: string; value: string; href: string; tone?: string }[] = [
+    { icon: Wallet, label: t("budget.available"), value: money(derived.available), href: "/budget" },
+    { icon: PiggyBank, label: t("pal.card.saved"), value: money(derived.intercepted), href: "/me#ledger", tone: "text-green" },
+    { icon: Package, label: t("brief.pantry"), value: shortest == null ? "—" : t("brief.days", { d: shortest }), href: "/plan#pantry", tone: low.length ? "text-amber" : undefined },
+    { icon: HandCoins, label: t("home.claims"), value: claimable == null ? "—" : money(claimable), href: "/resources", tone: "text-primary" },
+  ];
+
   const Mine = ({ children }: { children: React.ReactNode }) => (
     <div className="flex justify-end"><div className="max-w-[85%] rounded-2xl rounded-br-sm bg-primary px-4 py-2.5 text-[15px] text-white">{children}</div></div>
   );
-  const panel = "rounded-2xl rounded-tl-sm border border-line bg-panel shadow-sm";
-  const Bulletin = () => (
-    <ul className="space-y-1.5">
-      {lines.map((l, i) => { const I = l.icon; return <li key={i} className={`flex items-start gap-2 text-[15px] leading-snug ${l.tone ?? ""}`}><span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-bg text-muted"><I className="h-3 w-3" /></span>{l.text}</li>; })}
-    </ul>
-  );
-  const Numbers = () => (
-    <div className="num grid grid-cols-3 gap-2">
-      {[[t("budget.available"), money(derived.available), "text-fg"], [t("pal.card.saved"), money(derived.intercepted), "text-green"], [t("home.claims"), claimable == null ? "—" : money(claimable), "text-primary"]].map(([l, v, c]) => (
-        <div key={l} className="rounded-2xl bg-bg px-3 py-2.5"><div className="text-[11px] text-muted">{l}</div><div className={`text-xl font-semibold ${c}`}>{v}</div></div>
-      ))}
+  const PalSays = ({ children }: { children: React.ReactNode }) => (
+    <div className="flex items-start gap-2.5">
+      <PalFace size={28} className="mt-1 shrink-0" />
+      <div className="min-w-0 flex-1 rounded-2xl rounded-tl-sm border border-line bg-panel px-4 py-3 text-[15px] leading-relaxed shadow-sm">{children}</div>
     </div>
   );
-  const MoneyBody = () => (
-    <>
-      <div className="num mt-1 flex flex-wrap items-baseline gap-x-4 gap-y-1">
-        <span className="text-3xl font-semibold">{money(derived.available)}</span>
-        <span className="text-xs text-muted">{t("pal.status", { available: money(derived.available), budget: money(state.budget), spent: money(derived.spent), earned: money(derived.earned) })}</span>
-      </div>
-      <div className="mt-3 flex h-2.5 w-full overflow-hidden rounded-full bg-[#eceef5]">
-        <div className="h-full bg-lock" style={{ width: `${(state.food_lock / Math.max(state.budget + derived.earned, 1)) * 100}%` }} />
-        <div className="h-full bg-red/70" style={{ width: `${(derived.spent / Math.max(state.budget + derived.earned, 1)) * 100}%` }} />
-        <div className="h-full bg-primary" style={{ width: `${(derived.available / Math.max(state.budget + derived.earned, 1)) * 100}%` }} />
-      </div>
-      {derived.intercepted > 0 && <div className="num mt-2 text-xs text-green">{t("pal.card.saved")} {money(derived.intercepted)}</div>}
-      <div className="mt-3 flex gap-4 text-xs"><Link href="/budget" className="text-primary">{t("pal.card.open")} →</Link><Link href="/me#ledger" className="text-primary">{t("pal.card.details")} →</Link></div>
-    </>
+  const Chip = ({ icon: I, children, onClick, active }: { icon: LucideIcon; children: React.ReactNode; onClick: () => void; active?: boolean }) => (
+    <button onClick={onClick} className={`mt-2.5 flex w-full items-center gap-3 rounded-xl border px-3 py-2.5 text-left text-sm transition ${active ? "border-primary bg-primary-soft" : "border-line bg-bg hover:border-primary/60"}`}>
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-panel text-primary shadow-sm"><I className="h-4 w-4" /></span>
+      <span className="min-w-0 flex-1">{children}</span>
+      <span className="shrink-0 text-xs text-primary">{t("conv.open")} →</span>
+    </button>
   );
-  const PantryBody = () => (
-    <>
-      <ul className="mt-2 space-y-2">{pantry.map((x) => (
-        <li key={x.type}>
-          <div className="flex items-baseline justify-between text-sm"><span>{sname(x.type)}</span><span className={`num ${x.low ? "text-amber" : "text-muted"}`}>{t("supply.left", { n: x.left, unit: t(`supply.unit.${x.type}` as const) })} · {t("supply.days", { d: x.days ?? 0 })}</span></div>
-          <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-[#eceef5]"><div className={`h-full ${x.low ? "bg-amber" : "bg-primary"}`} style={{ width: `${Math.min(100, ((x.days ?? 0) / 30) * 100)}%` }} /></div>
-        </li>
-      ))}</ul>
-      {!pantry.length && <div className="mt-2 text-sm text-muted">{t("supply.untracked")}</div>}
-      <div className="mt-3 text-xs"><Link href="/plan#pantry" className="text-primary">{t("budget.edit")} →</Link></div>
-    </>
-  );
-  const ClaimsBody = () => (
-    <>
-      {claimable != null && report ? (
-        <>
-          <div className="num mt-1 text-3xl font-semibold text-primary">{money(claimable)}<span className="text-sm text-muted">/mo</span></div>
-          <ul className="mt-2 space-y-1 text-sm">{report.items.filter((i) => i.eligibility === "likely").slice(0, 5).map((i) => <li key={i.id} className="flex justify-between gap-3"><span className="truncate">{i.name}</span><span className="num shrink-0 text-muted">{i.monthly_value_estimate ? `$${i.monthly_value_estimate.toFixed(0)}/mo` : ""}</span></li>)}</ul>
-        </>
-      ) : <div className="mt-1 text-sm text-muted">{t("pal.line.claims_none")}</div>}
-      <div className="mt-3 text-xs"><Link href="/resources" className="text-primary">{t("pal.card.claims_cta")} →</Link></div>
-    </>
-  );
-  const Thread = () => (
-    <>
-      {showLastRun && <PalMsg wide><RunCard initial={lastRun!} plans={state.plans} onChange={onMoney} onError={onError} /></PalMsg>}
-      {latest && !thread.length && !showLastRun && (
-        <div className="space-y-3">
-          <Mine>{latest.ask}</Mine>
-          <PalMsg wide><PlanCard plan={latest} onPaid={onMoney} onError={onError} /></PalMsg>
-        </div>
+
+  const PlanReply = ({ plan }: { plan: Plan }) => (
+    <PalSays>
+      <div className="font-medium">{plan.headline}</div>
+      <p className="mt-1 text-sm text-muted">{plan.note}</p>
+      {plan.items.length > 0 && (
+        <Chip icon={ShoppingBasket} onClick={() => setPane({ kind: "plan", id: plan.id })} active={pane?.id === plan.id}>
+          <span className="num block text-sm">{plan.status === "paid" ? `${t("conv.paid")} · $${plan.approved_total.toFixed(2)}` : t("conv.items", { n: plan.items.filter((i) => i.verdict === "buy" || i.verdict === "swap").length, pay: plan.approved_total.toFixed(0) })}</span>
+          {plan.intercepted > 0 && <span className="num block text-xs text-green">{t("conv.saved", { n: plan.intercepted.toFixed(0) })}</span>}
+        </Chip>
       )}
-      {thread.map(({ ask: a, plan, run }) => run ? (
-        <PalMsg key={run.id} wide><RunCard initial={run} plans={state.plans} onChange={onMoney} onError={onError} /></PalMsg>
-      ) : (
-        <div key={plan.id} className="space-y-3">
-          <Mine>{a}</Mine>
-          <PalMsg wide><PlanCard plan={state.plans.find((p) => p.id === plan.id) ?? plan} onPaid={onMoney} onError={onError} /></PalMsg>
-        </div>
-      ))}
-      {busy && <Bubble><span className="text-muted">{t("composer.busy")}</span></Bubble>}
-      {error && <div className="rounded-lg border border-red/40 bg-red/5 px-3 py-2 text-xs text-red">{error}</div>}
-      <div ref={end} />
+    </PalSays>
+  );
+
+  const RunReply = ({ run }: { run: MonthRun }) => {
+    const done = run.steps.filter((s) => s.status === "done").length;
+    const cur = run.steps.find((s) => s.status === "running" || s.status === "failed") ?? run.steps.find((s) => s.status === "pending");
+    const last = [...run.steps].reverse().find((s) => s.summary);
+    const plan = run.plan_id ? state.plans.find((p) => p.id === run.plan_id) : undefined;
+    return (
+      <PalSays>
+        <div className="font-medium">{run.status === "done" && plan ? plan.headline : t("run.lead")}</div>
+        {run.status !== "done" && last && <p className="mt-1 text-sm text-muted">{last.summary}</p>}
+        {run.status === "done" && plan && <p className="mt-1 text-sm text-muted">{plan.note}</p>}
+        <div className="mt-2.5 flex gap-1" aria-hidden>{run.steps.map((s, i) => <span key={i} className={`h-1.5 flex-1 rounded-full ${s.status === "done" ? "bg-green" : s.status === "failed" ? "bg-red" : s === cur && run.status === "running" ? "animate-pulse bg-primary" : "bg-line"}`} />)}</div>
+        <Chip icon={ListChecks} onClick={() => setPane({ kind: "run", id: run.id })} active={pane?.id === run.id}>
+          <span className="flex items-center gap-1.5 text-sm">
+            {run.status === "running" ? <Loader2 className="h-3.5 w-3.5 animate-spin text-primary" /> : run.status === "failed" ? <AlertTriangle className="h-3.5 w-3.5 text-red" /> : <Check className="h-3.5 w-3.5 text-green" />}
+            {run.status === "running" && cur ? t("conv.working", { step: stepLabel(cur) }) : t("conv.open_run")}
+          </span>
+          <span className="num block text-xs text-muted">{done}/{run.steps.length} · ${(run.total_cost ?? 0).toFixed(2)}{plan ? ` · ${t("conv.items", { n: plan.items.length, pay: plan.approved_total.toFixed(0) })}` : ""}</span>
+        </Chip>
+      </PalSays>
+    );
+  };
+
+  const paneRun = pane?.kind === "run" ? runOf(pane.id) : undefined;
+  const panePlan = pane?.kind === "plan" ? state.plans.find((p) => p.id === pane.id) : undefined;
+  const paneBody = pane && (
+    <>
+      <div className="flex items-center justify-between border-b border-line bg-panel px-4 py-2.5 text-sm">
+        <span className="font-medium">{pane.kind === "run" ? t("conv.title_run") : t("conv.title_plan")}</span>
+        <button onClick={() => setPane(null)} aria-label={t("conv.close")} className="rounded-full p-1.5 text-muted hover:bg-bg hover:text-fg"><X className="h-4 w-4" /></button>
+      </div>
+      <div className="min-h-0 flex-1 overflow-y-auto p-4">
+        {paneRun && <RunCard run={paneRun} plans={state.plans} onChange={changed} onError={setError} onRetry={() => drive(paneRun, true)} />}
+        {panePlan && <PlanCard plan={panePlan} onPaid={changed} onError={setError} />}
+      </div>
     </>
   );
-  const chip = "shrink-0 rounded-full border border-line bg-panel px-3 py-1.5 text-sm text-fg shadow-sm hover:border-primary hover:text-primary";
-  const tabs: { k: Tab; l: string }[] = [{ k: "money", l: t("tab.money") }, { k: "pantry", l: t("tab.pantry") }, { k: "needs", l: t("tab.needs") }, { k: "claims", l: t("tab.claims") }];
 
   return (
-    <main className="mx-auto max-w-2xl px-4 pb-56 pt-4 md:max-w-6xl md:px-6 md:pb-48 md:pt-8">
-      <div className="relative flex flex-col items-center md:flex-row md:items-end md:gap-6">
-        <div className="relative z-10 -mb-14 md:mb-0 md:shrink-0">
-          <PalFigure width={170} className="md:w-[190px]" />
-          {first && <BabyAvatar child={first} size={64} className="absolute -right-6 bottom-10 ring-4" />}
-        </div>
-        <section className="w-full rounded-3xl border border-line bg-panel px-5 pb-5 pt-16 shadow-sm md:flex-1 md:pt-5">
-          <h1 className="text-xl font-semibold tracking-tight md:text-2xl">{hello}</h1>
-          <p className="mt-1 text-sm text-muted">{t("pal.intro")}</p>
-          <div className="mt-4"><Numbers /></div>
-          {low.length > 0 && <div className="mt-4 rounded-xl border border-amber/40 bg-amber/5 px-3 py-2 text-sm text-amber">{low.map((x) => t("supply.low", { item: sname(x.type), d: x.days ?? 0 })).join(" ")}</div>}
-          <div className="mt-4 text-[11px] text-muted">{t("pal.quick")}</div>
-          <div className="mt-1.5 flex flex-wrap gap-2"><button onClick={startRun} className="rounded-full border border-primary bg-primary px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:opacity-90">{t("run.start")}</button>{quick.map((q) => <button key={q} onClick={() => { setAsk(q); box.current?.focus(); }} className="rounded-full border border-line bg-panel px-3 py-1.5 text-sm hover:border-primary hover:text-primary">{q}</button>)}</div>
-        </section>
-      </div>
-
-      <section className="mt-5 space-y-4">
-        <PalMsg wide>
-          <div className={`${panel} px-4 py-3`}>
-            <div className="mb-1.5 text-[11px] text-muted">{t("pal.says")}</div>
-            <Bulletin />
-          </div>
-        </PalMsg>
-
-        <div className="md:hidden">
-          <PalMsg wide>
-            <div className={`${panel} p-4`}>
-              <div className="flex gap-1 rounded-xl bg-bg p-1">{tabs.map((x) => <button key={x.k} onClick={() => setTab(x.k)} className={`flex-1 rounded-lg py-1.5 text-xs font-medium ${tab === x.k ? "bg-panel text-fg shadow-sm" : "text-muted"}`}>{x.l}</button>)}</div>
-              <div className="mt-3">
-                {tab === "money" && <><div className="text-sm font-medium">{t("pal.card.money")}</div><MoneyBody /></>}
-                {tab === "pantry" && <><div className="text-sm font-medium">{t("supply.title")}</div><PantryBody /></>}
-                {tab === "needs" && first && <NeedsCard child={first} profile={state.profile} />}
-                {tab === "claims" && <><div className="text-sm font-medium">{t("pal.card.claims")}</div><ClaimsBody /></>}
+    <div className="flex">
+      <main className="min-w-0 flex-1">
+        <div className="mx-auto w-full max-w-[720px] px-4 pb-48 pt-4 md:px-6 md:pt-8">
+          {/* Brief: Pal, the child, and the four numbers that matter today */}
+          <section className="flex items-start gap-4">
+            <div className={`relative hidden shrink-0 ${pane ? "" : "sm:block"}`}>
+              <PalFigure width={92} />
+              {first && <BabyAvatar child={first} size={40} className="absolute -right-3 bottom-1 ring-2" />}
+            </div>
+            <div className="min-w-0 flex-1">
+              <h1 className="text-xl font-semibold tracking-tight md:text-2xl">{hello}</h1>
+              <p className="mt-0.5 text-sm text-muted">{first ? t("pal.line.child", { name: kidName, age: formatAge(monthsSince(first.born), lang), needs: money(needs) }) : t("pal.intro")}</p>
+              <div className={`num mt-3 grid grid-cols-2 gap-2 ${pane ? "xl:grid-cols-4" : "sm:grid-cols-4"}`}>
+                {counters.map(({ icon: I, label, value, href, tone }) => (
+                  <Link key={label} href={href} className="rounded-xl border border-line bg-panel px-3 py-2 shadow-sm hover:border-primary/50">
+                    <div className="flex items-center gap-1 text-[11px] text-muted"><I className="h-3 w-3" />{label}</div>
+                    <div className={`text-lg font-semibold ${tone ?? "text-fg"}`}>{value}</div>
+                  </Link>
+                ))}
               </div>
+              {low.length > 0 && <div className="mt-2 rounded-xl border border-amber/40 bg-amber/5 px-3 py-1.5 text-sm text-amber">{low.map((x) => t("supply.low", { item: sname(x.type), d: x.days ?? 0 })).join(" ")}</div>}
+              {working && !conv?.items.some((i) => i.id === working.id) && (
+                <button onClick={() => setPane({ kind: "run", id: working.id })} className="mt-2 flex items-center gap-1.5 text-xs text-primary"><Loader2 className="h-3 w-3 animate-spin" />{t("conv.working", { step: stepLabel(working.steps.find((s) => s.status !== "done") ?? working.steps[0]) })}</button>
+              )}
             </div>
-          </PalMsg>
+          </section>
+
+          <section className="mt-6 space-y-4">
+            {!conv && (
+              <>
+                <PalSays>
+                  <ul className="space-y-1">
+                    <li>{t("pal.line.money", { available: money(derived.available) })}</li>
+                    <li>{claimable != null ? t("pal.line.claims", { claims: money(claimable) }) : t("pal.line.claims_none")}</li>
+                    <li className="text-muted">{t("run.lead")}</li>
+                  </ul>
+                </PalSays>
+                <div className="ml-10 flex flex-wrap gap-2">
+                  <button onClick={startRun} className="rounded-full bg-primary px-3.5 py-1.5 text-sm font-medium text-white shadow-sm hover:opacity-90">{t("run.start")}</button>
+                  {quick.map((q) => <button key={q} onClick={() => submit(q)} className="rounded-full border border-line bg-panel px-3 py-1.5 text-sm hover:border-primary hover:text-primary">{q}</button>)}
+                </div>
+              </>
+            )}
+            {conv?.items.map((it) => {
+              if (it.kind === "plan") {
+                const plan = state.plans.find((p) => p.id === it.id);
+                return plan ? <div key={it.id} className="space-y-3"><Mine>{plan.ask}</Mine><PlanReply plan={plan} /></div> : null;
+              }
+              const run = runOf(it.id);
+              return run ? <div key={it.id} className="space-y-3"><Mine>{run.goal}</Mine><RunReply run={run} /></div> : null;
+            })}
+            {busy && <div className="flex items-end gap-2.5"><PalFace size={28} className="mb-1" /><span className="typing rounded-2xl rounded-bl-sm border border-line bg-panel px-3 py-2"><i /><i /><i /></span></div>}
+            {error && <div className="rounded-lg border border-red/40 bg-red/5 px-3 py-2 text-xs text-red">{error}</div>}
+            <div ref={end} />
+          </section>
         </div>
 
-        <div className="hidden md:block">
-          <PalMsg wide>
-            <div className="grid grid-cols-3 gap-4">
-              <div className={`${panel} p-4`}><div className="flex items-center gap-2 text-sm font-medium"><span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#fff1f0] text-red"><Wallet className="h-4 w-4" /></span>{t("pal.card.money")}</div><MoneyBody /></div>
-              <div className={`${panel} p-4`}><div className="flex items-center gap-2 text-sm font-medium"><span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#e6f4ff] text-primary"><Package className="h-4 w-4" /></span>{t("supply.title")}</div><PantryBody /></div>
-              <div className={`${panel} p-4`}><div className="flex items-center gap-2 text-sm font-medium"><span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#f6ffed] text-green"><HandCoins className="h-4 w-4" /></span>{t("pal.card.claims")}</div><ClaimsBody /></div>
+        {/* Composer: stays at the bottom of the conversation column */}
+        <div className={`fixed bottom-[calc(3.6rem+env(safe-area-inset-bottom))] left-0 right-0 z-20 bg-gradient-to-t from-bg via-bg/95 to-bg/0 pt-6 md:bottom-0 ${sidebar.collapsed ? "md:left-16" : "md:left-60"} ${pane ? "md:right-[min(44%,600px)]" : ""}`}>
+          <div className="mx-auto max-w-[720px] px-4 pb-3 md:px-6">
+            {conv && <div className="mb-2 flex gap-2 overflow-x-auto [scrollbar-width:none]"><button onClick={startRun} className="shrink-0 rounded-full border border-primary/50 bg-panel px-3 py-1 text-xs text-primary">{t("run.start")}</button>{quick.slice(0, 3).map((q) => <button key={q} onClick={() => submit(q)} className="shrink-0 rounded-full border border-line bg-panel px-3 py-1 text-xs text-muted hover:text-fg">{q}</button>)}</div>}
+            <div className="flex items-end gap-2 rounded-3xl border border-line bg-panel p-1.5 shadow-[0_-6px_24px_rgba(40,50,110,0.08)]">
+              <textarea ref={box} value={ask} onChange={(e) => setAsk(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); } }} rows={1} placeholder={voice.listening ? t("voice.listening") : t("pal.placeholder")} className="max-h-32 flex-1 resize-none bg-transparent px-3 py-2 text-[15px] placeholder:text-muted" />
+              <MicButton voice={voice} />
+              <button onClick={() => submit()} disabled={busy || !ask.trim()} className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white disabled:opacity-30">{busy ? t("composer.busy") : t("pal.send")}</button>
             </div>
-          </PalMsg>
-          <div className="mt-4 space-y-4">{kids.map((c, i) => <PalMsg key={i} wide><SpendCard child={c} profile={state.profile} state={state} /></PalMsg>)}</div>
-        </div>
-
-        <Thread />
-      </section>
-
-      <div className="fixed inset-x-0 bottom-[calc(3.6rem+env(safe-area-inset-bottom))] z-20 bg-gradient-to-t from-bg via-bg/95 to-bg/0 pt-6 md:bottom-0">
-        <div className="relative mx-auto max-w-2xl px-4 pb-2.5 md:max-w-6xl md:px-6">
-          <PalFigure pose="wave" width={96} className="absolute bottom-[3.9rem] left-2 z-0 md:left-0 md:w-[120px]" />
-          <div className="relative mb-2 ml-24 flex gap-2 overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:ml-32">
-            <button onClick={() => box.current?.focus()} className={chip}>{t("pal.topic.buy")}</button>
-            <Link href="/resources" className={chip}>{t("pal.topic.claim")}</Link>
-            <Link href="/plan" className={chip}>{t("pal.topic.month", { name: kidName })}</Link>
-            <Link href="/budget" className={chip}>{t("pal.topic.budget")}</Link>
-            <Link href="/chat" className={chip}>{t("pal.history")}</Link>
-          </div>
-          <div className="relative flex items-end gap-2 rounded-3xl border border-line bg-panel p-1.5 shadow-[0_-6px_24px_rgba(40,50,110,0.08)]">
-            <textarea ref={box} value={ask} onChange={(e) => setAsk(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); } }} rows={1} placeholder={voice.listening ? t("voice.listening") : t("pal.placeholder")} className="max-h-32 flex-1 resize-none bg-transparent px-3 py-2 text-[15px] placeholder:text-muted" />
-            <MicButton voice={voice} />
-            <button onClick={() => submit()} disabled={busy || !ask.trim()} className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white disabled:opacity-30">{busy ? t("composer.busy") : t("pal.send")}</button>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+
+      {/* The panel: two columns only while a card is open */}
+      {pane && <aside className="sticky top-0 hidden h-screen w-[44%] max-w-[600px] shrink-0 flex-col border-l border-line bg-bg md:flex">{paneBody}</aside>}
+      {pane && <div className="fixed inset-0 z-40 flex flex-col bg-bg md:hidden">{paneBody}</div>}
+    </div>
   );
 }

@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { LangProvider } from "@/components/LangProvider";
 import { Nav } from "@/components/Nav";
+import { Frame } from "@/components/Frame";
+import { SidebarProvider } from "@/components/Sidebar";
 
 export const metadata: Metadata = {
   title: "MamaPal",
@@ -19,8 +21,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="min-h-screen pb-24 md:pb-10">
         <LangProvider>
-          <Nav />
-          {children}
+          <SidebarProvider>
+            <Nav />
+            <Frame>{children}</Frame>
+          </SidebarProvider>
         </LangProvider>
       </body>
     </html>

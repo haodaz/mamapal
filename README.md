@@ -11,6 +11,8 @@ Most "agentic commerce" demos teach an AI to spend money for people who have ple
 
 ## What it does
 
+**The app is a conversation with Pal.** Home is Pal talking: a short brief on top (money left, saved, days of pantry left, help she can claim), then the conversation. Pal's answers stay short; what it did arrives as a small card in the conversation, and the card opens in a panel on the right (full screen on a phone) only when there is something to look at: a cart, or a month run's steps as they light up. On desktop a left sidebar holds the tools she manages herself (this month, budget, claims, me) and her past conversations with Pal; it folds to icons on its own while a panel is open. Phones keep a bottom tab bar.
+
 Three pillars. Desktop gets a top navigation and a wide layout; phones get a bottom tab bar with a floating "Ask Pal" button.
 
 | Screen | What it is |

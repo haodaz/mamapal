@@ -182,7 +182,12 @@ export type State = {
   market?: Record<string, Market>; // key = stage|id|lang (retrieved, refreshable)
   owned?: string[]; // one-time items she already has
   runs?: MonthRun[]; // month runs, newest last (kept to the last few)
+  conversations?: Conversation[]; // newest first; each holds the verdicts and month runs asked in it
 };
+
+// A conversation with Pal: what she asked, in order. The answers themselves stay in plans / runs.
+export type ConvItem = { kind: "plan" | "run"; id: string };
+export type Conversation = { id: string; title: string; created_at: string; updated_at: string; items: ConvItem[] };
 
 export function derive(state: State) {
   const spent = state.ledger.filter((e) => e.kind === "spend").reduce((s, e) => s + e.amount, 0);

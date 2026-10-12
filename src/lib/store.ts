@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 import path from "path";
-import type { State, Opportunity, Profile, MonthArchive, Supplies } from "./types";
+import type { State, Opportunity, Profile, MonthArchive, Supplies, Conversation } from "./types";
 import { derive } from "./types";
 
 import { createClient } from "@supabase/supabase-js";
@@ -92,6 +92,27 @@ export function emptySupplies(): Supplies {
 
 export function freshState(): State { return fresh(); }
 
+// Households from before conversations existed: one conversation per earlier verdict or month run, newest first.
+function legacyConversations(st: State): Conversation[] {
+  const items = [
+    ...st.plans.filter((p) => !p.run_id).map((p) => ({ kind: "plan" as const, id: p.id, title: p.ask, at: p.created_at })),
+    ...(st.runs ?? []).map((r) => ({ kind: "run" as const, id: r.id, title: r.goal, at: r.created_at })),
+  ].sort((a, b) => b.at.localeCompare(a.at));
+  return items.slice(0, 30).map((x) => ({ id: `c_${x.id}`, title: x.title.slice(0, 60), created_at: x.at, updated_at: x.at, items: [{ kind: x.kind, id: x.id }] }));
+}
+
+// Put a new verdict or run into a conversation (a new one when none is given). Returns the conversation id.
+export function attach(state: State, conversationId: string | undefined, item: { kind: "plan" | "run"; id: string }, title: string): string {
+  const now = new Date().toISOString();
+  const list = state.conversations ?? [];
+  let c = conversationId ? list.find((x) => x.id === conversationId) : undefined;
+  if (!c) { c = { id: newId("c"), title: title.trim().slice(0, 60), created_at: now, updated_at: now, items: [] }; }
+  c.items.push(item);
+  c.updated_at = now;
+  state.conversations = [c, ...list.filter((x) => x.id !== c!.id)].slice(0, 30);
+  return c.id;
+}
+
 function fresh(): State {
   return {
     month: monthKey(),
@@ -161,6 +182,7 @@ export async function loadState(row?: string): Promise<State> {
     st.opportunities = st.opportunities.map((o) => ({ ...SEED_OPPORTUNITIES.find((x) => x.id === o.id), ...o } as Opportunity));
     if (!Array.isArray(st.history)) st.history = [];
     st.supplies = { ...emptySupplies(), ...(s.supplies ?? {}) };
+    if (!Array.isArray(st.conversations)) st.conversations = legacyConversations(st);
     // new calendar month: archive the old one automatically
     if (st.month !== monthKey()) {
       st = rollover(st);

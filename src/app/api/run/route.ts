@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { loadState, saveState } from "@/lib/store";
+import { loadState, saveState, attach } from "@/lib/store";
 import { newRun } from "@/lib/month-run";
 
 export const dynamic = "force-dynamic";
@@ -11,10 +11,11 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const { lang } = (await req.json().catch(() => ({}))) as { lang?: "en" | "zh" };
+  const { lang, conversation_id } = (await req.json().catch(() => ({}))) as { lang?: "en" | "zh"; conversation_id?: string };
   const state = await loadState();
   const run = newRun(state, lang === "zh" ? "zh" : "en");
-  state.runs = [...(state.runs ?? []), run].slice(-5);
+  state.runs = [...(state.runs ?? []), run].slice(-8);
+  const cid = attach(state, conversation_id, { kind: "run", id: run.id }, run.goal);
   await saveState(state);
-  return NextResponse.json({ run });
+  return NextResponse.json({ run, conversation_id: cid });
 }

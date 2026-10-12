@@ -1,102 +1,35 @@
 "use client";
 import Link from "next/link";
-import { Suspense, useCallback, useEffect, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { Plus } from "lucide-react";
 import { PalFace } from "@/components/PalFace";
-import { findItem } from "@/lib/catalog";
-import { monthsSince } from "@/lib/age";
 import { useAppState } from "@/components/useAppState";
 import { useLang } from "@/components/LangProvider";
-import { PlanCard } from "@/components/PlanCard";
-import { MicButton, speak, useVoice } from "@/components/Voice";
-import { EXAMPLES } from "@/lib/i18n";
 
-function ChatInner() {
+// The list of conversations with Pal (on desktop the same list sits in the sidebar). Each opens on the home page.
+export default function ChatList() {
   const { t, lang } = useLang();
-  const params = useSearchParams();
-  const fromRaw = params.get("from");
-  const from = (["plan", "budget", "resources", "me", "item"] as const).find((x) => x === fromRaw);
-  const itemId = params.get("item") ?? "";
-  const { data, refresh } = useAppState();
-  const firstKid = data?.state.profile.children[0];
-  const itemRow = itemId ? findItem(itemId, firstKid ? monthsSince(firstKid.born) : 0) : undefined;
-  const item = itemRow ? (lang === "zh" ? itemRow.label_zh : itemRow.label_en) : itemId;
-  const [ask, setAsk] = useState("");
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const bottom = useRef<HTMLDivElement>(null);
-  const submitRef = useRef<(text?: string, spoke?: boolean) => void>(() => {});
-  const voice = useVoice((said) => submitRef.current(said, true), (heard) => setAsk(heard));
-  const count = data?.state.plans.length ?? 0;
-  useEffect(() => { bottom.current?.scrollIntoView({ block: "end" }); }, [count, busy]);
-  const onMoney = useCallback(() => refresh(), [refresh]);
-  const onError = useCallback((m: string) => setError(m), []);
-
-  async function submit(text = ask, spoke = false) {
-    if (!text.trim() || busy) return;
-    setBusy(true); setError(null);
-    try {
-      const r = await fetch("/api/plan", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ask: text, lang, context: from === "item" ? `item page: ${item}` : from }) });
-      const j = await r.json();
-      if (!r.ok) throw new Error(j.error ?? "Planning failed");
-      setAsk("");
-      if (spoke && j.plan) speak(`${j.plan.headline} ${j.plan.note}`, lang);
-      await refresh();
-    } catch (e) { setError((e as Error).message); } finally { setBusy(false); }
-  }
-
-  submitRef.current = submit;
+  const { data } = useAppState();
   if (!data) return <main className="p-8 text-sm text-muted">{t("loading")}</main>;
-  const plans = data.state.plans;
-  const kid = data.state.profile.children[0]?.name || (lang === "zh" ? "宝宝" : "the baby");
-  const ctxChips = from ? [t(`ctx.${from}.q1` as const, { name: kid, item }), t(`ctx.${from}.q2` as const, { name: kid, item }), t(`ctx.${from}.q3` as const, { name: kid, item })] : [];
+  const convs = data.state.conversations ?? [];
+  const fmt = (iso: string) => new Date(iso).toLocaleDateString(lang === "zh" ? "zh-CN" : "en-US", { month: "short", day: "numeric" });
   return (
-    <main className="mx-auto max-w-3xl px-4 pt-2 md:px-6 md:pt-8">
-      <div className="flex items-baseline justify-between">
-        <div>
-          <div className="text-xs text-muted"><span className="text-primary">{t("pillar.cut")}</span></div>
-          <h2 className="text-xl font-semibold tracking-tight">{t("chat.title")}</h2>
-          <p className="text-xs text-muted">{t("chat.subtitle")}</p>
-        </div>
-        <Link href="/" className="text-xs text-muted md:hidden">{t("chat.back")}</Link>
+    <main className="mx-auto max-w-[720px] px-4 pt-4 md:px-6 md:pt-8">
+      <div className="flex items-center justify-between">
+        <h1 className="text-xl font-semibold tracking-tight">{t("conv.list_title")}</h1>
+        <Link href="/?new=1" className="flex items-center gap-1 rounded-full bg-primary px-3 py-1.5 text-sm font-medium text-white"><Plus className="h-4 w-4" />{t("nav.new")}</Link>
       </div>
-
-      <div className="mt-4 space-y-5 pb-48">
-        {from && (
-          <div className="flex items-end gap-2">
-            <PalFace size={28} className="mb-1" />
-            <div className="max-w-[85%] rounded-2xl rounded-bl-sm border border-primary/30 bg-primary-soft/60 px-4 py-2.5 text-[15px] leading-relaxed">{t(`ctx.${from}.intro` as const, { name: kid, item })}</div>
-          </div>
-        )}
-        {!plans.length && !from && <p className="text-sm text-muted">{t("chat.empty")}</p>}
-        {plans.map((p) => (
-          <div key={p.id} className="space-y-2">
-            <div className="flex justify-end"><div className="max-w-[85%] rounded-2xl rounded-br-sm bg-primary px-4 py-2 text-sm text-white">{p.ask}</div></div>
-            <PlanCard plan={p} onPaid={onMoney} onError={onError} />
-          </div>
+      {convs.length === 0 && <p className="mt-6 text-sm text-muted">{t("conv.list_empty")}</p>}
+      <ul className="mt-4 divide-y divide-line rounded-2xl border border-line bg-panel shadow-sm">
+        {convs.map((c) => (
+          <li key={c.id}>
+            <Link href={`/?c=${c.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-bg">
+              <PalFace size={26} />
+              <span className="min-w-0 flex-1 truncate text-sm">{c.title || "…"}</span>
+              <span className="num shrink-0 text-xs text-muted">{c.items.length} · {fmt(c.updated_at)}</span>
+            </Link>
+          </li>
         ))}
-        {busy && <div className="text-sm text-muted">{t("composer.busy")}</div>}
-        {error && <div className="rounded-lg border border-red/40 bg-red/5 px-3 py-2 text-xs text-red">{error}</div>}
-        <div ref={bottom} />
-      </div>
-
-      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-line bg-bg/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:bottom-0">
-        <div className="mx-auto max-w-3xl px-4 py-3 md:px-6">
-          <div className="mb-2 flex flex-wrap gap-1.5">
-            {ctxChips.map((q) => <button key={q} onClick={() => setAsk(q)} className="rounded-full border border-primary/40 bg-primary-soft/60 px-2.5 py-1 text-[11px] text-primary">{q}</button>)}
-            {!from && EXAMPLES[lang].map((ex, i) => <button key={i} onClick={() => setAsk(ex)} className="rounded-full border border-line bg-panel px-2.5 py-1 text-[11px] text-muted hover:border-primary hover:text-fg">{t("composer.example")} {i + 1}</button>)}
-          </div>
-          <div className="flex items-end gap-2">
-            <textarea value={ask} onChange={(e) => setAsk(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); } }} rows={2} placeholder={voice.listening ? t("voice.listening") : t("composer.placeholder")} className="flex-1 resize-none rounded-2xl border border-line bg-panel px-4 py-2.5 text-sm shadow-sm placeholder:text-muted focus:border-primary" />
-            <MicButton voice={voice} className="mb-1" />
-            <button onClick={() => submit()} disabled={busy || !ask.trim()} className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white disabled:opacity-30">{busy ? t("composer.busy") : t("composer.filter")}</button>
-          </div>
-        </div>
-      </div>
+      </ul>
     </main>
   );
-}
-
-export default function ChatPage() {
-  return <Suspense fallback={null}><ChatInner /></Suspense>;
 }
