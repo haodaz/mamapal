@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { MapPin } from "lucide-react";
 import { useLang } from "@/components/LangProvider";
 import { PalFigure } from "@/components/PalFace";
@@ -9,7 +8,6 @@ import { PERSONA_CARDS } from "@/lib/persona-cards";
 
 export default function Login() {
   const { t, lang } = useLang();
-  const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
@@ -22,7 +20,8 @@ export default function Login() {
       const r = await fetch("/api/login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
       const j = await r.json();
       if (!r.ok) throw new Error(j.error ?? "failed");
-      router.push(j.onboarded ? "/" : "/welcome");
+      // a full load, so nothing fetched before sign-in stays on screen
+      window.location.assign(j.onboarded ? "/" : "/welcome");
     } catch (e) { setError((e as Error).message); setBusy(null); }
   }
   const input = "mt-1 w-full rounded-xl border border-line bg-panel px-3 py-2.5 text-base";

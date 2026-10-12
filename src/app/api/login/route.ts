@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { freshState, loadState, saveState, ROW_COOKIE } from "@/lib/store";
+import { freshState, loadState, saveState, ROW_COOKIE, OWNER_ROW } from "@/lib/store";
 import { personaByCode } from "@/lib/personas";
 
 // Demo sign-in. Two ways in, each with its own state row (cookie `mp_row`):
@@ -17,6 +17,13 @@ export async function POST(req: Request) {
   const jar = await cookies();
   const opts = { httpOnly: true, sameSite: "lax" as const, path: "/", maxAge: MONTH };
 
+  if (code && process.env.OWNER_CODE && code.trim() === process.env.OWNER_CODE) {
+    // the owner's own household: no copy, the real row
+    const state = await loadState(OWNER_ROW);
+    jar.set(ROW_COOKIE, OWNER_ROW, opts);
+    jar.set(COOKIE, encodeURIComponent(JSON.stringify({ name: state.profile.name || "owner", at: Date.now() })), opts);
+    return NextResponse.json({ ok: true, name: state.profile.name, onboarded: state.onboarded === true });
+  }
   if (code) {
     const p = personaByCode(code);
     if (!p) return NextResponse.json({ error: "unknown code" }, { status: 404 });

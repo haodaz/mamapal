@@ -40,3 +40,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 /data/
+
+# demo video working files
+/docs/video/v2/out/
+/docs/video/v2/tts/

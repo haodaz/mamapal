@@ -10,11 +10,14 @@ import { cookies } from "next/headers";
 //   1. Supabase table `app_state` (one row per household, jsonb) when SUPABASE_URL + a key are set — needed on Vercel, whose disks don't persist.
 //   2. data/state.json (or data/state-<row>.json) on disk (local dev).
 //   3. in-memory fallback.
-// Which row: the `mp_row` cookie set at sign-in (each demo code gets its own private copy); without it, STATE_ROW_ID or "default".
+// Which row: the `mp_row` cookie set at sign-in (each demo code gets its own private copy). Without the cookie a
+// request gets an empty "guest" household, never a real one. The owner's own household (row "default", or
+// STATE_ROW_ID) is reached only by signing in with OWNER_CODE, which is set in the environment, never in code.
 // Boundary: a household is whoever holds the cookie. This is not authentication.
 
 export const ROW_COOKIE = "mp_row";
-const DEFAULT_ROW = process.env.STATE_ROW_ID ?? "default";
+export const OWNER_ROW = process.env.STATE_ROW_ID ?? "default";
+const DEFAULT_ROW = "guest";
 export const validRow = (r: string | undefined | null): r is string => !!r && /^[a-z0-9-]{1,48}$/.test(r);
 const memory = new Map<string, State>();
 
