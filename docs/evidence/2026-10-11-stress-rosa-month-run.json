@@ -1,0 +1,313 @@
+{
+  "household": "rosa",
+  "id": "run_mv4gpdqjamft",
+  "goal": "Keep Mateo covered until the month ends, on what is left",
+  "status": "done",
+  "total_cost_usd": 0.587,
+  "seconds": 110,
+  "steps": [
+    {
+      "key": "stock",
+      "attempt": 0,
+      "status": "done",
+      "summary": "$290 free (keeping $25 aside), 21 days left; 1 consumable won't last the month, 15 other must-haves to cover.",
+      "notes": null,
+      "usage": {
+        "cost": 0,
+        "input": 0,
+        "output": 0,
+        "searches": 0
+      },
+      "error": null,
+      "seconds": 0.0
+    },
+    {
+      "key": "plan",
+      "attempt": 0,
+      "status": "done",
+      "summary": "11 things now for about $176, 2 scheduled for later, 4 left for another month.",
+      "notes": null,
+      "usage": {
+        "cost": 0.1,
+        "input": 2972,
+        "output": 3297,
+        "searches": 0
+      },
+      "error": null,
+      "seconds": 40.0
+    },
+    {
+      "key": "prices",
+      "attempt": 0,
+      "status": "done",
+      "summary": "Searched 11 items, found 23 real offers with links.",
+      "notes": null,
+      "usage": {
+        "cost": 0.487,
+        "input": 57205,
+        "output": 3236,
+        "searches": 12
+      },
+      "error": null,
+      "seconds": 64.2
+    },
+    {
+      "key": "verify",
+      "attempt": 0,
+      "status": "done",
+      "summary": "opened 23 links: 7 showed the price, 12 open or block robots, 4 dead and dropped; money, coverage to month end and order checked: all passed.",
+      "notes": [],
+      "usage": {
+        "cost": 0,
+        "input": 0,
+        "output": 0,
+        "searches": 0
+      },
+      "error": null,
+      "seconds": 5.8
+    },
+    {
+      "key": "cart",
+      "attempt": 0,
+      "status": "done",
+      "summary": "Cart ready: 11 items for $163, $127 left after; 2 later buys scheduled. You approve the payment in PayPal; Pal never pays for you.",
+      "notes": null,
+      "usage": {
+        "input": 0,
+        "output": 0,
+        "searches": 0,
+        "cost": 0
+      },
+      "error": null,
+      "seconds": 0.0
+    }
+  ],
+  "stock": {
+    "available": 290,
+    "spend_cap": 265,
+    "days_left": 21,
+    "lines": [
+      "diapers: 90 diapers left, about 22 days; 0 diapers short of month end",
+      "wipes not tracked, counting the whole month: 126 wipes"
+    ],
+    "musts": [
+      {
+        "cost": 110,
+        "need": "Family table food & whole milk (Mateo)"
+      },
+      {
+        "cost": 8,
+        "need": "Tear-free wash, lotion & hooded towels (Mateo)"
+      },
+      {
+        "cost": 8,
+        "need": "Mom: multivitamin, dental care & own checkup (Mateo)"
+      },
+      {
+        "cost": 10,
+        "need": "Extra laundry detergent & stain remover (Mateo)"
+      },
+      {
+        "cost": 1.7,
+        "need": "Barrier/diaper cream (Mateo)"
+      },
+      {
+        "cost": 15,
+        "need": "Clothes size 2T–3T (easy pull-down waistbands) (Mateo)"
+      },
+      {
+        "cost": 6,
+        "need": "Flexible toddler shoes (Mateo)"
+      },
+      {
+        "cost": 1.7,
+        "need": "Toddler toothbrush & fluoride toothpaste (Mateo)"
+      },
+      {
+        "cost": 2.7,
+        "need": "Children's acetaminophen & ibuprofen (Mateo)"
+      },
+      {
+        "cost": 3.3,
+        "need": "First aid supplies (bandages, saline, tweezers) (Mateo)"
+      },
+      {
+        "cost": 4,
+        "need": "Sunscreen, sun hat & winter hat/mittens (Mateo)"
+      },
+      {
+        "cost": 8,
+        "need": "Prenatal vitamin with folic acid (Baby)"
+      },
+      {
+        "cost": 25,
+        "need": "Prenatal checkups & ultrasounds (Baby)"
+      },
+      {
+        "cost": 5,
+        "need": "Iron supplement (if anemic) (Baby)"
+      },
+      {
+        "cost": 4,
+        "need": "Unscented body lotion for itchy belly (Baby)"
+      }
+    ]
+  },
+  "links": {
+    "ok": 7,
+    "dead": 4,
+    "opens": 12,
+    "blocked": 0
+  },
+  "issues_left_for_her": [],
+  "items": [
+    {
+      "need": "wipes",
+      "name": "Parent's Choice Fresh Scent Baby Wipes, 900 ct (9 packs of 100)",
+      "packs": 1,
+      "unit_price": 13.97,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": null
+    },
+    {
+      "need": "Family table food & whole milk (Mateo)",
+      "name": "Great Value whole milk, eggs, beans, rice, frozen veg, fruit, bread (monthly grocery run)",
+      "packs": 1,
+      "unit_price": 95,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "SNAP and WIC cover most of this; the food pantry can stretch it further"
+    },
+    {
+      "need": "Tear-free wash, lotion & hooded towels (Mateo)",
+      "name": "Equate Tear-Free Baby Wash 15 oz plus baby lotion 15 oz",
+      "packs": 1,
+      "unit_price": 7.97,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": null
+    },
+    {
+      "need": "Barrier/diaper cream (Mateo)",
+      "name": "Equate Zinc Oxide Diaper Rash Cream, 4 oz",
+      "packs": 1,
+      "unit_price": 3.29,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": null
+    },
+    {
+      "need": "Extra laundry detergent & stain remover (Mateo)",
+      "name": "Great Value laundry detergent 100 oz plus stain spray",
+      "packs": 1,
+      "unit_price": 9.97,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": null
+    },
+    {
+      "need": "Mom: multivitamin, dental care & own checkup (Mateo)",
+      "name": "Equate Women's Multivitamin 100 ct, toothpaste and toothbrush",
+      "packs": 1,
+      "unit_price": 8,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "Medicaid covers your checkup and dental at no cost"
+    },
+    {
+      "need": "Prenatal vitamin with folic acid (Baby)",
+      "name": "Equate Prenatal Multivitamin with folic acid, 100 ct",
+      "packs": 1,
+      "unit_price": 8.98,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "WIC and Medicaid may supply prenatal vitamins free; ask at your visit"
+    },
+    {
+      "need": "Unscented body lotion for itchy belly (Baby)",
+      "name": "Equate Unscented Moisturizing Lotion, 20 oz",
+      "packs": 1,
+      "unit_price": 3.97,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": null
+    },
+    {
+      "need": "Toddler toothbrush & fluoride toothpaste (Mateo)",
+      "name": "Equate Kids toothbrush 2-pack and fluoride toddler toothpaste",
+      "packs": 1,
+      "unit_price": 2.48,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": null
+    },
+    {
+      "need": "Children's acetaminophen & ibuprofen (Mateo)",
+      "name": "Equate Children's Acetaminophen 4 oz and Children's Ibuprofen 4 oz",
+      "packs": 1,
+      "unit_price": 5.48,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": null
+    },
+    {
+      "need": "First aid supplies (bandages, saline, tweezers)",
+      "name": "Equate bandage variety pack, saline wound wash and tweezers",
+      "packs": 1,
+      "unit_price": 3.48,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": null
+    },
+    {
+      "need": "Flexible toddler shoes (Mateo)",
+      "name": "Wonder Nation toddler flexible sneakers, size 7-8",
+      "packs": 1,
+      "unit_price": 6.97,
+      "when": "later",
+      "buy_by": "2026-10-28",
+      "tier": 1,
+      "benefit": "Bloom Free Store often has shoes at no cost"
+    },
+    {
+      "need": "Sunscreen, sun hat & winter hat/mittens (Mateo)",
+      "name": "Wonder Nation toddler knit hat and mittens set",
+      "packs": 1,
+      "unit_price": 3.97,
+      "when": "later",
+      "buy_by": "2026-10-30",
+      "tier": 1,
+      "benefit": "Bloom Free Store gives out winter gear too"
+    }
+  ],
+  "skipped": [
+    {
+      "why": "You have 90 left, enough past month end",
+      "need": "diapers"
+    },
+    {
+      "why": "Bloom Free Store gives toddler clothes free; ask there first",
+      "need": "Clothes size 2T-3T (easy pull-down waistbands)"
+    },
+    {
+      "why": "Medicaid pays these in full, no cash needed",
+      "need": "Prenatal checkups & ultrasounds"
+    },
+    {
+      "why": "Only if bloodwork shows low iron; wait for your visit",
+      "need": "Iron supplement (if anemic)"
+    }
+  ]
+}

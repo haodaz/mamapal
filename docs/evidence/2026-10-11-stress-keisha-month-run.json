@@ -1,0 +1,517 @@
+{
+  "household": "keisha",
+  "id": "run_mv4ivnl45i2q",
+  "goal": "Keep Amara covered until the month ends, on what is left",
+  "status": "done",
+  "total_cost_usd": 0.919,
+  "seconds": 167,
+  "steps": [
+    {
+      "key": "stock",
+      "attempt": 0,
+      "status": "done",
+      "summary": "$280 free (keeping $25 aside), 21 days left; 1 consumable won't last the month, 31 other must-haves to cover.",
+      "notes": null,
+      "usage": {
+        "cost": 0,
+        "input": 0,
+        "output": 0,
+        "searches": 0
+      },
+      "error": null,
+      "seconds": 0.0
+    },
+    {
+      "key": "plan",
+      "attempt": 0,
+      "status": "done",
+      "summary": "13 things now for about $164, 1 scheduled for later, 10 left for another month.",
+      "notes": null,
+      "usage": {
+        "cost": 0.147,
+        "input": 3344,
+        "output": 5103,
+        "searches": 0
+      },
+      "error": null,
+      "seconds": 60.2
+    },
+    {
+      "key": "prices",
+      "attempt": 0,
+      "status": "done",
+      "summary": "Searched 13 items, found 10 real offers with links; 10 items had none.",
+      "notes": null,
+      "usage": {
+        "cost": 0.405,
+        "input": 44181,
+        "output": 2583,
+        "searches": 12
+      },
+      "error": null,
+      "seconds": 55.1
+    },
+    {
+      "key": "verify",
+      "attempt": 0,
+      "status": "done",
+      "summary": "opened 10 links: 2 showed the price, 8 open or block robots, 0 dead and dropped; money, coverage to month end and order checked: 10 items still unpriced, searching again.",
+      "notes": [
+        "Great Value dairy-free table food basket (bananas, avocado, sweet potato, oat O's, soft pasta): no store offer found yet.",
+        "Parent's Choice iron-fortified baby oatmeal cereal, 16 oz: no store offer found yet.",
+        "Great Value staples run (rice, eggs, chicken, frozen veg, bread, peanut butter, fruit): no store offer found yet.",
+        "Great Value whole milk, 1 gallon: no store offer found yet.",
+        "Equate Kids Complete Multivitamin gummies, 70 ct: no store offer found yet.",
+        "Equate Prenatal Vitamin with Iron tablets, 100 ct: no store offer found yet.",
+        "Equate infant acetaminophen 2 oz plus Equate children's acetaminophen 4 oz: no store offer found yet.",
+        "Equate tear-free baby wash 15 oz, Equate kids 2-in-1 wash 15 oz, Equate lotion, hand soap, tissues: no store offer found yet.",
+        "Equate kids toothbrush 2-pack and Equate kids fluoride toothpaste, 4.2 oz: no store offer found yet.",
+        "Parent's Choice nursing pads 60 ct, lanolin nipple cream 2 oz, milk storage bags 50 ct: no store offer found yet."
+      ],
+      "usage": {
+        "cost": 0,
+        "input": 0,
+        "output": 0,
+        "searches": 0
+      },
+      "error": null,
+      "seconds": 2.5
+    },
+    {
+      "key": "prices",
+      "attempt": 1,
+      "status": "done",
+      "summary": "Searched 10 items, found 6 real offers with links; 8 items had none.",
+      "notes": null,
+      "usage": {
+        "cost": 0.367,
+        "input": 40773,
+        "output": 1723,
+        "searches": 12
+      },
+      "error": null,
+      "seconds": 46.0
+    },
+    {
+      "key": "verify",
+      "attempt": 1,
+      "status": "done",
+      "summary": "opened 16 links: 6 showed the price, 10 open or block robots, 0 dead and dropped; money, coverage to month end and order checked: 8 items still unpriced, searching again.",
+      "notes": [
+        "Parent's Choice iron-fortified baby oatmeal cereal, 16 oz: no store offer found yet.",
+        "Great Value whole milk, 1 gallon: no store offer found yet.",
+        "Equate Kids Complete Multivitamin gummies, 70 ct: no store offer found yet.",
+        "Equate Prenatal Vitamin with Iron tablets, 100 ct: no store offer found yet.",
+        "Equate infant acetaminophen 2 oz plus Equate children's acetaminophen 4 oz: no store offer found yet.",
+        "Equate tear-free baby wash 15 oz, Equate kids 2-in-1 wash 15 oz, Equate lotion, hand soap, tissues: no store offer found yet.",
+        "Equate kids toothbrush 2-pack and Equate kids fluoride toothpaste, 4.2 oz: no store offer found yet.",
+        "Parent's Choice nursing pads 60 ct, lanolin nipple cream 2 oz, milk storage bags 50 ct: no store offer found yet."
+      ],
+      "usage": {
+        "cost": 0,
+        "input": 0,
+        "output": 0,
+        "searches": 0
+      },
+      "error": null,
+      "seconds": 2.7
+    },
+    {
+      "key": "cart",
+      "attempt": 0,
+      "status": "done",
+      "summary": "Cart ready: 13 items for $160, $120 left after; 1 later buy scheduled; 11 things for you to look at. You approve the payment in PayPal; Pal never pays for you.",
+      "notes": null,
+      "usage": {
+        "input": 0,
+        "output": 0,
+        "searches": 0,
+        "cost": 0
+      },
+      "error": null,
+      "seconds": 0.0
+    }
+  ],
+  "stock": {
+    "available": 280,
+    "spend_cap": 255,
+    "days_left": 21,
+    "lines": [
+      "diapers: 200 diapers left, about 33 days; 0 diapers short of month end",
+      "wipes: 120 wipes left, about 13 days; 69 wipes short of month end"
+    ],
+    "musts": [
+      {
+        "cost": 8,
+        "need": "Postnatal / prenatal vitamin"
+      },
+      {
+        "cost": 45,
+        "need": "Finger foods & table food (Amara)"
+      },
+      {
+        "cost": 12,
+        "need": "Iron-rich foods (meat, beans, fortified cereal) (Amara)"
+      },
+      {
+        "cost": 10,
+        "need": "Mom's iron & hydration (breastfeeding)"
+      },
+      {
+        "cost": 8,
+        "need": "Milk storage bags"
+      },
+      {
+        "cost": 5,
+        "need": "Nursing pads"
+      },
+      {
+        "cost": 5,
+        "need": "Breast pump + replacement parts"
+      },
+      {
+        "cost": 3.3,
+        "need": "Vitamin D drops (Amara)"
+      },
+      {
+        "cost": 2,
+        "need": "Infant acetaminophen / ibuprofen (Amara)"
+      },
+      {
+        "cost": 1.3,
+        "need": "Baby wash / shampoo (Amara)"
+      },
+      {
+        "cost": 2,
+        "need": "Nipple cream"
+      },
+      {
+        "cost": 4,
+        "need": "Kids toothbrush + fluoride toothpaste (Jordan)"
+      },
+      {
+        "cost": 110,
+        "need": "Preschooler's share of family food (Jordan)"
+      },
+      {
+        "cost": 25,
+        "need": "Milk / calcium foods (Jordan)"
+      },
+      {
+        "cost": 6,
+        "need": "Crayons, washable markers, paper, safety scissors (Jordan)"
+      },
+      {
+        "cost": 5,
+        "need": "Kids shampoo, soap, lotion (Jordan)"
+      },
+      {
+        "cost": 4,
+        "need": "Hand soap, tissues, wipes (Jordan)"
+      },
+      {
+        "cost": 6,
+        "need": "Children's vitamin D / multivitamin (Jordan)"
+      },
+      {
+        "cost": 5,
+        "need": "Mom's multivitamin / iron"
+      },
+      {
+        "cost": 3.3,
+        "need": "Cotton underwear (3T-4T) (Jordan)"
+      },
+      {
+        "cost": 2,
+        "need": "Children's acetaminophen / ibuprofen (Jordan)"
+      },
+      {
+        "cost": 2.7,
+        "need": "Bandages & first-aid basics (Jordan)"
+      },
+      {
+        "cost": 2.7,
+        "need": "Kids sunscreen SPF 30+ (Jordan)"
+      },
+      {
+        "cost": 4,
+        "need": "Furniture anchors, outlet covers, cabinet locks (Jordan)"
+      },
+      {
+        "cost": 7.3,
+        "need": "Fitted sheets + waterproof mattress protector (Jordan)"
+      },
+      {
+        "cost": 5,
+        "need": "Pajamas (3T-5T) (Jordan)"
+      },
+      {
+        "cost": 13.3,
+        "need": "Everyday clothes (3T-5T) (Jordan)"
+      },
+      {
+        "cost": 6.7,
+        "need": "Sneakers (velcro) (Jordan)"
+      },
+      {
+        "cost": 8.3,
+        "need": "Winter coat, hat, mittens, boots (Jordan)"
+      },
+      {
+        "cost": 2,
+        "need": "Ball, sidewalk chalk, bubbles (Jordan)"
+      },
+      {
+        "cost": 8.3,
+        "need": "Mom's walking shoes & basics"
+      }
+    ]
+  },
+  "links": {
+    "ok": 6,
+    "dead": 0,
+    "opens": 10,
+    "blocked": 0
+  },
+  "issues_left_for_her": [
+    {
+      "check": "pack",
+      "fix_by": "mom",
+      "problem": "Great Value dairy-free table food basket (bananas, avocado, sweet potato, oat O's, soft pasta): stores list $6.49, $6.79, $7.29, $7.99 against a $28.00 estimate (a different pack, or the estimate is off). Budgeted at $28.00; check the pack before you pay."
+    },
+    {
+      "check": "pack",
+      "fix_by": "mom",
+      "problem": "Great Value low-sodium black beans, 15 oz, 6 cans: stores list $0.92, $1.37, $1.53 against a $4.50 estimate (a different pack, or the estimate is off). Budgeted at $4.50; check the pack before you pay."
+    },
+    {
+      "check": "pack",
+      "fix_by": "mom",
+      "problem": "Great Value staples run (rice, eggs, chicken, frozen veg, bread, peanut butter, fruit): stores list $4.88, $7.88 against a $48.00 estimate (a different pack, or the estimate is off). Budgeted at $48.00; check the pack before you pay."
+    },
+    {
+      "check": "price",
+      "fix_by": "mom",
+      "problem": "Parent's Choice iron-fortified baby oatmeal cereal, 16 oz: no store offer found yet."
+    },
+    {
+      "check": "price",
+      "fix_by": "mom",
+      "problem": "Great Value whole milk, 1 gallon: no store offer found yet."
+    },
+    {
+      "check": "price",
+      "fix_by": "mom",
+      "problem": "Equate Kids Complete Multivitamin gummies, 70 ct: no store offer found yet."
+    },
+    {
+      "check": "price",
+      "fix_by": "mom",
+      "problem": "Equate Prenatal Vitamin with Iron tablets, 100 ct: no store offer found yet."
+    },
+    {
+      "check": "price",
+      "fix_by": "mom",
+      "problem": "Equate infant acetaminophen 2 oz plus Equate children's acetaminophen 4 oz: no store offer found yet."
+    },
+    {
+      "check": "price",
+      "fix_by": "mom",
+      "problem": "Equate tear-free baby wash 15 oz, Equate kids 2-in-1 wash 15 oz, Equate lotion, hand soap, tissues: no store offer found yet."
+    },
+    {
+      "check": "price",
+      "fix_by": "mom",
+      "problem": "Equate kids toothbrush 2-pack and Equate kids fluoride toothpaste, 4.2 oz: no store offer found yet."
+    },
+    {
+      "check": "price",
+      "fix_by": "mom",
+      "problem": "Parent's Choice nursing pads 60 ct, lanolin nipple cream 2 oz, milk storage bags 50 ct: no store offer found yet."
+    }
+  ],
+  "items": [
+    {
+      "need": "wipes",
+      "name": "Parent's Choice fragrance-free baby wipes, 480 ct",
+      "packs": 1,
+      "unit_price": 5.37,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "Central California Food Bank diaper program (free diapers and wipes monthly)"
+    },
+    {
+      "need": "Finger foods & table food (Amara)",
+      "name": "Great Value dairy-free table food basket (bananas, avocado, sweet potato, oat O's, soft pasta)",
+      "packs": 1,
+      "unit_price": 28,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "CalFresh EBT; WIC fruit and veggie benefit"
+    },
+    {
+      "need": "Iron-rich foods (meat, beans, fortified cereal) (Amara)",
+      "name": "Parent's Choice iron-fortified baby oatmeal cereal, 16 oz",
+      "packs": 2,
+      "unit_price": 2.48,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "WIC infant cereal"
+    },
+    {
+      "need": "Iron-rich foods (meat, beans, fortified cereal) (Amara)",
+      "name": "Great Value low-sodium black beans, 15 oz, 6 cans",
+      "packs": 1,
+      "unit_price": 4.5,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "CalFresh EBT"
+    },
+    {
+      "need": "Preschooler's share of family food (Jordan)",
+      "name": "Great Value staples run (rice, eggs, chicken, frozen veg, bread, peanut butter, fruit)",
+      "packs": 1,
+      "unit_price": 48,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "CalFresh EBT"
+    },
+    {
+      "need": "Milk / calcium foods (Jordan)",
+      "name": "Great Value whole milk, 1 gallon",
+      "packs": 3,
+      "unit_price": 3,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "WIC milk benefit for Jordan"
+    },
+    {
+      "need": "Vitamin D drops (Amara)",
+      "name": "Equate Baby Vitamin D3 drops, 400 IU, 1.69 oz",
+      "packs": 1,
+      "unit_price": 7.03,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": null
+    },
+    {
+      "need": "Children's vitamin D / multivitamin (Jordan)",
+      "name": "Equate Kids Complete Multivitamin gummies, 70 ct",
+      "packs": 1,
+      "unit_price": 7,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": null
+    },
+    {
+      "need": "Postnatal / prenatal vitamin; Mom's multivitamin / iron",
+      "name": "Equate Prenatal Vitamin with Iron tablets, 100 ct",
+      "packs": 1,
+      "unit_price": 9,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "Medi-Cal may cover a prescribed prenatal vitamin"
+    },
+    {
+      "need": "Infant acetaminophen / ibuprofen (Amara); Children's acetaminophen / ibuprofen (Jordan)",
+      "name": "Equate infant acetaminophen 2 oz plus Equate children's acetaminophen 4 oz",
+      "packs": 1,
+      "unit_price": 9.98,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "Medi-Cal pharmacy if the doctor writes it"
+    },
+    {
+      "need": "Baby wash / shampoo (Amara); Kids shampoo, soap, lotion (Jordan); Hand soap, tissues, wipes (Jordan)",
+      "name": "Equate tear-free baby wash 15 oz, Equate kids 2-in-1 wash 15 oz, Equate lotion, hand soap, tissues",
+      "packs": 1,
+      "unit_price": 10,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": null
+    },
+    {
+      "need": "Kids toothbrush + fluoride toothpaste (Jordan)",
+      "name": "Equate kids toothbrush 2-pack and Equate kids fluoride toothpaste, 4.2 oz",
+      "packs": 1,
+      "unit_price": 4,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "Medi-Cal covers Jordan's dental visits"
+    },
+    {
+      "need": "Nursing pads; Nipple cream; Milk storage bags",
+      "name": "Parent's Choice nursing pads 60 ct, lanolin nipple cream 2 oz, milk storage bags 50 ct",
+      "packs": 1,
+      "unit_price": 13,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "WIC gives free pump parts and some supplies"
+    },
+    {
+      "need": "Preschooler's share of family food (Jordan); Milk / calcium foods (Jordan)",
+      "name": "Great Value second grocery run (milk, eggs, produce, chicken, cereal)",
+      "packs": 1,
+      "unit_price": 55,
+      "when": "later",
+      "buy_by": "2026-10-24",
+      "tier": 1,
+      "benefit": "CalFresh EBT"
+    }
+  ],
+  "skipped": [
+    {
+      "why": "Two hundred left, enough past month's end; ask the diaper bank.",
+      "need": "diapers"
+    },
+    {
+      "why": "WIC supplies pump and parts for free.",
+      "need": "Breast pump + replacement parts"
+    },
+    {
+      "why": "Try Buy Nothing and church closets before spending.",
+      "need": "Everyday clothes, pajamas, sneakers, winter coat (Jordan)"
+    },
+    {
+      "why": "Can wait a month; current pairs still fit.",
+      "need": "Cotton underwear (3T-4T) (Jordan)"
+    },
+    {
+      "why": "Not urgent this month; food and wipes come first.",
+      "need": "Fitted sheets + waterproof mattress protector (Jordan)"
+    },
+    {
+      "why": "Library story time and free craft kits cover play now.",
+      "need": "Crayons, markers, paper, safety scissors; Ball, chalk, bubbles"
+    },
+    {
+      "why": "October in Fresno; buy in spring instead.",
+      "need": "Kids sunscreen SPF 30+ (Jordan)"
+    },
+    {
+      "why": "Small need; add next month if the kit runs low.",
+      "need": "Bandages & first-aid basics (Jordan)"
+    },
+    {
+      "why": "Ask Early Start or local fire station for free safety items.",
+      "need": "Furniture anchors, outlet covers, cabinet locks (Jordan)"
+    },
+    {
+      "why": "Holding until tier-one food and care are steady.",
+      "need": "Mom's walking shoes & basics"
+    }
+  ]
+}

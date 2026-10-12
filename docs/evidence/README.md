@@ -28,6 +28,10 @@ searches and cost, the offers with the link check the verifier did, and what was
    and never found. Fix: at most one extra price pass per run.
 5. **Price step too expensive (run 2).** 20 searches at medium effort cost $1.38. Fix: up to 1.5 searches per item
    (max 12) at low effort, plus the targeted second pass from fix 3. Run 3's two price passes together: $0.95.
+6. **Two children broke the plan (stress test, Keisha).** A 10-month-old and a 4-year-old together have 31 must-haves
+   at their stages; the plan grew past the output limit and was cut off mid-JSON ("Unterminated string"). Fix: the
+   plan holds at most 14 items with small things grouped, more output room, the mother's own items are listed once
+   instead of once per child, and a cut-off now says so in plain words. The re-run passed with 13 items now.
 
 ## Benefit sources
 
@@ -67,9 +71,17 @@ What it shows: Ohio's program pages are plain HTML and the checker could confirm
 and Texas's pages mostly refuse robots or never got a quote, so those cards honestly say "couldn't read" or "no
 source". Keisha's report used her child's medical note (WIC covers dairy-free formula with a doctor's form).
 
-The month runs stopped at the price step: the Anthropic account ran out of credit mid-test ("Your credit balance is
-too low"). Each run kept the steps it had finished (stock, plan) and shows "try again from this step"; they resume
-from there once credit is added. The month-run results for these households will be added then.
+**Month runs.** The first attempt stopped at the price step when the Anthropic account ran out of credit ("Your
+credit balance is too low"); each run kept its finished steps and was resumed after the top-up with "try again from
+this step". Keisha's run was also cut by a dev-server crash mid-step and resumed the same way.
+
+| Household | Result | Steps | Time | AI cost | What the checker did |
+|---|---|---|---|---|---|
+| [Rosa](2026-10-11-stress-rosa-month-run.json) | 11 items now, 2 later | 5 | 110 s | $0.59 | Passed first time; opened 23 links, 7 showed the price, 4 dead links dropped. |
+| [Maya](2026-10-11-stress-maya-month-run.json) | 4 items now | 11 | 231 s | $1.49 | **Caught a gap in formula twice**: the plan put the next formula can on Oct 21, then Oct 22, but her formula runs out Oct 14 (a 4-month-old with a week without formula). Sent back both times; the third plan buys it now. |
+| [Keisha](2026-10-11-stress-keisha-month-run.json) | 13 items now | 7 | 167 s | $0.92 | After defect 6 was fixed: re-priced the unpriced items once, then passed. |
+
+Across five households and eight full runs, one month run costs $0.59 to $1.95 of AI time and takes 2 to 5 minutes.
 
 ## What the checker verifies (no model involved)
 

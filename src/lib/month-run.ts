@@ -56,14 +56,19 @@ function takeStock(state: State, run: MonthRun) {
   });
   // Must-haves from the catalog beyond the three tracked consumables (those are counted above, not by price).
   const tracked = new Set(["diapers", "wipes"]);
+  // One line per need: the mother's own items (and anything both children share) are counted once, not per child.
   const musts: { need: string; cost: number }[] = [];
+  const seen = new Map<string, { need: string; cost: number; kids: string[] }>();
   for (const c of state.profile.children) {
     for (const n of childNeeds(c, state.profile, state.owned ?? []).needs) {
       if (n.tier !== 1 || n.kind === "one_time" || n.monthly <= 0) continue;
       if (tracked.has(n.category) || (n.category === "feeding" && /formula/i.test(n.label.en) && state.profile.formula_ml_per_day > 0)) continue;
-      musts.push({ need: `${n.label.en}${state.profile.children.length > 1 ? ` (${c.name || "child"})` : ""}`, cost: n.monthly });
+      const prev = seen.get(n.id);
+      if (prev) { if (n.category !== "mom") prev.kids.push(c.name || "child"); continue; }
+      seen.set(n.id, { need: n.label.en, cost: n.monthly, kids: n.category === "mom" ? [] : [c.name || "child"] });
     }
   }
+  for (const m of seen.values()) musts.push({ need: m.kids.length && state.profile.children.length > 1 ? `${m.need} (${m.kids.join(", ")})` : m.need, cost: m.cost });
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
   const bought = state.plans.filter((p) => p.status === "paid" && new Date(p.created_at).getTime() >= monthStart)
     .flatMap((p) => p.items.filter((i) => i.buy_name && (i.verdict === "buy" || i.verdict === "swap")).map((i) => i.buy_name!));
@@ -111,6 +116,7 @@ Rules:
 - Buy now only what runs out within ~10 days or is cheaper bought now; schedule the rest as "later" with a buy_by date a few days before it runs out. Later dates must be before the month ends.
 - Maslow order: tier 1 must-haves first. Tier 2 (growth) or tier 3 (joy) only if tier 1 is fully covered and money is left; free options first (library, Buy Nothing).
 - Do not re-buy what she already bought this month.
+- Keep the plan short enough to act on: at most 14 items in all (now + later). Group small toiletries or pantry staples into one line, and leave anything that can wait to "skipped".
 - If a benefit can cover it (WIC covers formula, diaper banks give diapers), say so in benefit; still buy a bridge amount if it runs out before she could collect.
 - Medical notes on a child outrank savings: never swap a prescribed or special formula for a cheaper one.
 - Realistic US prices (Walmart, Target, Aldi, dollar stores, pharmacies). Product names can stay English.
@@ -133,12 +139,17 @@ Benefits she likely qualifies for: ${s.benefits.join(" | ") || "unknown (she has
   const client = new Anthropic();
   const res = await client.messages.parse({
     model: MODEL,
-    max_tokens: 8000,
+    max_tokens: 16000,
     system: [{ type: "text", text: PLAN_SYSTEM, cache_control: { type: "ephemeral" } }],
     messages: [{ role: "user", content: `${ctx}${fb}\n\nWrite headline, note, reasons in ${run.lang === "zh" ? "Simplified Chinese" : "English"}.` }],
     output_config: { format: zodOutputFormat(DraftSchema), effort: "medium" },
+  }).catch((e: Error) => {
+    // the SDK throws when the JSON is cut off; say what happened in plain words
+    throw new Error(/parse structured output/i.test(e.message) ? "The plan was cut off before it finished (too long); try again" : e.message);
   });
+
   if (res.stop_reason === "refusal") throw new Error("The model declined this request");
+  if (res.stop_reason === "max_tokens") throw new Error("The plan was cut off before it finished (too long); try again");
   if (!res.parsed_output) throw new Error("Could not parse the plan");
   const out = res.parsed_output;
   // Keep offers already found for items that survived a revision unchanged.

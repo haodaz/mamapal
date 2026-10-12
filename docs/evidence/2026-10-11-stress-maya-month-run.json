@@ -1,0 +1,276 @@
+{
+  "household": "maya",
+  "id": "run_mv4gq3qemq0w",
+  "goal": "Keep Leo covered until the month ends, on what is left",
+  "status": "done",
+  "total_cost_usd": 1.49,
+  "seconds": 231,
+  "steps": [
+    {
+      "key": "stock",
+      "attempt": 0,
+      "status": "done",
+      "summary": "$260 free (keeping $25 aside), 21 days left; 2 consumables won't last the month, 4 other must-haves to cover.",
+      "notes": null,
+      "usage": {
+        "cost": 0,
+        "input": 0,
+        "output": 0,
+        "searches": 0
+      },
+      "error": null,
+      "seconds": 0.0
+    },
+    {
+      "key": "plan",
+      "attempt": 0,
+      "status": "done",
+      "summary": "8 things now for about $73, 1 scheduled for later, 1 left for another month.",
+      "notes": null,
+      "usage": {
+        "cost": 0.057,
+        "input": 2638,
+        "output": 2136,
+        "searches": 0
+      },
+      "error": null,
+      "seconds": 26.4
+    },
+    {
+      "key": "prices",
+      "attempt": 0,
+      "status": "done",
+      "summary": "Searched 8 items, found 10 real offers with links; 2 items had none.",
+      "notes": null,
+      "usage": {
+        "cost": 0.693,
+        "input": 97363,
+        "output": 3432,
+        "searches": 12
+      },
+      "error": null,
+      "seconds": 69.3
+    },
+    {
+      "key": "verify",
+      "attempt": 0,
+      "status": "done",
+      "summary": "opened 10 links: 2 showed the price, 8 open or block robots, 0 dead and dropped; money, coverage to month end and order checked: 1 problems, sent back.",
+      "notes": [
+        "Parent's Choice Advantage Infant Formula, 36 oz can: buy_by 2026-10-21 is after formula runs out on 2026-10-14. Move it earlier or buy now.",
+        "Equate Baby Lotion, 15 oz: no store offer found yet.",
+        "Equate Infants' Acetaminophen Oral Suspension, 2 fl oz: no store offer found yet."
+      ],
+      "usage": {
+        "cost": 0,
+        "input": 0,
+        "output": 0,
+        "searches": 0
+      },
+      "error": null,
+      "seconds": 2.1
+    },
+    {
+      "key": "plan",
+      "attempt": 1,
+      "status": "done",
+      "summary": "Revised after the check: 7 things now for about $76, 2 scheduled for later, 2 left for another month.",
+      "notes": null,
+      "usage": {
+        "cost": 0.059,
+        "input": 2725,
+        "output": 2206,
+        "searches": 0
+      },
+      "error": null,
+      "seconds": 26.2
+    },
+    {
+      "key": "prices",
+      "attempt": 1,
+      "status": "done",
+      "summary": "Searched 4 items, found 9 real offers with links.",
+      "notes": null,
+      "usage": {
+        "cost": 0.292,
+        "input": 36907,
+        "output": 1897,
+        "searches": 6
+      },
+      "error": null,
+      "seconds": 37.5
+    },
+    {
+      "key": "verify",
+      "attempt": 1,
+      "status": "done",
+      "summary": "opened 15 links: 2 showed the price, 13 open or block robots, 0 dead and dropped; money, coverage to month end and order checked: 1 problems, sent back.",
+      "notes": [
+        "Parent's Choice Advantage Infant Formula, 36 oz can: buy_by 2026-10-22 is after formula runs out on 2026-10-14. Move it earlier or buy now."
+      ],
+      "usage": {
+        "cost": 0,
+        "input": 0,
+        "output": 0,
+        "searches": 0
+      },
+      "error": null,
+      "seconds": 1.9
+    },
+    {
+      "key": "plan",
+      "attempt": 2,
+      "status": "done",
+      "summary": "Revised after the check: 4 things now for about $92, 0 scheduled for later, 4 left for another month.",
+      "notes": null,
+      "usage": {
+        "cost": 0.055,
+        "input": 2785,
+        "output": 1517,
+        "searches": 0
+      },
+      "error": null,
+      "seconds": 21.2
+    },
+    {
+      "key": "prices",
+      "attempt": 2,
+      "status": "done",
+      "summary": "Searched 4 items, found 5 real offers with links.",
+      "notes": null,
+      "usage": {
+        "cost": 0.334,
+        "input": 46071,
+        "output": 1756,
+        "searches": 6
+      },
+      "error": null,
+      "seconds": 44.7
+    },
+    {
+      "key": "verify",
+      "attempt": 2,
+      "status": "done",
+      "summary": "opened 5 links: 1 showed the price, 4 open or block robots, 0 dead and dropped; money, coverage to month end and order checked: all passed.",
+      "notes": [],
+      "usage": {
+        "cost": 0,
+        "input": 0,
+        "output": 0,
+        "searches": 0
+      },
+      "error": null,
+      "seconds": 2.0
+    },
+    {
+      "key": "cart",
+      "attempt": 0,
+      "status": "done",
+      "summary": "Cart ready: 4 items for $92, $168 left after. You approve the payment in PayPal; Pal never pays for you.",
+      "notes": null,
+      "usage": {
+        "input": 0,
+        "output": 0,
+        "searches": 0,
+        "cost": 0
+      },
+      "error": null,
+      "seconds": 0.0
+    }
+  ],
+  "stock": {
+    "available": 260,
+    "spend_cap": 235,
+    "days_left": 21,
+    "lines": [
+      "diapers: 70 diapers left, about 8 days; 98 diapers short of month end",
+      "formula: 3198 ml left, about 3 days; 13602 ml short of month end",
+      "wipes: 300 wipes left, about 25 days; 0 wipes short of month end"
+    ],
+    "musts": [
+      {
+        "cost": 8,
+        "need": "Postnatal / prenatal vitamin"
+      },
+      {
+        "cost": 5,
+        "need": "Baby wash/shampoo & lotion"
+      },
+      {
+        "cost": 4,
+        "need": "Infant vitamin D drops"
+      },
+      {
+        "cost": 1.7,
+        "need": "Infant acetaminophen"
+      }
+    ]
+  },
+  "links": {
+    "ok": 1,
+    "dead": 0,
+    "opens": 4,
+    "blocked": 0
+  },
+  "issues_left_for_her": [],
+  "items": [
+    {
+      "need": "formula",
+      "name": "Parent's Choice Advantage Infant Formula, 36 oz can",
+      "packs": 2,
+      "unit_price": 22.98,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "Texas WIC covers infant formula once you are enrolled"
+    },
+    {
+      "need": "diapers",
+      "name": "Parent's Choice Diapers Size 2, 180 ct box",
+      "packs": 1,
+      "unit_price": 26.94,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "Houston Lone Star Diaper Bank gives about 50-75 free diapers a month"
+    },
+    {
+      "need": "Baby wash/shampoo & lotion, Infant vitamin D drops, Infant acetaminophen, Postnatal vitamin",
+      "name": "Equate baby wash & shampoo 15 oz, Equate baby lotion 15 oz, Equate infant vitamin D drops 1.69 oz, Equate infant acetaminophen 2 oz, Equate prenatal vitamin 60 ct",
+      "packs": 1,
+      "unit_price": 19.5,
+      "when": "now",
+      "buy_by": null,
+      "tier": 1,
+      "benefit": "Children's Medicaid may cover vitamin D drops with a doctor's order"
+    },
+    {
+      "need": "Play and learning",
+      "name": "Library board books and baby story time",
+      "packs": 1,
+      "unit_price": 0,
+      "when": "now",
+      "buy_by": null,
+      "tier": 3,
+      "benefit": null
+    }
+  ],
+  "skipped": [
+    {
+      "why": "You have 300 left; they last past the end of the month.",
+      "need": "wipes"
+    },
+    {
+      "why": "Diaper bank pickup may cover next month; buy then.",
+      "need": "Bigger diaper stockpile"
+    },
+    {
+      "why": "Leo is covered for now; try Buy Nothing groups first.",
+      "need": "Clothes and gear"
+    },
+    {
+      "why": "SNAP and the Houston Food Bank pantry cover food this month.",
+      "need": "Groceries for you"
+    }
+  ]
+}

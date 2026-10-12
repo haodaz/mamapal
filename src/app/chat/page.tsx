@@ -8,6 +8,7 @@ import { monthsSince } from "@/lib/age";
 import { useAppState } from "@/components/useAppState";
 import { useLang } from "@/components/LangProvider";
 import { PlanCard } from "@/components/PlanCard";
+import { MicButton, speak, useVoice } from "@/components/Voice";
 import { EXAMPLES } from "@/lib/i18n";
 
 function ChatInner() {
@@ -24,12 +25,14 @@ function ChatInner() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const bottom = useRef<HTMLDivElement>(null);
+  const submitRef = useRef<(text?: string, spoke?: boolean) => void>(() => {});
+  const voice = useVoice((said) => submitRef.current(said, true), (heard) => setAsk(heard));
   const count = data?.state.plans.length ?? 0;
   useEffect(() => { bottom.current?.scrollIntoView({ block: "end" }); }, [count, busy]);
   const onMoney = useCallback(() => refresh(), [refresh]);
   const onError = useCallback((m: string) => setError(m), []);
 
-  async function submit(text = ask) {
+  async function submit(text = ask, spoke = false) {
     if (!text.trim() || busy) return;
     setBusy(true); setError(null);
     try {
@@ -37,10 +40,12 @@ function ChatInner() {
       const j = await r.json();
       if (!r.ok) throw new Error(j.error ?? "Planning failed");
       setAsk("");
+      if (spoke && j.plan) speak(`${j.plan.headline} ${j.plan.note}`, lang);
       await refresh();
     } catch (e) { setError((e as Error).message); } finally { setBusy(false); }
   }
 
+  submitRef.current = submit;
   if (!data) return <main className="p-8 text-sm text-muted">{t("loading")}</main>;
   const plans = data.state.plans;
   const kid = data.state.profile.children[0]?.name || (lang === "zh" ? "宝宝" : "the baby");
@@ -82,7 +87,8 @@ function ChatInner() {
             {!from && EXAMPLES[lang].map((ex, i) => <button key={i} onClick={() => setAsk(ex)} className="rounded-full border border-line bg-panel px-2.5 py-1 text-[11px] text-muted hover:border-primary hover:text-fg">{t("composer.example")} {i + 1}</button>)}
           </div>
           <div className="flex items-end gap-2">
-            <textarea value={ask} onChange={(e) => setAsk(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); } }} rows={2} placeholder={t("composer.placeholder")} className="flex-1 resize-none rounded-2xl border border-line bg-panel px-4 py-2.5 text-sm shadow-sm placeholder:text-muted focus:border-primary" />
+            <textarea value={ask} onChange={(e) => setAsk(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); } }} rows={2} placeholder={voice.listening ? t("voice.listening") : t("composer.placeholder")} className="flex-1 resize-none rounded-2xl border border-line bg-panel px-4 py-2.5 text-sm shadow-sm placeholder:text-muted focus:border-primary" />
+            <MicButton voice={voice} className="mb-1" />
             <button onClick={() => submit()} disabled={busy || !ask.trim()} className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white disabled:opacity-30">{busy ? t("composer.busy") : t("composer.filter")}</button>
           </div>
         </div>

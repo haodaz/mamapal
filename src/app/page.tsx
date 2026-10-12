@@ -11,6 +11,7 @@ import { PlanCard } from "@/components/PlanCard";
 import { BabyAvatar } from "@/components/BabyAvatar";
 import { SpendCard } from "@/components/SpendCard";
 import { RunCard } from "@/components/RunCard";
+import { MicButton, speak, useVoice } from "@/components/Voice";
 import { childNeeds } from "@/lib/stages";
 import { supplyStatus } from "@/lib/inventory";
 import { monthsSince, formatAge } from "@/lib/age";
@@ -30,6 +31,8 @@ export default function Home() {
   const [lastRun, setLastRun] = useState<MonthRun | null>(null);
   const [tab, setTab] = useState<Tab>("money");
   const box = useRef<HTMLTextAreaElement>(null);
+  const submitRef = useRef<(text?: string, spoke?: boolean) => void>(() => {});
+  const voice = useVoice((said) => submitRef.current(said, true), (heard) => setAsk(heard));
   const end = useRef<HTMLDivElement>(null);
   useEffect(() => { fetch("/api/resources", { cache: "no-store" }).then((r) => r.json()).then((j) => setReport(j.resources)); }, []);
   useEffect(() => { fetch("/api/run", { cache: "no-store" }).then((r) => r.json()).then((j) => setLastRun(j.run)).catch(() => {}); }, []);
@@ -71,17 +74,22 @@ export default function Home() {
       if (!r.ok) throw new Error(j.error ?? "failed");
       setThread((th) => [...th, { run: j.run }]);
     } catch (e) { setError((e as Error).message); }
-  }
+  }  submitRef.current = submit;
 
-  async function submit() {
-    if (!ask.trim() || busy) return;
-    const text = ask.trim();
+
+  // "plan my month" (typed or said) starts a month run instead of a one-off verdict
+  const wantsRun = (s: string) => /\b(plan|sort|cover)\b.*\b(month|rest of)\b|排.*(这个)?月|这个月.*(安排|排)/i.test(s);
+  async function submit(said?: string, spoke = false) {
+    const text = (said ?? ask).trim();
+    if (!text || busy) return;
+    if (wantsRun(text)) { setAsk(""); if (spoke) speak(t("voice.run_ok"), lang); return startRun(); }
     setBusy(true); setError(null); setAsk("");
     try {
       const r = await fetch("/api/plan", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ask: text, lang }) });
       const j = await r.json();
       if (!r.ok) throw new Error(j.error ?? "failed");
       setThread((th) => [...th, { ask: text, plan: j.plan }]);
+      if (spoke) speak(`${j.plan.headline} ${j.plan.note}`, lang);
       refresh();
     } catch (e) { setError((e as Error).message); setAsk(text); } finally { setBusy(false); }
   }
@@ -238,8 +246,9 @@ export default function Home() {
             <Link href="/chat" className={chip}>{t("pal.history")}</Link>
           </div>
           <div className="relative flex items-end gap-2 rounded-3xl border border-line bg-panel p-1.5 shadow-[0_-6px_24px_rgba(40,50,110,0.08)]">
-            <textarea ref={box} value={ask} onChange={(e) => setAsk(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); } }} rows={1} placeholder={t("pal.placeholder")} className="max-h-32 flex-1 resize-none bg-transparent px-3 py-2 text-[15px] placeholder:text-muted" />
-            <button onClick={submit} disabled={busy || !ask.trim()} className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white disabled:opacity-30">{busy ? t("composer.busy") : t("pal.send")}</button>
+            <textarea ref={box} value={ask} onChange={(e) => setAsk(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); } }} rows={1} placeholder={voice.listening ? t("voice.listening") : t("pal.placeholder")} className="max-h-32 flex-1 resize-none bg-transparent px-3 py-2 text-[15px] placeholder:text-muted" />
+            <MicButton voice={voice} />
+            <button onClick={() => submit()} disabled={busy || !ask.trim()} className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white disabled:opacity-30">{busy ? t("composer.busy") : t("pal.send")}</button>
           </div>
         </div>
       </div>

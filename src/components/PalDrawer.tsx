@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import { useLang } from "./LangProvider";
 import { PalFace } from "./PalFace";
 import { PlanCard } from "./PlanCard";
+import { MicButton, speak, useVoice } from "./Voice";
 import { contextLine, type PalContext } from "@/lib/context";
 import type { Plan } from "@/lib/types";
 
@@ -18,6 +19,8 @@ export function PalDrawer({ ctx, kid, onClose }: { ctx: PalContext | null; kid: 
   const [thread, setThread] = useState<{ ask: string; plan: Plan }[]>([]);
   const end = useRef<HTMLDivElement>(null);
   const box = useRef<HTMLTextAreaElement>(null);
+  const submitRef = useRef<(text?: string, spoke?: boolean) => void>(() => {});
+  const voice = useVoice((said) => submitRef.current(said, true), (heard) => setAsk(heard));
   useEffect(() => { box.current?.focus(); }, []);
   useEffect(() => { if (thread.length || busy) end.current?.scrollIntoView({ behavior: "smooth", block: "end" }); }, [thread.length, busy]);
   useEffect(() => { const k = (e: KeyboardEvent) => e.key === "Escape" && onClose(); window.addEventListener("keydown", k); return () => window.removeEventListener("keydown", k); }, [onClose]);
@@ -26,7 +29,7 @@ export function PalDrawer({ ctx, kid, onClose }: { ctx: PalContext | null; kid: 
   const intro = ctx ? t(`ctx.${screen}.intro` as const, vars) : t("pal.intro");
   const chips = ctx ? [t(`ctx.${screen}.q1` as const, vars), t(`ctx.${screen}.q2` as const, vars), t(`ctx.${screen}.q3` as const, vars)] : [t("pal.q1"), t("pal.q2", vars), t("pal.q3")];
 
-  async function submit(text = ask) {
+  async function submit(text = ask, spoke = false) {
     if (!text.trim() || busy) return;
     const q = text.trim();
     setBusy(true); setError(null); setAsk("");
@@ -35,9 +38,11 @@ export function PalDrawer({ ctx, kid, onClose }: { ctx: PalContext | null; kid: 
       const j = await r.json();
       if (!r.ok) throw new Error(j.error ?? "failed");
       setThread((th) => [...th, { ask: q, plan: j.plan }]);
+      if (spoke) speak(`${j.plan.headline} ${j.plan.note}`, lang);
     } catch (e) { setError((e as Error).message); setAsk(q); } finally { setBusy(false); }
   }
 
+  submitRef.current = submit;
   return (
     <div className="fixed inset-0 z-40 md:pointer-events-none">
       <div className="absolute inset-0 bg-fg/15 backdrop-blur-[1px] md:hidden" onClick={onClose} />
@@ -72,7 +77,8 @@ export function PalDrawer({ ctx, kid, onClose }: { ctx: PalContext | null; kid: 
         </div>
         <div className="border-t border-line bg-panel px-4 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:rounded-b-3xl">
           <div className="flex items-end gap-2 rounded-2xl border border-line bg-bg p-1.5">
-            <textarea ref={box} value={ask} onChange={(e) => setAsk(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); } }} rows={1} placeholder={t("pal.placeholder")} className="max-h-32 flex-1 resize-none bg-transparent px-3 py-2 text-sm placeholder:text-muted" />
+            <textarea ref={box} value={ask} onChange={(e) => setAsk(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); } }} rows={1} placeholder={voice.listening ? t("voice.listening") : t("pal.placeholder")} className="max-h-32 flex-1 resize-none bg-transparent px-3 py-2 text-sm placeholder:text-muted" />
+            <MicButton voice={voice} />
             <button onClick={() => submit()} disabled={busy || !ask.trim()} className="rounded-full bg-primary px-3.5 py-2 text-sm font-semibold text-white disabled:opacity-30">{t("pal.send")}</button>
           </div>
         </div>

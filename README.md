@@ -38,6 +38,10 @@ One button, one goal: *keep the baby covered until the month ends, on what is le
 
 Every step is saved as it finishes, so a timeout resumes at the next step. Three real runs, the five defects they exposed and the fix for each are in [`docs/evidence/`](docs/evidence/README.md).
 
+### Talk to Pal
+
+A parent holding a baby has one free hand. Every place you can talk to Pal (home, the pop-up, the conversation page) has a mic: tap it, talk, stop talking. The words fill the box as she speaks and go out after a short pause; when she asked by voice, Pal reads its answer back. "Plan the rest of the month", said or typed, starts the month run. It uses the browser's own speech services (in Chrome, recognition is done by Google's speech service, so audio does leave the device); MamaPal itself never records or stores audio. Browsers without speech recognition simply don't show the mic.
+
 ### Pal cuts
 
 **Smart-tax filter.** She types what she thinks she needs, the way it sits in her head ("baby has a rash, Instagram says buy the $45 organic oil and the $60 sleep sack"). Claude returns a verdict per item: **BUY / SWAP / SKIP / DEFER**, a concrete cheaper equivalent with a realistic US retail price, and a one-line reason. Money fields are recomputed server-side; the model never gets the last word on arithmetic. Typical result: $105 asked → $18 approved. Then **check prices across stores**: Pal searches the web for the same item at Walmart, Target, Amazon, Costco, Aldi, dollar stores and pharmacies, lists real offers with links, and lowers the cart if it finds cheaper. Pal is nobody's shop.
